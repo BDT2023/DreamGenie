@@ -53,3 +53,28 @@ Snakes were chasing me from everywhere but not really bitting or charging, just 
 OUT:
 Scene 1: A person being chased by multiple snakes from all directions. The snakes are not attacking but just chasing the person.
 ###
+IN:
+I am with bunch of my old partners. The mood is up and we are having a good time. We own an orchard together and a bird is talking and hurting the business. I do not see the bird or think about it much, but I am aware of it. We joke that the talking bird could have an accident. We all laugh.
+OUT:
+Scene 1: A group of old business partners are gathered together, in a positive mood and enjoying themselves.
+Scene 2: There is a a talking bird at an orchard.
+Scene 3: The group jokes about the bird having an accident and they all laugh.
+###
+IN:
+So, I remember being in my mom's house and next thing I know I am walking her dog. This very friendly dog places my hand under "his" arm pit pretty much the way my husband does at night in bed while trying to fall asleep. 
+Such a good feeling to be home and see my brother and mom. We went to the street market where they sell rotisserie chicken on Sundays and brought some home for lunch. A kid not related to use was playing around in a car the size of a shoe box and went towards the charcoal where they were barbecuing. Don't know if because of my husband or the dog, my hand felt good tucked in.
+OUT:
+Scene 1: A person sitting in their mother's house.
+Scene 2: A friendly dog placing the narrators hand under his armpit
+Scene 3: The person sees their brother and mother and they all go to the street market, where vendors are selling rotisserie chicken.
+Scene 4: A kid is playing around with a shoe-box sized toy car at the market, near the charcoal where they were barbecuing.
+###
+IN:
+This is the second time in weeks that I dream of war. Not the "typical" war ...
+I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ... 
+aaagghhh.... don't like wars!! not even in my dreams.
+OUT:
+Scene 1: The narrator is in their mother's house, which is located in a city. They are surrounded by people who are preparing for a war and there is a sense of chaos and urgency in the air.
+Scene 2: The narrator sees foreign soldiers armed with guns, roaming the streets. 
+Scene 3: The narrator's children are huddled together, trying to send a text message to their father for help without being caught by the foreign soldiers. The narrator is watching them with a look of fear and concern on their face.
+###
