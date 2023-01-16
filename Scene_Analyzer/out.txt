@@ -1,0 +1,361 @@
+Prompt: Give short visual descriptions of the scenes in the following: 
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope.
+It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+Scene 1:
+Output:  A cold, stark landscape is illuminated by the fading twilight sky. In the distance, a lone figure stands, taking in the stillness of the evening. 
+
+Scene 2: 
+The figure is suddenly interrupted by the sound of loping footsteps. A large wolf appears, slowly making its way around the corner. Its breath is visible in the air as it moves, and the figure admires its gracefulness. 
+
+Scene 3:
+The wolf moves out of view, disappearing around the corner, leaving the figure alone with its thoughts. They feel a sense of curiosity, as if the wolf was leading them somewhere, though they can't remember where.
+
+########################
+
+Prompt: Give short visual only descriptions of the scenes in the following: 
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope.
+It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+
+Scene 1:
+Output: A barren landscape lit by a soft purple-pink hue of twilight.
+
+Scene 2:
+A wolf walking at a brisk pace, panting as it moves around a corner and out of sight. 
+
+Scene 3:
+A figure standing still, admiring the wolf as it disappears.
+
+########################
+
+Prompt: Describe in words the scenes in the following: 
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope.
+It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+
+Scene 1:
+Output: The setting of the dream was a cold and stark landscape at twilight. I was standing in the middle of the scenery feeling at ease.
+
+Scene 2:
+Suddenly, a wolf appeared around the corner and began to lope across the landscape. It was panting as it moved, and I watched it in admiration. Then, it suddenly turned around and disappeared around another corner. I did not follow it, but I felt like it may have been a sign of something.
+
+########################
+
+Prompt: Describe in words the visual scenes in the following: 
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope.
+It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+
+Scene 1:
+Output: The first scene of my dream was a cold, stark landscape at twilight. I was standing there and feeling a sense of calm.
+
+Scene 2:
+Around the corner, a wolf appeared. It was loping at a brisk speed, panting as it moved. I was mesmerized by it and watched as it went around another corner and disappeared from sight.########################
+
+Prompt: Break into the visual scenes the following: 
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope.
+It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+
+Scene 1:
+Output: I am standing in a cold, stark landscape at twilight. I am admiring the peaceful atmosphere.
+
+Scene 2:
+A wolf appears and begins to lope around the corner. It is panting and appears to be in a hurry.
+
+Scene 3:
+The wolf disappears around the corner and I remain standing in the landscape. I feel like the wolf has led me to something, but I cannot remember the rest of the dream.
+
+########################
+
+Prompt: Break into the visual scenes the following: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: I am having lunch with Chris in DC. 
+
+Scene 2:
+I am driving back and I feel that I can't control the car. 
+
+Scene 3:
+I realize that Chris and I are sitting in the back seat. 
+
+Scene 4:
+Right before we get to the highway, I stop and get behind the wheel. 
+
+Scene 5:
+I realize that I have left my notebook behind and I was logged in. 
+
+Scene 6:
+I get very concerned, but I do not have time to go back to the restaurant. 
+
+Scene 7:
+I am thinking that I should have changed the setting on my notebook.
+
+########################
+
+Prompt: Give short visual only descriptions of the scenes in the following: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Two people sitting in the back seat of a car. 
+
+Scene 2:
+Person getting out of the car and getting behind the wheel. 
+
+Scene 3:
+Person realizing they have left something behind, looking worried.
+
+########################
+
+Prompt: Give visual only descriptions of the scenes in the following: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Two people sitting in the back seat of a car.
+
+Scene 2:
+Person getting out of the back seat and getting into the driver's seat.
+
+Scene 3:
+Person looking back at the car as they realize they left something behind. 
+
+Scene 4:
+Person thinking and looking concerned.
+
+########################
+
+Prompt: Visual only descriptions of the scenes in the following: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Two people, Chris and the narrator, are sitting in the back seat of a car. 
+
+Scene 2:
+The narrator gets out of the back seat to get behind the wheel and realizes they have left their notebook behind. 
+
+Scene 3:
+The narrator is worried and concerned, but they do not have time to go back to the restaurant.
+
+########################
+
+Prompt: Visual only descriptions of the scenes in: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: The two characters, Chris and the narrator, are having lunch in a restaurant in DC. 
+
+Scene 2:
+The narrator is driving the car back from the restaurant, but realizes that Chris and they are sitting in the back seat instead of the front. 
+
+Scene 3:
+The narrator stops the car before they reach the highway and gets behind the wheel. 
+
+Scene 4:
+The narrator realizes they have left their notebook behind and are logged in. They become concerned and think they should have changed the settings on their notebook, but do not have time to go back.
+
+########################
+
+Prompt: Short,Visual only descriptions of the scenes in: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Chris and I are sitting in the backseat of a car, feeling like we can't control the vehicle. 
+
+Scene 2:
+I am getting out of the car to take the wheel and suddenly realize I left my notebook behind. 
+
+Scene 3:
+I am feeling concerned as I drive away, wishing I had changed the settings on my notebook.
+
+########################
+
+Prompt: Give short visual only descriptions of the scenes here: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Two people sitting in a car, one in the driver's seat and one in the back. 
+
+Scene 2:
+The person in the driver's seat switches places with the person in the back seat. 
+
+Scene 3:
+The person in the driver's seat notices their laptop sitting on the back seat, realizing they left it behind. 
+
+Scene 4:
+The person in the driver's seat looks concerned as they drive away, wishing they had changed the settings on their laptop before leaving.
+
+########################
+
+Prompt: Give accurate short visual only descriptions of the scenes here: 
+I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot
+control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the
+highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I
+was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking
+that I should have changed the setting on my notebook.
+
+Scene 1:
+Output: Two people sitting in the backseat of a car. 
+
+Scene 2:
+Person getting out of the backseat and into the driver's seat. 
+
+Scene 3:
+Person realizing something is missing, looking concerned.
+
+########################
+
+Prompt: Give accurate short visual only descriptions of the scenes here: 
+I&#39;m alone &quot;apparently&quot; in a room were one of the walls is a large industrial elevator with accordion
+fenced doors closing from right to left.
+The elevator is sent down as a kind of experiment to see if it will bring back something from very
+deep below.
+Kind of like in the movie Hell-Boy in the starting scene.
+The first two times it came up with only hints of spiritual beings with no negative connotations
+actually more funny / witty / spirits than anything else,, although there was no visual entity at all.
+the third time it was sent down with much hesitation... on the way up ,, just before it reached the
+suppericie i head the voice of my father calling my name numerous times as a warning loaded with
+worries,, like warning me from what was coming up.
+My father was not there! he was thousands of miles away.. but he was warning me.... very loudly...
+When the elevator reached there was a small person in it behind the fence. it looked like D it was in a
+2 piece pajamas with the long curly hair held in a loose pony tail..
+I was very very scared,, and tried immediately to press the button to send it back down, but realized
+only then of a huge mistake! the white oversize button to send it down in case of emergency was
+actually inside the elevator on the left wall @!!!
+I had to nervously open the gate to try to reach the button ..
+was extremely scared and woke up.... immediately with the dream very present for many days.
+
+Scene 1:
+Output: A person alone in a room with an industrial elevator with accordion-fenced doors closing from right to left.
+
+Scene 2:
+The elevator is sent down as an experiment, and two times it returns with no visual entity.
+
+Scene 3:
+The third time the elevator is sent down, the person hears their father's voice warning them from afar. When it returns, a small person in two-piece pajamas with long curly hair is inside the elevator.
+
+Scene 4:
+The person is scared and attempts to press the emergency button on the left wall inside the elevator, but wakes up before being able to do so.
+
+########################
+
+Prompt: Give short visual only descriptions of the scenes here: 
+I&#39;m alone &quot;apparently&quot; in a room were one of the walls is a large industrial elevator with accordion
+fenced doors closing from right to left.
+The elevator is sent down as a kind of experiment to see if it will bring back something from very
+deep below.
+Kind of like in the movie Hell-Boy in the starting scene.
+The first two times it came up with only hints of spiritual beings with no negative connotations
+actually more funny / witty / spirits than anything else,, although there was no visual entity at all.
+the third time it was sent down with much hesitation... on the way up ,, just before it reached the
+suppericie i head the voice of my father calling my name numerous times as a warning loaded with
+worries,, like warning me from what was coming up.
+My father was not there! he was thousands of miles away.. but he was warning me.... very loudly...
+When the elevator reached there was a small person in it behind the fence. it looked like D it was in a
+2 piece pajamas with the long curly hair held in a loose pony tail..
+I was very very scared,, and tried immediately to press the button to send it back down, but realized
+only then of a huge mistake! the white oversize button to send it down in case of emergency was
+actually inside the elevator on the left wall @!!!
+I had to nervously open the gate to try to reach the button ..
+was extremely scared and woke up.... immediately with the dream very present for many days.
+
+Scene 1:
+Output: A large industrial elevator with accordion fenced doors closing from right to left, with the protagonist alone in the room.
+
+Scene 2:
+The elevator is sent down as an experiment, with no visible entity coming up the first two times, but with a sense of spiritual presence.
+
+Scene 3:
+The protagonist hears the voice of their father warning them from what is coming up, even though the father is far away.
+
+Scene 4:
+A small person with long, curly hair in two-piece pajamas appears in the elevator. The protagonist is scared and frantically tries to press the button to send it back down, but finds the button inside the elevator.
+
+########################
+
+Prompt: Give short visual only descriptions of the scenes here: So we were in this very nice and warm place. i think I know where. We had this large and very modern house, tropically bright and beautiful. My family and a long lost friend were there. I did not know how long we were staying so did not pack enough for the stay. We went out shopping so we could go dancing and site seeing later. It was so relaxing and fun filled. So warm and bright and fluid.  Just like a dream ...
+Scene 1:
+Output: A large modern house with bright, tropical colors, surrounded by family and a long-lost friend.
+
+Scene 2:
+Shopping for clothes to prepare for a night of dancing and sightseeing. 
+
+Scene 3:
+A warm, bright, and inviting atmosphere, full of joy and relaxation.
+
+########################
+
+Prompt: Give short visual descriptions of the scenes in the following: So we were in this very nice and warm place. i think I know where. We had this large and very modern house, tropically bright and beautiful. My family and a long lost friend were there. I did not know how long we were staying so did not pack enough for the stay. We went out shopping so we could go dancing and site seeing later. It was so relaxing and fun filled. So warm and bright and fluid.  Just like a dream ...
+Scene 1:
+Output: A modern, brightly colored house is surrounded by lush tropical plants. Inside, a family and a long lost friend are laughing and talking. 
+
+Scene 2:
+The family and their friend are out shopping in a busy outdoor market, haggling over prices and pointing out interesting items.
+
+Scene 3:
+The family and their friend are out dancing in a lively club, the music and laughter filling the air. 
+
+Scene 4:
+The family and their friend are out sightseeing, taking in the sights of the tropical paradise. They pause to take in the beauty of the scenery. 
+
+Scene 5:
+The family and their friend are back at the house, relaxing and enjoying each other's company. The air is filled with a feeling of warmth and contentment.
+
+########################
+
+Prompt: Give short visual descriptions of the scenes in the following: So we were in this very nice and warm place. i think I know where. We had this large and very modern house, tropically bright and beautiful. My family and a long lost friend were there. I did not know how long we were staying so did not pack enough for the stay. We went out shopping so we could go dancing and site seeing later. It was so relaxing and fun filled. So warm and bright and fluid.  Just like a dream ...
+Scene 1:
+Output: A large, modern house with bright, tropical colors, surrounded by lush greenery. Family and a long lost friend are gathered in the living room, laughing and talking. 
+
+Scene 2:
+The group is out shopping, browsing through stores and picking out clothes, accessories, and other items. Everyone is in a cheerful mood, enjoying the day. 
+
+Scene 3:
+The group is out dancing and sightseeing, laughing and having a great time. The sun is shining brightly and the atmosphere is relaxed and joyful.
+
+########################
+

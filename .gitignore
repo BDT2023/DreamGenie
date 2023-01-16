@@ -3,6 +3,6 @@
 .idea/modules.xml
 .idea/project_notebook.iml
 .idea/inspectionProfiles/Project_Default.xml
-./secrets.py
-secrets.py
+./my_secrets.py
+my_secrets.py
 __pycache__/secrets.cpython-39.pyc
