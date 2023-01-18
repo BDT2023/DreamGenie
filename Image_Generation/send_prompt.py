@@ -3,9 +3,13 @@ from icecream import ic
 from PIL import Image
 import base64
 from io import BytesIO
-URL = "https://98a8cb39-68db-4a08.gradio.live"
+#TODO: We need to have a permanent URL for the server
+URL = "https://7bf59f1a-20ab-407c.gradio.live"
+
 
 def send_to_sd(prompt):
+    #TODO: add check for existing style using /sdapi/v1/prompt-styles endpoint
+    # Disable debug prints
     ic.disable()
     tokens = """
     ,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
@@ -14,7 +18,7 @@ def send_to_sd(prompt):
     lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
     missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
     """
-    negative_prompt = ""
+    #https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
     payload = {
     "enable_hr": 'false',
     "denoising_strength": 0,
@@ -22,28 +26,29 @@ def send_to_sd(prompt):
     "firstphase_height": 0,
     "prompt": f'{prompt}',
     "styles": [
-        "project_tokes"
+        "project_tokens" #maybe we don't need to add all the tokens
     ],
     "seed": -1,
     "subseed": -1,
     "subseed_strength": 0,
     "seed_resize_from_h": -1,
     "seed_resize_from_w": -1,
-    "sampler_name": "DPM++ 2M",
+    "sampler_name": "DPM++ 2M", #TODO: play with the results
     "batch_size": 1,
     "n_iter": 1,
     "steps": 30,
-    "cfg_scale": 7.5,
-    "width": 512,
+    "cfg_scale": 13,
+    "width": 768,
     "height": 512,
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
-    "eta": 0,
+    "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
     "s_tmax": 0,
     "s_tmin": 0,
-    "s_noise": 1  
+    "s_noise": 1,
+    "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
     #{'prompt': 'A painting of a forest,oil paints','sampler_index':'DDIM','steps':'15'}
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
@@ -59,6 +64,5 @@ def send_to_sd(prompt):
             ic("Image completley black!")
             
 if __name__ == "__main__":
-    #prompt = input("Enter prompt: ")
     prompt = "A painting of a forest,oil paints"
     send_to_sd(prompt)

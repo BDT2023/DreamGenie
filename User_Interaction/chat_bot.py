@@ -1,4 +1,6 @@
 import sys
+#TODO: add __init__.py to the other modules
+# add path to the other modules to enable import
 sys.path.append('../Image_Generation')
 sys.path.append('../Scene_Analyzer')
 from gpt_call import separate_random
@@ -6,7 +8,11 @@ from send_prompt import send_to_sd
 from recorder_gui import run_gui
 import whisper
 import argparse
-model = whisper.load_model("tiny.en")
+'''
+A hard coded chat bot that will guide the user through the process of creating an image
+'''
+
+
 # here are some "magic words"
 # that will make our promt better
 magic_words = ["HDR", "UHD", "4K", "8K", "64K", "highly detailed",
@@ -81,11 +87,6 @@ def edit_component(component, list_of_options, user_input):
 def generate_image(user_input, mode="txt2img", flag=False):
     print("Okay, creating your image now! please wait a few seconds...")
     print("The prompt is: " + user_input)
-    #################################################
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-    # making api call to the server, and showing the image after we get the response
-    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #
-    #################################################
     send_to_sd(prompt=user_input)
     print("Here's your image! I hope you like it!")
     if flag:
@@ -124,18 +125,26 @@ def get_user_input(input_type):
     return user_input
 
 if __name__ == "__main__":
+    # parse the arguments, if there are any,access with args.{argument name}
     parser = argparse.ArgumentParser()
     parser.add_argument("--prompt", type=str, default="random", help="prompt for the image")
     parser.add_argument("--mode", type=str, default="auto", help="auto or manual")
     parser.add_argument("--input", type=str, default="text", help="text or voice")
     args = parser.parse_args()
+    
     print("Hello there! I'm Lisa! so nice to meet you"
         " here!\nI'm a chatbot, so I can't really "
         "talk to you, but I can help you with drawing"
         " some nice images!\nSo, what do you want to draw?\n"
         "please mention also if you want image or painting, for better results!\n")
     user_input = ""
+    
+    if args.input == "voice":
+        model = whisper.load_model("tiny.en")
+
+    # loop to get the user input
     while True:
+        # if we don't want user prompt, we will generate a random one from the dreams
         if args.mode == "auto":
             user_input = separate_random()
         else:

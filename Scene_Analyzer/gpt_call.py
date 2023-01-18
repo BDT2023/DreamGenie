@@ -1,5 +1,5 @@
 import openai
-from icecream import ic
+from icecream import ic # for debugging https://github.com/gruns/icecream
 from my_secrets import API_KEY
 import os
 import random as rand
@@ -17,6 +17,7 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
     #model_engine = "text-curie-001"
     model_engine = "text-davinci-003"
     '''
+    API call to OpenAI GPT-3 using this schema:
     https://beta.openai.com/docs/api-reference/completions/create
     '''
     
@@ -28,13 +29,14 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
         prompt=prompt,
         max_tokens=512,
         n=1,
-        stop=None,
-        temperature=0.45,
+        stop=None, #optional token that stops the generation
+        temperature=0.45, # not too high
     )
 
     # Print the generated text
     generated_text = completions.choices[0].text
 
+    # Append the generated text to the output file to keep track of the results.
     with open("out.txt", "a+") as f:
         f.write(f'Prompt: {prompt}')
         ic(f'Prompt: {prompt}')
@@ -48,6 +50,7 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
     return generated_text
 
 def separate_random():
+    # load the dreams from the csv
     dream_list = load_dreams()
     # show a random dream
     rand.seed(os.urandom(32))
@@ -57,4 +60,5 @@ def separate_random():
 
 
 if __name__ == "__main__":
+    # Load a random dream from the csv and call the openai scene separator on it.
     separate_random()
