@@ -104,12 +104,16 @@ class AudioRecorder:
         self.save_button.config(state=tk.DISABLED)
         
 def on_closing():
+    global root
     if messagebox.askokcancel("Quit", "Do you want to quit?"):
         root.destroy()
-            
-if __name__ == "__main__":
+
+def run_gui():
+    global root
     root = tk.Tk()
     my_gui = AudioRecorder(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
     
+if __name__ == "__main__":
+    run_gui()    

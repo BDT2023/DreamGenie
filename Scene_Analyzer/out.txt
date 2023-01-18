@@ -359,3 +359,17 @@ The group is out dancing and sightseeing, laughing and having a great time. The 
 
 ########################
 
+Prompt: Give short visual descriptions of the scenes in the following: I am with bunch of my old partners. The mood is up and we are having a good time. We own an orchard together and a bird is talking and hurting the business. I do not see the bird or think about it much, but I am aware of it. We joke that the talking bird could have an accident. We all laugh.
+    Scene 1:
+    Output:  A group of friends, all of them wearing smiles, are gathered in an orchard. They are standing in a loose circle, talking and joking with each other. 
+    
+    Scene 2:
+     The group is still gathered in the orchard, but their attention has shifted. One of them is pointing off into the distance, gesturing and making a joke about a talking bird that is hurting their business. The others laugh, but there is no sign of the bird.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: I am making out in the supply room in a high school, but I am not me. I am just someone else going to school. I do not know who I am with.
+    Scene 1:
+    Output:  A teenage student stands in an empty supply room, leaning in close to another student. Their faces are close together, eyes closed, as they kiss passionately. 
+
+    Scene 2:
+    The same student is now standing alone in the supply room, looking around in confusion. They appear disoriented and unsure of their surroundings.
+########################

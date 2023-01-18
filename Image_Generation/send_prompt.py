@@ -1,10 +1,12 @@
 import requests
+from icecream import ic
 from PIL import Image
 import base64
 from io import BytesIO
-URL = "https://6aeba5ba-2809-4364.gradio.live"
+URL = "https://98a8cb39-68db-4a08.gradio.live"
 
 def send_to_sd(prompt):
+    ic.disable()
     tokens = """
     ,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
     """  
@@ -45,7 +47,7 @@ def send_to_sd(prompt):
     }
     #{'prompt': 'A painting of a forest,oil paints','sampler_index':'DDIM','steps':'15'}
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
-    print(x)
+    ic(x)
 
     # check if the image wasn't filterd due to nsfw
     for i in range(0,len(x.json()['images'])):
@@ -54,7 +56,7 @@ def send_to_sd(prompt):
         if not extrema == (0, 0):
             im.show()
         else:
-            print("Image completley black!")
+            ic("Image completley black!")
             
 if __name__ == "__main__":
     #prompt = input("Enter prompt: ")

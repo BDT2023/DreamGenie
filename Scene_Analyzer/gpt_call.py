@@ -1,4 +1,5 @@
 import openai
+from icecream import ic
 from my_secrets import API_KEY
 import os
 import random as rand
@@ -7,7 +8,7 @@ openai.api_key = API_KEY
 
 
 def load_dreams(file_name='sample_texts_normalized.csv'):
-    dream_list = pd.read_csv('sample_texts_normalized.csv', header=None)
+    dream_list = pd.read_csv('G:\\Coding\\final project\\DreamGenie\\Scene_Analyzer\\sample_texts_normalized.csv', header=None)
     return dream_list
 
 
@@ -33,18 +34,27 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
 
     # Print the generated text
     generated_text = completions.choices[0].text
-    print(generated_text)
+
     with open("out.txt", "a+") as f:
         f.write(f'Prompt: {prompt}')
+        ic(f'Prompt: {prompt}')
         f.write(f'Output: {generated_text}')
+        ic(f'Output: {generated_text}')
         f.write(os.linesep)
         f.write(f'########################')
+        ic(f'########################')
         f.write(os.linesep)
+    gen_list = generated_text.split("Scene")
+    return generated_text
 
-if __name__ == "__main__":
+def separate_random():
     dream_list = load_dreams()
     # show a random dream
     rand.seed(os.urandom(32))
     text = dream_list[0][rand.randint(0, len(dream_list)-1)]
-    print(text)
+    ic(text)
     call_openai(text)
+
+
+if __name__ == "__main__":
+    separate_random()

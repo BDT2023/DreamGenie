@@ -1,0 +1,13 @@
+Prompt: Give short visual descriptions of the scenes in the following: I am walking through this automatic door, which is something between an industrial warehouse door and a pharmacy screen. I turn around to help Soraya's father to step in. But before he does, the door starts coming down. He stops and the door closes. There is an opening under the door, we check it to find out if he can slip through. But the opening closes too. Now we are totally separated. The workers inside busy doing their own thing. I do not seem to worry about him, but I am just upset about what has happened. I ask the workers to help. Apparently it is not as simple to open the door after it gets closed for some security reasons. One of them is on a ladder playing with the control box.....
+    Scene 1:
+    Output: 
+The scene is of a person walking through an automatic door that is a mix between an industrial warehouse door and a pharmacy screen. They turn around to help Soraya's father step in, but before he can the door starts to close. 
+
+Scene 2:
+
+The scene is of Soraya's father and the person standing on either side of the closed door. They check for an opening under the door, but it closes too. The workers inside are busy doing their own thing and the person is upset about what has happened. 
+
+Scene 3:
+
+The scene is of the person asking the workers to help. One of them is on a ladder playing with the control box, trying to figure out how to open the door.
+########################
