@@ -4,7 +4,7 @@ from PIL import Image
 import base64
 from io import BytesIO
 #TODO: We need to have a permanent URL for the server
-URL = "https://7bf59f1a-20ab-407c.gradio.live"
+URL = "https://ff8a800e-7c08-4868.gradio.live"
 
 
 def send_to_sd(prompt):
@@ -43,17 +43,20 @@ def send_to_sd(prompt):
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
+    "script_name": "Prompt matrix",
+    "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
     "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
     "s_tmax": 0,
     "s_tmin": 0,
-    "s_noise": 1,
-    "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
+    "s_noise": 1
+    #"override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
     #{'prompt': 'A painting of a forest,oil paints','sampler_index':'DDIM','steps':'15'}
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
     ic(x)
-
+    if x.status_code != 200:
+        raise Exception("Error: {}".format(x.json()['error']))
     # check if the image wasn't filterd due to nsfw
     for i in range(0,len(x.json()['images'])):
         im = Image.open(BytesIO(base64.b64decode(x.json()['images'][i])))
@@ -64,5 +67,5 @@ def send_to_sd(prompt):
             ic("Image completley black!")
             
 if __name__ == "__main__":
-    prompt = "A painting of a forest,oil paints"
+    prompt = "A painting of a forest,oil paints|fairy|lights"
     send_to_sd(prompt)
