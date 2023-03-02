@@ -3,7 +3,9 @@ from icecream import ic
 from PIL import Image
 import base64
 from io import BytesIO
-URL = "https://98a8cb39-68db-4a08.gradio.live"
+import argparse
+
+URL = "https://db91-132-70-60-180.ngrok.io"
 
 def send_to_sd(prompt):
     ic.disable()
@@ -59,6 +61,11 @@ def send_to_sd(prompt):
             ic("Image completley black!")
             
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--url", type=str, default="", help="url for the api server")
+    args = parser.parse_args()
+    if args.url != "":
+        URL = args.url
     #prompt = input("Enter prompt: ")
     prompt = "A painting of a forest,oil paints"
     send_to_sd(prompt)
