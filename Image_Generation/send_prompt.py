@@ -12,9 +12,13 @@ def get_url():
     api_url = "https://api.ngrok.com/endpoints"
     headers = {'Authorization': f'Bearer {API_KEY}', 'Ngrok-Version': '2'}
     response = requests.get(api_url,headers=headers)
+    if response.status_code != 200:
+        raise Exception(f'API request failed: {response.text}')
     URL = response.json()['endpoints'][0]['public_url']
     
 def send_to_sd(prompt):
+    if URL == "":
+        get_url()
     #ic.disable()
     tokens = """
     ,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
