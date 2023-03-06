@@ -4,11 +4,18 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
+from my_secrets import API_KEY
+URL = ""
 
-URL = "https://db91-132-70-60-180.ngrok.io"
-
+def get_url():
+    global URL
+    api_url = "https://api.ngrok.com/endpoints"
+    headers = {'Authorization': f'Bearer {API_KEY}', 'Ngrok-Version': '2'}
+    response = requests.get(api_url,headers=headers)
+    URL = response.json()['endpoints'][0]['public_url']
+    
 def send_to_sd(prompt):
-    ic.disable()
+    #ic.disable()
     tokens = """
     ,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
     """  
@@ -66,6 +73,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
     if args.url != "":
         URL = args.url
+    else:
+        get_url()
     #prompt = input("Enter prompt: ")
     prompt = "A painting of a forest,oil paints"
     send_to_sd(prompt)

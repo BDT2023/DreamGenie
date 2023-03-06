@@ -8,3 +8,7 @@ my_secrets.py
 __pycache__/secrets.cpython-39.pyc
 Demonstration/
 
+Image_Generation/__pycache__/my_secrets.cpython-39.pyc
+User_Interaction/voice_input.wav
+Scene_Analyzer/ngrok_api_test.ipynb
+User_Interaction/voice_input.wav

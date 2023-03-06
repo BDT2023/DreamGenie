@@ -16,6 +16,7 @@ def load_dreams(file_name='sample_texts_normalized.csv'):
 def call_openai(text,command="Give short visual descriptions of the scenes in the following:"):
     #model_engine = "text-curie-001"
     model_engine = "text-davinci-003"
+    command = "Give short augmented visual descriptions of the scenes in the following:"
     '''
     https://beta.openai.com/docs/api-reference/completions/create
     '''

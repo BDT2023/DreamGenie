@@ -373,3 +373,31 @@ Prompt: Give short visual descriptions of the scenes in the following: I am maki
     Scene 2:
     The same student is now standing alone in the supply room, looking around in confusion. They appear disoriented and unsure of their surroundings.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following: I am having lunch with Chris in DC and then I am driving back. As I am driving, I feel that I cannot control the car. Then I realize that Charis and I are sitting in the back seat. Right before we get to the highway, I stop and get behind the wheel. Then I realize that I have left my notebook behind and I was logged in. I get very concerned, but I do not have time to go back to the restaurant. I am thinking that I should have changed the setting on my notebook.
+    Scene 1:
+    Output: 
+Two people, Chris and the protagonist, are sitting together in a restaurant in DC, eating lunch. 
+
+Scene 2:
+
+The protagonist is driving a car, with Chris in the back seat. The protagonist feels like they cannot control the car. 
+
+Scene 3:
+
+The protagonist stops the car and switches places with Chris, getting behind the wheel. 
+
+Scene 4:
+
+The protagonist realizes that they left their notebook in the restaurant, and that it was logged in. They are concerned, but don't have time to go back. They are thinking that they should have changed the setting on their notebook.
+########################
+Prompt: Give short augmented visual descriptions of the scenes in the following: This is the second time in weeks that I dream of war. Not the "typical" war ...
+I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ... 
+aaagghhh.... don't like wars!! not even in my dreams.
+    Scene 1:
+    Output: 
+In the cozy living room of a suburban home, a mother and her children are huddled together in fear. A cacophony of foreign voices and the clatter of guns can be heard outside. The mother is trying to send a desperate text message to her husband, while her children look on in worry. 
+
+
+    Scene 2:
+Outside the home, a chaotic scene ensues. Foreign soldiers, speaking a language that is unrecognizable to the family, are milling around with their guns. The air is thick with tension and fear as the family inside anxiously awaits a response from their loved one.
+########################
