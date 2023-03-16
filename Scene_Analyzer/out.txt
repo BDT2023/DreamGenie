@@ -401,3 +401,8 @@ In the cozy living room of a suburban home, a mother and her children are huddle
     Scene 2:
 Outside the home, a chaotic scene ensues. Foreign soldiers, speaking a language that is unrecognizable to the family, are milling around with their guns. The air is thick with tension and fear as the family inside anxiously awaits a response from their loved one.
 ########################
+Prompt: Extract the main character, setting, and mood from the following and generate a description of an image based on that information: Snakes were chasing me from everywhere but not really bitting or charging, just chasing. How annoying!
+Scene 1:
+Output: 
+The image shows a person running through a dark, spooky forest, with a multitude of slithering snakes chasing them. The person is sweating and looks terrified, their eyes wide with fear. The mood of the image is one of intense dread and panic.
+########################
