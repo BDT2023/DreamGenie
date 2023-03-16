@@ -14,6 +14,8 @@ def get_url():
     response = requests.get(api_url,headers=headers)
     if response.status_code != 200:
         raise Exception(f'API request failed: {response.text}')
+    if len(response.json()['endpoints'])==0:
+        raise Exception(f'No endpoints found')
     URL = response.json()['endpoints'][0]['public_url']
     
 def send_to_sd(prompt):
@@ -52,8 +54,8 @@ def send_to_sd(prompt):
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
-    "script_name": "Prompt matrix",
-    "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
+    #"script_name": "Prompt matrix",
+    #"script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
     "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
     "s_tmax": 0,
@@ -65,7 +67,7 @@ def send_to_sd(prompt):
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
     ic(x)
     if x.status_code != 200:
-        raise Exception("Error: {}".format(x.json()['error']))
+        raise Exception(f'API request failed: {response.text}')
     # check if the image wasn't filterd due to nsfw
     for i in range(0,len(x.json()['images'])):
         im = Image.open(BytesIO(base64.b64decode(x.json()['images'][i])))
