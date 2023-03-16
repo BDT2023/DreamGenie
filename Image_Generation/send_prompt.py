@@ -21,10 +21,10 @@ def send_to_sd(prompt):
         get_url()
     #ic.disable()
     tokens = """
-    ,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
+    Salvador Dali,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
     """  
     negative_prompt = """
-    lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
+    Salvador Dali,lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
     missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
     """
     #https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
@@ -52,8 +52,8 @@ def send_to_sd(prompt):
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
-    "script_name": "Prompt matrix",
-    "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
+    #"script_name": "Prompt matrix",
+    #"script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
     "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
     "s_tmax": 0,
