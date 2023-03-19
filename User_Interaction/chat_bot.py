@@ -1,9 +1,10 @@
 import sys
-
+import os
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
 sys.path.append('../Image_Generation')
 sys.path.append('../Scene_Analyzer')
+os.chdir(os.path.dirname(__file__))
 from gpt_call import separate_random
 from send_prompt import send_to_sd
 from recorder_gui import run_gui
@@ -41,6 +42,7 @@ negative_prompt = "lowres, text, error, cropped, worst quality, low quality," \
 
 def get_voice_input():
     run_gui()
+    
     result = model.transcribe('voice_input.wav')
     output_text = result["text"]
     print(f'User says: "{output_text}"')
