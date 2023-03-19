@@ -64,10 +64,12 @@ def send_to_sd(prompt):
     #"override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
     #{'prompt': 'A painting of a forest,oil paints','sampler_index':'DDIM','steps':'15'}
+
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
+
     ic(x)
     if x.status_code != 200:
-        raise Exception(f'API request failed: {response.text}')
+        raise Exception(f'API request failed: {x.text}')
     # check if the image wasn't filterd due to nsfw
     for i in range(0,len(x.json()['images'])):
         im = Image.open(BytesIO(base64.b64decode(x.json()['images'][i])))
