@@ -8,7 +8,8 @@ openai.api_key = API_KEY
 
 
 def load_dreams(file_name='sample_texts_normalized.csv'):
-    dream_list = pd.read_csv('G:\\Coding\\final project\\DreamGenie\\Scene_Analyzer\\sample_texts_normalized.csv', header=None)
+
+    dream_list = pd.read_csv('..\\Scene_Analyzer\\sample_texts_normalized.csv', header=None)
     return dream_list
 
 

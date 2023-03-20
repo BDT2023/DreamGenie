@@ -9,7 +9,7 @@ from gpt_call import separate_random
 from send_prompt import send_to_sd
 from recorder_gui import run_gui
 import whisper
-import icecream as ic
+from icecream import ic
 import argparse
 
 '''
@@ -48,6 +48,7 @@ def get_voice_input():
     ic("Running run_gui()")
     run_gui()
     ic("Finished run_gui(), Transcribing audio")
+
     result = model.transcribe('voice_input.wav')
     ic("Finished Transcribing audio")
     output_text = result["text"]
