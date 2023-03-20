@@ -43,7 +43,7 @@ def send_to_sd(prompt):
     #ic.disable()
     if not is_style:
         tokens = """
-        ,dream,by Salvador Dali,expressive oil painting,oil paints,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
+        ,dream,by Salvador Dali,expressive oil painting,oil paints,whimsical atmosphere,matte painting trending on artstation HQ,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
         """  
         negative_prompt = """
         lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
