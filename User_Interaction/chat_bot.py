@@ -9,6 +9,7 @@ from gpt_call import separate_random
 from send_prompt import send_to_sd
 from recorder_gui import run_gui
 import whisper
+import icecream as ic
 import argparse
 
 '''
@@ -40,15 +41,23 @@ negative_prompt = "lowres, text, error, cropped, worst quality, low quality," \
                   " fused fingers, too many fingers, long neck, username, watermark, signature"
 
 
+'''
+A function that gets voice input from the user using the recorder_gui.py module, and transcribes it using whisper.
+'''
 def get_voice_input():
+    ic("Running run_gui()")
     run_gui()
-    
+    ic("Finished run_gui(), Transcribing audio")
     result = model.transcribe('voice_input.wav')
+    ic("Finished Transcribing audio")
     output_text = result["text"]
     print(f'User says: "{output_text}"')
     return output_text
 
 
+'''
+Helper function that will validate the user input
+'''
 def input_validation(user_input, valid_input_list):
     while True:
         if user_input in valid_input_list:
