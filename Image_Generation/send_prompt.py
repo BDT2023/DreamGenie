@@ -18,11 +18,13 @@ def get_url():
     if len(response.json()['endpoints'])==0:
         raise Exception(f'No endpoints found')
     URL = response.json()['endpoints'][0]['public_url']
+    return URL
     
 '''
 A method to populate the URLS dictionary with the urls for each service, so that we can use them later
 '''
 def get_service_urls():
+    ic.disable()
     global URLS
     api_url = "https://api.ngrok.com/tunnels"
     headers = {'Authorization': f'Bearer {API_KEY}', 'Ngrok-Version': '2'}
@@ -32,7 +34,6 @@ def get_service_urls():
 
     response = response.json()
     ic(response)
-    
     tunnels = {}
     # iterate through the tunnels and get the public url, save it in the tunnels dictionary as a value, where the key is the tunnel session id
     for tunnel in response['tunnels']:
@@ -56,6 +57,7 @@ def get_service_urls():
     for t in tunnel_sessions.keys():
         URLS[credential_id[tunnel_sessions[t]]] = tunnels[t]
     ic(URLS)
+    return URLS
  
 def check_style_api():
     response = requests.get(URL+'/sdapi/v1/prompt-styles')
@@ -66,9 +68,6 @@ def check_style_api():
             return True
     return False
 
-    
-
-        
 def send_to_sd(prompt):
     if URL == "":
         get_url()
