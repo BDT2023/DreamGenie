@@ -7,6 +7,7 @@ import argparse
 from my_secrets import API_KEY
 URL = ""
 
+
 def get_url():
     global URL
     api_url = "https://api.ngrok.com/endpoints"
@@ -17,27 +18,48 @@ def get_url():
     if len(response.json()['endpoints'])==0:
         raise Exception(f'No endpoints found')
     URL = response.json()['endpoints'][0]['public_url']
+ 
+def check_style_api():
+    response = requests.get(URL+'/sdapi/v1/prompt-styles')
+    if response.status_code != 200:
+        raise Exception(f'API request failed: {response.text}')
+    for style in response.json():
+        if style['name'] == 'project_tokens':
+            return True
+    return False
+
     
+
+        
 def send_to_sd(prompt):
     if URL == "":
         get_url()
+        
+    is_style = check_style_api() #check if the style is already added
+    ic(is_style)
+    tokens = ''
+    negative_prompt = ''
+    style = 'project_tokens'
     #ic.disable()
-    tokens = """
-    Salvador Dali,expressive oil painting,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution. Dramatic light, Octane render
-    """  
-    negative_prompt = """
-    Salvador Dali,lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
-    missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
-    """
+    if not is_style:
+        tokens = """
+        ,dream,by Salvador Dali,expressive oil painting,oil paints,whimsical atmosphere,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
+        """  
+        negative_prompt = """
+        lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
+        missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
+        """
+        style = ''
+    
     #https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
     payload = {
     "enable_hr": 'false',
     "denoising_strength": 0,
     "firstphase_width": 0,
     "firstphase_height": 0,
-    "prompt": f'{prompt}',
+    "prompt": f'{prompt+tokens}',
     "styles": [
-        "project_tokens" #maybe we don't need to add all the tokens
+        f'{style}' #maybe we don't need to add all the tokens
     ],
     "seed": -1,
     "subseed": -1,
@@ -54,7 +76,8 @@ def send_to_sd(prompt):
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
-    #"script_name": "Prompt matrix",
+    "script_name": "CensorScript",
+    "script_args": ['true','false'], #Pass the script its arguments as a list
     #"script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
     "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
@@ -63,7 +86,6 @@ def send_to_sd(prompt):
     "s_noise": 1
     #"override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
-    #{'prompt': 'A painting of a forest,oil paints','sampler_index':'DDIM','steps':'15'}
 
     x = requests.post(URL+'/sdapi/v1/txt2img',json = payload)
 
@@ -88,5 +110,5 @@ if __name__ == "__main__":
     else:
         get_url()
     #prompt = input("Enter prompt: ")
-    prompt = "A painting of a forest,oil paints"
+    prompt = "A painting of a forest with a river flowing through it."
     send_to_sd(prompt)
