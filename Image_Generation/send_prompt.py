@@ -113,8 +113,8 @@ def send_to_sd(prompt):
     "restore_faces": 'false',
     "tiling": 'false',
     "negative_prompt": f'{negative_prompt}',
-    "script_name": "CensorScript",
-    "script_args": ['true','false'], #Pass the script its arguments as a list
+    #"script_name": "CensorScript",
+    #"script_args": ['true','false'], #Pass the script its arguments as a list
     #"script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
     "eta": 0, #TODO: check about the following parameters
     "s_churn": 0,
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     if args.url != "":
         URL = args.url
     else:
-        get_url()
+        get_service_urls()['sd']
     #prompt = input("Enter prompt: ")
     prompt = "A painting of a forest with a river flowing through it."
     send_to_sd(prompt)
