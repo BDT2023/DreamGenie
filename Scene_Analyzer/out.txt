@@ -406,3 +406,21 @@ Scene 1:
 Output: 
 The image shows a person running through a dark, spooky forest, with a multitude of slithering snakes chasing them. The person is sweating and looks terrified, their eyes wide with fear. The mood of the image is one of intense dread and panic.
 ########################
+Prompt: Give short augmented visual descriptions of the scenes in the following: I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+    Scene 1:
+    Output:  I am at Shawn's house, surrounded by a lively party atmosphere. People are gathered in the other room, likely to eat, while a karaoke machine plays a mix of German and Japanese songs, creating a unique ambiance. 
+
+    Scene 2:
+    I am standing in Shawn's house, where a party is in full swing. The karaoke machine is playing a mix of German and Japanese songs, filling the air with a vibrant and soothing melody. Everyone else is in the other room, enjoying a meal together, and I am about to join them.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: This is the second time in weeks that I dream of war. Not the "typical" war ...
+I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ... 
+aaagghhh.... don't like wars!! not even in my dreams.
+    Scene 1:
+    Output: 
+The interior of a home is filled with a sense of urgency. People are moving around quickly, packing bags and gathering supplies. The language spoken is unfamiliar and there is a strong smell of gunpowder in the air. 
+
+Scene 2:
+
+The family is huddled together, the children frantically typing away on their phones. The parents are standing guard, looking around for any sign of danger. The tension in the room is palpable.
+########################
