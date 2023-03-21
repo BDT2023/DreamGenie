@@ -5,10 +5,16 @@ import base64
 from io import BytesIO
 import argparse
 from my_secrets import API_KEY
+import os
+from datetime import datetime
 
 URL = ""
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
 
+def save_image(img, folder, filename):
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    img.save(os.path.join(folder, filename)) 
 
 def get_url():
     global URL
@@ -140,6 +146,8 @@ def send_to_sd(prompt):
         extrema = im.convert("L").getextrema()
         if not extrema == (0, 0):
             im.show()
+            date_folder = datetime.now().strftime("%Y-%m-%d")
+            save_image(im, date_folder, f"image_{i+1}.png")
         else:
             ic("Image completley black!")
 
@@ -155,4 +163,5 @@ if __name__ == "__main__":
         get_service_urls()['sd']
     # prompt = input("Enter prompt: ")
     prompt = "A painting of a forest with a river flowing through it."
+    prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
     send_to_sd(prompt)
