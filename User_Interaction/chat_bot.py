@@ -1,17 +1,20 @@
 import sys
-#TODO: add __init__.py to the other modules
+import os
+# TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
 sys.path.append('../Image_Generation')
 sys.path.append('../Scene_Analyzer')
+os.chdir(os.path.dirname(__file__))
 from gpt_call import separate_random
 from send_prompt import send_to_sd
 from recorder_gui import run_gui
 import whisper
+from icecream import ic
 import argparse
+
 '''
 A hard coded chat bot that will guide the user through the process of creating an image
 '''
-
 
 # here are some "magic words"
 # that will make our promt better
@@ -37,14 +40,25 @@ negative_prompt = "lowres, text, error, cropped, worst quality, low quality," \
                   " malformed limbs, missing arms, missing legs, extra arms, extra legs," \
                   " fused fingers, too many fingers, long neck, username, watermark, signature"
 
+
+'''
+A function that gets voice input from the user using the recorder_gui.py module, and transcribes it using whisper.
+'''
 def get_voice_input():
+    ic("Running run_gui()")
     run_gui()
+    ic("Finished run_gui(), Transcribing audio")
+
     result = model.transcribe('voice_input.wav')
+    ic("Finished Transcribing audio")
     output_text = result["text"]
     print(f'User says: "{output_text}"')
     return output_text
 
 
+'''
+Helper function that will validate the user input
+'''
 def input_validation(user_input, valid_input_list):
     while True:
         if user_input in valid_input_list:
@@ -53,6 +67,7 @@ def input_validation(user_input, valid_input_list):
             print("I'm sorry, I didn't understand that. Please answer:\n" + ' or\n'.join(valid_input_list) + '!')
             user_input = input()
             continue
+
 
 def yes_no_validation(user_input):
     while True:
@@ -64,6 +79,7 @@ def yes_no_validation(user_input):
             print("I'm sorry, I didn't understand that. Please answer \"yes\" or \"no\"!")
             user_input = input()
             continue
+
 
 def edit_component(component, list_of_options, user_input):
     print(f"Would you like to edit the {component} of the image?\n"
@@ -84,6 +100,7 @@ def edit_component(component, list_of_options, user_input):
         print("Okay, let's continue!")
         return answer, user_input
 
+
 def generate_image(user_input, mode="txt2img", flag=False):
     print("Okay, creating your image now! please wait a few seconds...")
     print("The prompt is: " + user_input)
@@ -92,6 +109,7 @@ def generate_image(user_input, mode="txt2img", flag=False):
     if flag:
         print("We can make it better if you want to!")
     continue_or_exit()
+
 
 def generate_or_edit(user_input, mode="txt2img"):
     print("Would you like to generate the image now or continue editing it?"
@@ -105,6 +123,7 @@ def generate_or_edit(user_input, mode="txt2img"):
         print("Okay, let's continue editing!")
         return
 
+
 def continue_or_exit():
     print("Do you want to continue the process of editing the image?\n"
           "Please answer \"yes\" or \"no\"")
@@ -116,13 +135,15 @@ def continue_or_exit():
         print("Okay, I hope you liked the image! Bye!")
         # TODO: add a way to save the image
         exit()
-        
+
+
 def get_user_input(input_type):
     if input_type == "text":
         user_input = input()
     else:
         user_input = get_voice_input()
     return user_input
+
 
 if __name__ == "__main__":
     # parse the arguments, if there are any,access with args.{argument name}
@@ -131,20 +152,21 @@ if __name__ == "__main__":
     parser.add_argument("--mode", type=str, default="auto", help="auto or manual")
     parser.add_argument("--input", type=str, default="text", help="text or voice")
     args = parser.parse_args()
-    
+
     print("Hello there! I'm Lisa! so nice to meet you"
-        " here!\nI'm a chatbot, so I can't really "
-        "talk to you, but I can help you with drawing"
-        " some nice images!\nSo, what do you want to draw?\n"
-        "please mention also if you want image or painting, for better results!\n")
+          " here!\nI'm a chatbot, so I can't really "
+          "talk to you, but I can help you with drawing"
+          " some nice images!\nSo, what do you want to draw?\n"
+          "please mention also if you want image or painting, for better results!\n")
     user_input = ""
-    
+
     if args.input == "voice":
         model = whisper.load_model("tiny.en")
 
     # loop to get the user input
     while True:
         # if we don't want user prompt, we will generate a random one from the dreams
+        # TODO: fix bug - if we choose --input as 'voice' we do not want args.mode to be 'auto'
         if args.mode == "auto":
             user_input = separate_random()
         else:
@@ -164,8 +186,8 @@ if __name__ == "__main__":
     # https://cdn.openart.ai/assets/Stable%20Diffusion%20Prompt%20Book%20From%20OpenArt%2011-13.pdf
 
     lighting_list = ["Daylight", "Overcast", "Night", "Flash", "Fluorescent", "Incandescent", "Soft",
-                    "Ambient", "Sunlight", "Shade", "Backlight", "Candlelight", "Cinematic", "Nostalgic",
-                    "Sun Rays", "Purple Haze", "Neon"]
+                     "Ambient", "Sunlight", "Shade", "Backlight", "Candlelight", "Cinematic", "Nostalgic",
+                     "Sun Rays", "Purple Haze", "Neon"]
 
     answer, user_input = edit_component("lighting", lighting_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
@@ -174,17 +196,18 @@ if __name__ == "__main__":
     answer, user_input = edit_component("environment", environment_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
     color_scheme_list = ["Monochrome", "Grayscale", "Color", "Vibrant", "Pastel", "dark",
-                        "light", "warm", "cool", "Complementary", "Analogous", "Triadic", "split-complementary"]
+                         "light", "warm", "cool", "Complementary", "Analogous", "Triadic", "split-complementary"]
     answer, user_input = edit_component("color scheme", color_scheme_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
     shot_type_list = ["Close-up", "Mid-shot", "Long-shot", "Extreme close-up", "Extreme long-shot", "POV"]
     answer, user_input = edit_component("shot type", shot_type_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
     style_list = ["Realistic", "Abstract", "Cartoon", "Fantasy", "Photorealistic", "Surreal", "Polaroid",
-                "Sketch", "Line Art", "Watercolor", "Oil Painting", "Acrylic Painting", "Digital Painting", "Mixed Media"
+                  "Sketch", "Line Art", "Watercolor", "Oil Painting", "Acrylic Painting", "Digital Painting",
+                  "Mixed Media"
         , "Graffiti", "Manga", "Anime", "Comic", "Illustration", "3D", "3D Cartoon", "3D Realistic",
-                "chalk", "pencil sketch", "caricature", "pop art", "pixel art", "vector art", "collage", "mosaic",
-                "horror"]
+                  "chalk", "pencil sketch", "caricature", "pop art", "pixel art", "vector art", "collage", "mosaic",
+                  "horror"]
     answer, user_input = edit_component("style", style_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
     emotion_list = ["Happy", "Sad", "Angry", "Fearful", "Surprised", "Disgusted", "Calm", "Bored", "Excited",
@@ -192,5 +215,3 @@ if __name__ == "__main__":
                     "Childish", "Cute", "Funny", "Grim", "Gory"]
     answer, user_input = edit_component("emotion", emotion_list, user_input)
     if answer: generate_or_edit(user_input, "img2img")
-
-

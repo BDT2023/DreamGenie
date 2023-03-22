@@ -86,7 +86,8 @@ class AudioRecorder:
 
     def save_recording(self):
         # Open a file in write-binary mode
-        filename = filedialog.asksaveasfilename(title="Save file", filetypes=(("wav files", "*.wav"), ("all files", "*.*")))
+        #filename = filedialog.asksaveasfilename(title="Save file", filetypes=(("wav files", "*.wav"), ("all files", "*.*")))
+        filename = "voice_input.wav"
         if filename:
             wf = wave.open(filename, "wb")
 
@@ -102,11 +103,16 @@ class AudioRecorder:
         self.frames = []
         self.play_button.config(state=tk.DISABLED)
         self.save_button.config(state=tk.DISABLED)
+        global root
+        if messagebox.askokcancel("Save and exit", "Do you want to save and exit the recording?"):
+            root.destroy()
+        #root.protocol("WM_DELETE_WINDOW", on_closing)
         
 def on_closing():
     global root
-    if messagebox.askokcancel("Quit", "Do you want to quit?"):
+    if messagebox.askokcancel("Abort", "Do you want to exit the program completely?"):
         root.destroy()
+    quit()
 
 def run_gui():
     global root

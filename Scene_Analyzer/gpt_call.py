@@ -8,7 +8,8 @@ openai.api_key = API_KEY
 
 
 def load_dreams(file_name='sample_texts_normalized.csv'):
-    dream_list = pd.read_csv('G:\\Coding\\final project\\DreamGenie\\Scene_Analyzer\\sample_texts_normalized.csv', header=None)
+
+    dream_list = pd.read_csv('..\\Scene_Analyzer\\sample_texts_normalized.csv', header=None)
     return dream_list
 
 
@@ -16,7 +17,7 @@ def load_dreams(file_name='sample_texts_normalized.csv'):
 def call_openai(text,command="Give short visual descriptions of the scenes in the following:"):
     #model_engine = "text-curie-001"
     model_engine = "text-davinci-003"
-    command = "Give short augmented visual descriptions of the scenes in the following:"
+    #command = "Give short augmented visual descriptions of the scenes in the following:"
     '''
     API call to OpenAI GPT-3 using this schema:
     https://beta.openai.com/docs/api-reference/completions/create

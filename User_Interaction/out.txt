@@ -11,3 +11,57 @@ Scene 3:
 
 The scene is of the person asking the workers to help. One of them is on a ladder playing with the control box, trying to figure out how to open the door.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+    Scene 1:
+    Output:  A dark, cold landscape at twilight. A lone figure stands still, admiring the beauty of the moment. 
+ 
+ Scene 2:
+     A large wolf appears around the corner, loping along with its tongue hanging out. The figure watches it, mesmerized. 
+ 
+ Scene 3:
+     The wolf disappears around another corner, leaving the figure standing there, feeling like something momentous has just happened.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ... 
+    Scene 1:
+    Output:  A bustling city street, filled with people and the hustle and bustle of everyday life. Suddenly, the sound of foreign soldiers and the sight of guns disrupts the peaceful atmosphere. 
+    
+    Scene 2:
+     A family, huddled together in a small room. The adults are franticly trying to send a text message for help without being caught, while the children look on with fear in their eyes. The language being spoken is unfamiliar, but it sounds like Arabic.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: My dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+    Scene 1:
+    Output:  A cold, stark landscape is illuminated by the fading light of twilight. A lone figure stands in the middle of the scene, feeling a sense of calm. 
+ 
+ Scene 2:
+     A wolf appears around the corner, slowly loping across the scene. Its panting breath is the only sound in the stillness. The figure stands in awe, admiring the beauty of the animal. 
+ 
+ Scene 3:
+     The wolf quickly disappears around another corner, leaving the figure alone in the twilight. Though the figure does not follow, a feeling of anticipation lingers in the air.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+    Scene 1:
+    Output:  A cold, stark landscape, illuminated by the soft light of twilight. A lone figure stands in the middle of the scene, feeling a sense of calm.
+    
+    Scene 2:
+    A wolf appears from around the corner and lopes briskly across the landscape. Its panting breaths can be heard as it moves. The figure stands in awe, admiring the animal.
+    
+    Scene 3:
+    The wolf disappears around another corner, and the figure remains standing, feeling like the animal has led to something, though the rest of the dream is forgotten.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+    Scene 1:
+    Output:  A barren landscape is illuminated by the orange and purple hues of twilight. A lone figure stands in the center, admiring the calmness of the moment.
+    
+    Scene 2:
+     A large wolf appears from around the corner and begins to lope across the landscape, its breath visible in the cold air. The figure watches the wolf in admiration.
+    
+    Scene 3:
+     The wolf disappears around another corner, leaving the figure alone in the landscape. The figure feels like the wolf has led them to something, though they cannot remember what.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: hey
+    Scene 1:
+    Output:  A young woman stands in an open field, her arms outstretched and her face upturned to the bright blue sky. The sun is shining and a gentle breeze rustles the grass around her. 
+
+Scene 2:
+     Two friends are sitting on a park bench, laughing and talking. The sun is setting and the sky is painted in a beautiful array of oranges and pinks. The trees around them are silhouetted against the sky.
+########################
