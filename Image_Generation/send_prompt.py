@@ -4,7 +4,7 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
-from my_secrets import API_KEY
+from my_secrets import API_KEY, USERNAME, PASSWORD
 import os
 from datetime import datetime
 
@@ -70,7 +70,7 @@ def get_service_urls():
 
 
 def check_style_api():
-    response = requests.get(URL + '/sdapi/v1/prompt-styles')
+    response = requests.get(URL + '/sdapi/v1/prompt-styles',auth=(USERNAME, PASSWORD))
     if response.status_code != 200:
         raise Exception(f'API request failed: {response.text}')
     for style in response.json():
@@ -135,7 +135,7 @@ def send_to_sd(prompt):
         # "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
 
-    x = requests.post(URL + '/sdapi/v1/txt2img', json=payload)
+    x = requests.post(URL + '/sdapi/v1/txt2img', json=payload,auth=(USERNAME, PASSWORD))
 
     ic(x)
     if x.status_code != 200:
