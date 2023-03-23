@@ -149,8 +149,8 @@ def continue_or_exit():
     print("Do you want to continue the process of editing the image?\n"
           "Please answer \"yes\" or \"no\"")
 
-    third_input = input()
-    if yes_no_validation(third_input):
+    third_input = yes_no_gui()
+    if third_input == "Yes":
         print("Great! Let's continue!")
     else:
         print("Okay, I hope you liked the image! Bye!")
