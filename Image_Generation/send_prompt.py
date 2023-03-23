@@ -137,7 +137,7 @@ def send_to_sd(prompt):
     }
 
     x = requests.post(URL + '/sdapi/v1/txt2img', json=payload,auth=(USERNAME, PASSWORD))
-
+    ic(f'sending prompt: {prompt}')
     ic(x)
     if x.status_code != 200:
         raise Exception(f'API request failed: {x.text}')

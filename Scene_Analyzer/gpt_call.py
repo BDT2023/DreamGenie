@@ -19,10 +19,10 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
     text = ''' Scene 1:
     Output:  Two cats are facing each other, their fur bristling, their backs arched and their tails lashing. They are hissing and growling at each other, their ears flat against their heads. 
 
-Scene 2:
-     The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
+    Scene 2:
+        The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
 
-########################'''
+    ########################'''
     return text.split('Scene')
     model_engine = "text-davinci-003"
     #command = "Give short augmented visual descriptions of the scenes in the following:"
@@ -59,6 +59,7 @@ Scene 2:
     gen_list = generated_text.split("Scene")
     return gen_list
 
+
 def separate_random():
     # load the dreams from the csv
     dream_list = load_dreams()
@@ -66,7 +67,8 @@ def separate_random():
     rand.seed(os.urandom(32))
     text = dream_list[0][rand.randint(0, len(dream_list)-1)]
     ic(text)
-    call_openai(text)
+    return call_openai(text)
+    
 
 
 if __name__ == "__main__":
