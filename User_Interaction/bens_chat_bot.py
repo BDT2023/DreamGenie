@@ -5,18 +5,26 @@ from scipy.io.wavfile import write
 import io
 import requests
 import sys
-sys.path.append('../Image_Generation')
+from icecream import ic
+
 sys.path.append('../Scene_Analyzer')
+sys.path.append('../Image_Generation')
 from send_prompt import send_to_sd
 from gpt_call import call_openai
+from send_prompt import get_service_urls
 # Replace 'your_openai_api_key' with your actual API key
+from recorder_gui import run_gui
 
-def record_audio(duration=20, fs=16000):
-    print("Recording audio...")
-    recorded_data = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype=np.int16)
-    sd.wait()
-    print("Recording complete.")
-    return recorded_data
+def get_voice_input():
+    ic("Running run_gui()")
+    run_gui()
+    ic("Finished run_gui(), Transcribing audio")
+
+    result = model.transcribe('voice_input.wav')
+    ic("Finished Transcribing audio")
+    output_text = result["text"]
+    print(f'User says: "{output_text}"')
+    return output_text
 
 def transcribe_audio(audio_data, fs):
     wav_file = io.BytesIO()
@@ -41,18 +49,27 @@ def get_user_input(input_type):
 
 
 def main():
+    URL = get_service_urls()['whisper']
     while True:
         print("Hey, please tell me about a dream you had.")
-        transcript = get_user_input("text")
+        #transcript = get_user_input("text")
+        get_voice_input()
+        filename = 'voice_input.wav'
+        url = URL+'/whisper'
+        data = {'file': (filename, open(filename,'rb'), 'audio/wav')}
+        response = requests.post(url, files=data,auth=('bdt','12xmnxqgkpzj9cjb'))
+        transcript = response.json()['results'][0]['transcript']
         print("Before we continue, is this your desired prompt: \n\"" + transcript + "\"?")
         confirmation = input("Type 'yes' to confirm or 'no' to re-enter the prompt: ").lower().strip()
         
         if confirmation == 'yes':
             scenes = call_openai(transcript)
             for scene in scenes:
-                send_to_sd(scene)
+                if scene.strip():
+                    send_to_sd(scene)
+                    print(scene)
         elif confirmation == 'no':
-            continue
+            break
         else:
             print("Invalid input. Please try again.")
 

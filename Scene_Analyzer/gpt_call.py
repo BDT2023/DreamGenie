@@ -1,10 +1,10 @@
 import openai
 from icecream import ic # for debugging https://github.com/gruns/icecream
-from my_secrets import API_KEY
+from my_secrets import API_KEY_OPENAI
 import os
 import random as rand
 import pandas as pd
-openai.api_key = API_KEY
+openai.api_key = API_KEY_OPENAI
 
 
 def load_dreams(file_name='sample_texts_normalized.csv'):
@@ -16,6 +16,14 @@ def load_dreams(file_name='sample_texts_normalized.csv'):
 
 def call_openai(text,command="Give short visual descriptions of the scenes in the following:"):
     #model_engine = "text-curie-001"
+    text = ''' Scene 1:
+    Output:  Two cats are facing each other, their fur bristling, their backs arched and their tails lashing. They are hissing and growling at each other, their ears flat against their heads. 
+
+Scene 2:
+     The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
+
+########################'''
+    return text.split('Scene')
     model_engine = "text-davinci-003"
     #command = "Give short augmented visual descriptions of the scenes in the following:"
     '''
@@ -49,7 +57,7 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
         ic(f'########################')
         f.write(os.linesep)
     gen_list = generated_text.split("Scene")
-    return generated_text
+    return gen_list
 
 def separate_random():
     # load the dreams from the csv

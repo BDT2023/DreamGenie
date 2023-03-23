@@ -4,10 +4,10 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
-from my_secrets import API_KEY, USERNAME, PASSWORD
+from my_secrets_ig import API_KEY, USERNAME, PASSWORD
 import os
 from datetime import datetime
-
+counter = 0
 URL = ""
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
 
@@ -80,6 +80,7 @@ def check_style_api():
 
 
 def send_to_sd(prompt):
+    global counter
     if URL == "":
         get_url()
 
@@ -91,7 +92,7 @@ def send_to_sd(prompt):
     # ic.disable()
     if not is_style:
         tokens = """
-        ,dream,by Salvador Dali,expressive oil painting,oil paints,whimsical atmosphere,matte painting trending on artstation HQ,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
+        ,expressive oil painting,oil paints,whimsical atmosphere,matte painting trending on artstation HQ,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
         """
         negative_prompt = """
         lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
@@ -147,7 +148,8 @@ def send_to_sd(prompt):
         if not extrema == (0, 0):
             im.show()
             date_folder = datetime.now().strftime("%Y-%m-%d")
-            save_image(im, date_folder, f"image_{i+1}.png")
+            counter+=1
+            save_image(im, date_folder, f"image_{counter}.png")
         else:
             ic("Image completley black!")
 
@@ -164,4 +166,5 @@ if __name__ == "__main__":
     # prompt = input("Enter prompt: ")
     prompt = "A painting of a forest with a river flowing through it."
     prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
+    prompt = "two cats fighting each other"
     send_to_sd(prompt)
