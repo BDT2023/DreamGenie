@@ -65,3 +65,33 @@ Prompt: Give short visual descriptions of the scenes in the following: hey
 Scene 2:
      Two friends are sitting on a park bench, laughing and talking. The sun is setting and the sky is painted in a beautiful array of oranges and pinks. The trees around them are silhouetted against the sky.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following: two cats fighting
+    Scene 1:
+    Output:  Two cats stand in the center of a room, facing each other. They are hissing and snarling, their fur standing on end. One of the cats swipes a paw at the other, and they both jump back, ready to fight.
+    
+    Scene 2:
+     The two cats are now locked in a fierce battle. They are clawing and biting at each other, fur flying in all directions. The air is filled with their loud yowling and snarling. The fight continues until one of the cats finally backs off, defeated.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: 2 cats fighting
+    Scene 1:
+    Output:  Two cats crouched in a defensive stance, fur bristling and eyes narrowed. They circle each other, hissing and swatting with their paws.
+    
+    Scene 2:
+    One of the cats jumps forward and swipes at the other, claws outstretched. The other cat jumps back and yowls in surprise.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: two cats fighting
+    Scene 1:
+    Output:  Two cats are facing each other, their fur bristling, their backs arched and their tails lashing. They are hissing and growling at each other, their ears flat against their heads. 
+
+Scene 2:
+     The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
+########################
+Prompt: Give short visual descriptions of the scenes in the following: two
+    Scene 1:
+    Output: 
+A woman is standing in a field of tall grass, with a bright blue sky overhead and a few scattered white clouds. The sun is shining brightly, and the woman is smiling as she looks out over the vast expanse of the field. 
+
+Scene 2:
+
+A man is walking down a dark alleyway, the walls of the buildings either side of him covered in graffiti. The street is illuminated by a single lamp post, casting eerie shadows across the ground. The man is looking around cautiously, as if he is expecting something to jump out at him.
+########################

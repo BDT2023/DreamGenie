@@ -6,7 +6,6 @@
 .idea/project_notebook.iml
 .idea/inspectionProfiles/Project_Default.xml
 ./my_secrets.py
-my_secrets.py
 __pycache__/secrets.cpython-39.pyc
 Demonstration/
 Image_Generation/__pycache__/my_secrets.cpython-39.pyc
@@ -20,3 +19,5 @@ Scene_Analyzer/__pycache__/gpt_call.cpython-39.pyc
 User_Interaction/test_whisper_service.ipynb
 User_Interaction/voice_input.wav
 /__pycache__/*
+Image_Generation/my_secrets_ig.py
+my_secrets.py
