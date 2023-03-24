@@ -9,12 +9,14 @@ import argparse
 from icecream import ic
 from send_prompt import get_service_urls
 import requests
+from gpt_call import separate_random
+
 
 import os
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
 os.chdir(os.path.dirname(__file__))
-from gpt_call import separate_random
+
 
 # os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()['whisper']
@@ -182,8 +184,7 @@ if __name__ == "__main__":
     print("Hello there! I'm Lisa! so nice to meet you"
           " here!\nI'm a chatbot, so I can't really "
           "talk to you, but I can help you with drawing"
-          " some nice images!\nSo, what do you want to draw?\n"
-          "please mention also if you want image or painting, for better results!\n")
+          " some nice images!\nSo, what do you want to draw?\n")
     user_input = ""
 
     # loop to get the user input
