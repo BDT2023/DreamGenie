@@ -92,10 +92,10 @@ def send_to_sd(prompt):
     # ic.disable()
     if not is_style:
         tokens = """
-        ,expressive oil painting,oil paints,whimsical atmosphere,matte painting trending on artstation HQ,amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
+        expressive oil painting, oil paints, whimsical atmosphere, matte painting trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light
         """
         negative_prompt = """
-        lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry,  bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
+        lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry, bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,
         missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
         """
         style = ''
@@ -146,10 +146,12 @@ def send_to_sd(prompt):
         im = Image.open(BytesIO(base64.b64decode(x.json()['images'][i])))
         extrema = im.convert("L").getextrema()
         if not extrema == (0, 0):
-            im.show()
+            # im.show()
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter+=1
             save_image(im, date_folder, f"image_{counter}.png")
+            
+            return f".\{date_folder}\image_{counter}.png"
         else:
             ic("Image completley black!")
 

@@ -9,6 +9,7 @@ import pyaudio
 import threading
 import requests
 import sys
+from PIL import Image, ImageTk
 sys.path.append('../Scene_Analyzer')
 sys.path.append('../Image_Generation')
 
@@ -209,6 +210,8 @@ class ValidateInputWindow:
         self.loading_label.pack()
 
         
+
+        
         
     def update(self, response_text):
         # Destroy the loading label
@@ -220,6 +223,7 @@ class ValidateInputWindow:
         self.no_button.pack(side="right", padx=10, pady=10)
 
         # Show the response text in the new window
+        self.response_text = response_text
         self.concat_text = "Did you say: " + response_text + "?"
         
         self.response_label = tk.Label(self.master, text=self.concat_text, wraplength=200)
@@ -229,6 +233,13 @@ class ValidateInputWindow:
     def on_yes_button(self):
         print("Yes button clicked")
         print("we can show the image")
+        path = send_to_sd(self.response_text)
+        # Create an object of tkinter ImageTk
+        self.img = ImageTk.PhotoImage(Image.open(path))
+        # Create a Label Widget to display the text or Image
+        self.image_label = tk.Label(self.master, image = self.img)
+        self.image_label.pack()
+        
 
     def on_no_button(self):
         print("No button clicked")
