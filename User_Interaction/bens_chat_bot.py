@@ -5,19 +5,28 @@ from scipy.io.wavfile import write
 import io
 import requests
 import sys
-sys.path.append('../Image_Generation')
+from icecream import ic
 sys.path.append('../Scene_Analyzer')
+sys.path.append('../Image_Generation')
 from send_prompt import send_to_sd
 from gpt_call import call_openai
-# Replace 'your_openai_api_key' with your actual API key
+from send_prompt import get_service_urls
 
-def record_audio(duration=20, fs=16000):
-    print("Recording audio...")
-    recorded_data = sd.rec(int(duration * fs), samplerate=fs, channels=1, dtype=np.int16)
-    sd.wait()
-    print("Recording complete.")
-    return recorded_data
 
+def get_voice_input():    
+    ic("Running run_gui()")
+    run_gui()
+    ic("Finished run_gui(), Transcribing audio")
+    filename = 'voice_input.wav'
+    url = URL+'/whisper'
+    data = {'file': (filename, open(filename,'rb'), 'audio/wav')}
+    response = requests.post(url, files=data,auth=('bdt','12xmnxqgkpzj9cjb'))
+    result = response.json()['results'][0]['transcript']
+    ic("Finished Transcribing audio")
+    ic(f'User says: "{result}"')
+    return result
+
+# TODO: remove this function
 def transcribe_audio(audio_data, fs):
     wav_file = io.BytesIO()
     write(wav_file, fs, audio_data)
@@ -31,32 +40,34 @@ def transcribe_audio(audio_data, fs):
     response.raise_for_status()
     return response.json()["choices"][0]["text"].strip()
 
+
 def get_user_input(input_type):
     if input_type == "text":
         user_input = input()
     else:
-        audio_data = record_audio()
-        user_input = transcribe_audio(audio_data,audio_data.shape[0])
+        user_input = get_voice_input()
     return user_input
 
 
 def main():
+    
     while True:
         print("Hey, please tell me about a dream you had.")
-        transcript = get_user_input("text")
+        #transcript = get_user_input("text")
         print("Before we continue, is this your desired prompt: \n\"" + transcript + "\"?")
         confirmation = input("Type 'yes' to confirm or 'no' to re-enter the prompt: ").lower().strip()
         
         if confirmation == 'yes':
             scenes = call_openai(transcript)
             for scene in scenes:
-                send_to_sd(scene)
+                if scene.strip():
+                    send_to_sd(scene)
+                    print(scene)
         elif confirmation == 'no':
-            continue
+            break
         else:
             print("Invalid input. Please try again.")
 
-    
 
 if __name__ == '__main__':
     main()

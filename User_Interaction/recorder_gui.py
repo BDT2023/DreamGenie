@@ -117,6 +117,7 @@ def on_closing():
 def run_gui():
     global root
     root = tk.Tk()
+    root.geometry("600x400")
     my_gui = AudioRecorder(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
