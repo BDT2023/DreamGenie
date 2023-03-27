@@ -10,6 +10,9 @@ import argparse
 from my_secrets_ig import USERNAME, PASSWORD
 import os
 from datetime import datetime
+import time
+import concurrent.futures
+
 counter = 0
 URL = ""
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
@@ -74,6 +77,24 @@ def get_url():
     # ic(URLS)
     # return URLS
 
+#TODO: check edge cases
+def poll_results():
+    #s.auth = (USERNAME, PASSWORD)
+    response = session.get(URL + '/sdapi/v1/progress')
+    if response.status_code != 200:
+        raise Exception(f'API request failed: {response.text}')
+    #return response.json()['progress']
+    return round(float(response.json()['progress']),2)
+
+def poll_results_until_done():
+    time_started = time.time()
+    TIMEOUT = 50 # seconds
+    while True:
+        progress = poll_results()
+        if progress<=0 or progress >= 99 or time.time() > time_started + TIMEOUT:
+            break
+        print(f'Progress: {progress}%')
+        time.sleep(1)
 
 def check_style_api():
     response = session.get(URL + '/sdapi/v1/prompt-styles')
@@ -155,8 +176,13 @@ def send_to_sd(prompt):
         "s_noise": 1
         # "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
-
-    x = session.post(URL + '/sdapi/v1/txt2img', json=payload)
+    def post_prompt(payload):
+        return session.post(URL + '/sdapi/v1/txt2img', json=payload)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future = executor.submit(post_prompt, payload)
+        executor.submit(poll_results_until_done)
+        x = future.result()
+    #x = session.post(URL + '/sdapi/v1/txt2img', json=payload)
     ic(f'sending prompt: {prompt}')
     ic(x)
     if x.status_code != 200:
