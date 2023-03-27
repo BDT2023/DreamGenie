@@ -1,13 +1,13 @@
 import requests
 from icecream import ic
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
-
+from my_secrets import NGROK_API_KEY
 
 '''
 A method to populate the URLS dictionary with the urls for each service, so that we can use them later
 '''
 def get_service_urls():
-    ic.disable()
+    #ic.disable()
     global URLS
     api_url = "https://api.ngrok.com/tunnels"
     headers = {'Authorization': f'Bearer {NGROK_API_KEY}', 'Ngrok-Version': '2'}
