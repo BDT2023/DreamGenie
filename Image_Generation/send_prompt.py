@@ -179,11 +179,11 @@ def send_to_sd(prompt):
     def post_prompt(payload):
         return session.post(URL + '/sdapi/v1/txt2img', json=payload)
     with concurrent.futures.ThreadPoolExecutor() as executor:
+        ic(f'sending prompt: {prompt}')
         future = executor.submit(post_prompt, payload)
         executor.submit(poll_results_until_done)
         x = future.result()
     #x = session.post(URL + '/sdapi/v1/txt2img', json=payload)
-    ic(f'sending prompt: {prompt}')
     ic(x)
     if x.status_code != 200:
         raise Exception(f'API request failed: {x.text}')
