@@ -356,8 +356,9 @@ class ValidateInputWindow:
 class ShowImageWindow:
     def __init__(self, master):
         self.master = master
-        self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.1)
+        self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.07)
         self.progressbar.pack(padx=20, pady=10)
+        self.progressbar.set(0)
         self.progressbar.start()
         # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         # self.loading_label.pack()
