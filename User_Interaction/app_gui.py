@@ -330,7 +330,7 @@ class ValidateInputWindow:
         self.clear_window()
         self.show_image_window = ShowImageWindow(self.master)
 
-        
+        # TODO - destroy thread when window is closed
         t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
         t.start()
     
@@ -356,14 +356,18 @@ class ValidateInputWindow:
 class ShowImageWindow:
     def __init__(self, master):
         self.master = master
-        self.loading_label = ctk.CTkLabel(master, text="Loading input...")
-        self.loading_label.pack()
+        self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.1)
+        self.progressbar.pack(padx=20, pady=10)
+        self.progressbar.start()
+        # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
+        # self.loading_label.pack()
         
 
     def update(self, path):
         # Destroy the loading label
-        self.loading_label.destroy()
-        
+        # self.loading_label.destroy()
+        self.progressbar.destroy()
+
         # Create an object of tkinter ImageTk
         self.img = ImageTk.PhotoImage(Image.open(path))
         # Create a Label Widget to display the text or Image
