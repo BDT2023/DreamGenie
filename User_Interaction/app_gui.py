@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
 import wave
-import struct
-import tkinter as tk
 from tkinter import messagebox
 from tkinter import filedialog
 import pyaudio
@@ -13,14 +11,10 @@ from PIL import Image, ImageTk
 sys.path.append('../Scene_Analyzer')
 sys.path.append('../Image_Generation')
 
-from recorder_gui import run_gui
 from send_prompt import send_to_sd
-from yes_no_gui import get_user_input as yes_no_gui
-import argparse
-from icecream import ic
 from send_prompt import get_service_urls
 import requests
-from gpt_call import separate_random
+import customtkinter as ctk
 
 import os
 # TODO: add __init__.py to the other modules
@@ -32,14 +26,111 @@ os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()['whisper']
 
 
-class HelloWorldWindow:
+class StartWindow:
     def __init__(self, master):
         self.master = master
-        self.initial_message = "Hello there! I'm BotLisa! what do you want to draw?\n please click on record\n"
+        
+
+        # Create two radio buttons for Text and Audio
+        self.mode = tk.StringVar()
+        self.mode.set("text")
+        self.text_radio = ctk.CTkRadioButton(master, text="Text", variable=self.mode, value="text")
+        self.audio_radio = ctk.CTkRadioButton(master, text="Audio", variable=self.mode, value="audio")
+        self.text_radio.pack()
+        self.audio_radio.pack()
+
+        # Create a "proceed" button
+        self.proceed_button = ctk.CTkButton(master, text="Proceed", command=self.next_window)
+        self.proceed_button.pack()
+        
+    def clear_window(self):
+        # Destroy all widgets in the window
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+    def next_window(self):
+        self.clear_window()
+        # Open a new window based on the selected mode
+        if self.mode.get() == "text":
+            self.second_window = TextWindow(self.master)
+        else:
+            self.second_window = RecordWindow(self.master)
+
+
+class TextWindow:
+    def __init__(self, master):
+        self.master = master
+        self.initial_message = "Hello there! I'm BotLisa! what do you want to draw?\n" + \
+        "Please write your dream\n"
+        # self.font = ("Helvetica", 18, "normal", "roman")
 
         # Create and place "Hello World" label at top middle
-        hello_label = tk.Label(self.master, text=self.initial_message)
-        hello_label.pack(side=tk.TOP)
+        hello_label = ctk.CTkLabel(self.master, text=self.initial_message)
+        hello_label.pack()
+        
+        # Create a text box
+        # self.textbox = tk.Entry(master, width=50)
+        # self.textbox.pack(padx=10, pady=10)
+        self.textbox = ctk.CTkTextbox(master = self.master, width=300, 
+                                      height=100, corner_radius=0)
+        self.textbox.pack(padx=10, pady=10)
+        # Set up an event listener to check for changes in the text box
+        self.textbox.bind("<KeyRelease>", self.check_text)
+        
+        
+        self.next_button = ctk.CTkButton(master, text="Save & Continue", 
+                                         command=self.next, state=tk.DISABLED)
+        self.next_button.pack()
+
+        # Create and place "Cancel" button at bottom left
+        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel)
+        cancel_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
+
+    
+    def check_text(self, event):
+        # Enable the Next button if the text box contains some text
+        # "1.0" means that the input should be read from line one, character zero.
+        # The end-1c is divided in 2 parts:
+        # end: Read until the end of the text.
+        # 1c: Remove 1 character starting from the end.
+        if len(self.textbox.get("1.0",'end-1c')) > 0:
+            self.next_button.configure(state=tk.NORMAL)
+        else:
+            self.next_button.configure(state=tk.DISABLED)
+
+    def on_cancel(self):
+        # Display a messagebox asking if the user wants to cancel
+        result = messagebox.askquestion("Cancel", "Are you sure you want to cancel?")
+        if result == "yes":
+            self.master.quit() # Exit the program
+        else:
+            pass # Do nothing and return to the window
+        
+    def clear_window(self):
+        # Destroy all widgets in the window
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+    
+    def next(self):
+        # Do something when Next is clicked
+        self.text = self.textbox.get("1.0","end-1c")
+        self.clear_window()
+
+        self.second_window = ValidateInputWindow(self.master, self.text, mode = "text")
+        
+
+
+class RecordWindow:
+    def __init__(self, master):
+        self.master = master
+        self.initial_message = "Hello there! I'm BotLisa! what do you want to draw?\n" + \
+        "Please click on record\n"
+        # self.font = ("Helvetica", 18, "normal", "roman")
+
+        # Create and place "Hello World" label at top middle
+        hello_label = ctk.CTkLabel(self.master, text=self.initial_message)
+        hello_label.pack()
         
         self.frames = []  # Initialize array to store frames
         self.p = pyaudio.PyAudio()  # Create an instance of PyAudio
@@ -50,22 +141,22 @@ class HelloWorldWindow:
 
         self.recording = False
 
-        self.record_button = tk.Button(master, text="Record", command=self.start_recording)
-        self.stop_button = tk.Button(master, text="Stop", command=self.stop_recording)
-        self.play_button = tk.Button(master, text="Play", command=self.play_recording)
-        self.save_button = tk.Button(master, text="Save & Continue", command=self.save_recording)
+        self.record_button = ctk.CTkButton(master, text="Record", command=self.start_recording)
+        self.stop_button = ctk.CTkButton(master, text="Stop", command=self.stop_recording)
+        self.play_button = ctk.CTkButton(master, text="Play", command=self.play_recording)
+        self.save_button = ctk.CTkButton(master, text="Save & Continue", command=self.save_recording)
 
-        self.stop_button.config(state=tk.DISABLED)
-        self.play_button.config(state=tk.DISABLED)
-        self.save_button.config(state=tk.DISABLED)
+        self.stop_button.configure(state=tk.DISABLED)
+        self.play_button.configure(state=tk.DISABLED)
+        self.save_button.configure(state=tk.DISABLED)
 
-        self.record_button.pack()
-        self.stop_button.pack()
-        self.play_button.pack()
-        self.save_button.pack()
+        self.record_button.pack(padx=5, pady=5)
+        self.stop_button.pack(padx=5, pady=5)
+        self.play_button.pack(padx=5, pady=5)
+        self.save_button.pack(padx=5, pady=5)
 
         # Create and place "Cancel" button at bottom left
-        cancel_button = tk.Button(self.master, text="Cancel", command=self.on_cancel)
+        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel)
         cancel_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
 
         
@@ -203,53 +294,82 @@ class FunWindow:
         print(text)
         
 class ValidateInputWindow:
-    def __init__(self, master):
+    def __init__(self, master, response_text = None, mode = "audio"):
+        self.response_text = response_text
         self.master = master
-
-        self.loading_label = tk.Label(master, text="Loading input...")
+        self.mode = mode
+        self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         self.loading_label.pack()
+        
+        if response_text is not None:
+            self.update(response_text)
 
-        
-
-        
-        
     def update(self, response_text):
         # Destroy the loading label
         self.loading_label.destroy()
-        self.yes_button = tk.Button(self.master, text="Yes, continue", command=self.on_yes_button)
-        self.yes_button.pack(side="left", padx=10, pady=10)
-
-        self.no_button = tk.Button(self.master, text="No, go back", command=self.on_no_button)
-        self.no_button.pack(side="right", padx=10, pady=10)
-
+        
         # Show the response text in the new window
         self.response_text = response_text
-        self.concat_text = "Did you say: " + response_text + "?"
+        self.concat_text = "Did you mean: " + response_text + "?"
         
-        self.response_label = tk.Label(self.master, text=self.concat_text, wraplength=200)
+        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text)
         self.response_label.pack()
+        
+        self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
+        self.yes_button.pack(padx=10, pady=10)
+        
+        self.no_button = ctk.CTkButton(self.master, text="No, go back", command=self.on_no_button)
+        self.no_button.pack(padx=10, pady=10)
+
+        
     
 
     def on_yes_button(self):
-        print("Yes button clicked")
-        print("we can show the image")
-        path = send_to_sd(self.response_text)
-        # Create an object of tkinter ImageTk
-        self.img = ImageTk.PhotoImage(Image.open(path))
-        # Create a Label Widget to display the text or Image
-        self.image_label = tk.Label(self.master, image = self.img)
-        self.image_label.pack()
         
+        # Create and show the second window
+        self.clear_window()
+        self.show_image_window = ShowImageWindow(self.master)
+
+        
+        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        t.start()
+    
+    def send_request(self, show_image_window):
+        # Create a new thread to send the request
+        path = send_to_sd(self.response_text)
+        
+        show_image_window.update(path)
 
     def on_no_button(self):
-        print("No button clicked")
+        
         self.clear_window()
-        self.first_window = HelloWorldWindow(self.master)
+        if self.mode == "audio":
+            self.first_window = RecordWindow(self.master)
+        else:
+            self.first_window = TextWindow(self.master)
         
     def clear_window(self):
         # Destroy all widgets in the window
         for widget in self.master.winfo_children():
             widget.destroy()
+            
+class ShowImageWindow:
+    def __init__(self, master):
+        self.master = master
+        self.loading_label = ctk.CTkLabel(master, text="Loading input...")
+        self.loading_label.pack()
+        
+
+    def update(self, path):
+        # Destroy the loading label
+        self.loading_label.destroy()
+        
+        # Create an object of tkinter ImageTk
+        self.img = ImageTk.PhotoImage(Image.open(path))
+        # Create a Label Widget to display the text or Image
+        self.image_label = tk.Label(self.master, image = self.img)
+        self.image_label.pack(fill=tk.BOTH, expand=True)
+
 
 def on_closing():
     global root
@@ -259,9 +379,11 @@ def on_closing():
     
     
 if __name__ == "__main__":
-    root = tk.Tk()
+    ctk.set_appearance_mode("dark")
+    # root = tk.Tk()
+    root = ctk.CTk()
     # size of the window
     root.geometry("400x300")
-    app = HelloWorldWindow(root)
+    app = StartWindow(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()

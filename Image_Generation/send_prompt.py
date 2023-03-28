@@ -198,7 +198,7 @@ def send_to_sd(prompt):
             now = datetime.now().strftime("%H%M") 
             save_image(im, date_folder, f"image_{counter}_{now}.png")
 
-            return f".\{date_folder}\image_{counter}.png"
+            return f".\{date_folder}\image_{counter}_{now}.png"
         else:
             ic("Image completley black!")
 
