@@ -356,7 +356,7 @@ class ValidateInputWindow:
 class ShowImageWindow:
     def __init__(self, master):
         self.master = master
-        self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.07)
+        self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.065)
         self.progressbar.pack(padx=20, pady=10)
         self.progressbar.set(0)
         self.progressbar.start()
