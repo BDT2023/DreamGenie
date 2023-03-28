@@ -161,7 +161,8 @@ class RecordWindow:
         self.save_button.pack(padx=5, pady=5)
 
         # Create and place "Cancel" button at bottom left
-        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel)
+        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel,
+                                      fg_color="red", hover_color="dark red")
         cancel_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
 
         
