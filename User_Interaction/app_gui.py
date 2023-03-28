@@ -34,14 +34,18 @@ class StartWindow:
         # Create two radio buttons for Text and Audio
         self.mode = tk.StringVar()
         self.mode.set("text")
-        self.text_radio = ctk.CTkRadioButton(master, text="Text", variable=self.mode, value="text")
-        self.audio_radio = ctk.CTkRadioButton(master, text="Audio", variable=self.mode, value="audio")
-        self.text_radio.pack()
-        self.audio_radio.pack()
+        self.text_radio = ctk.CTkRadioButton(master, text="Text", variable=self.mode, 
+                                             value="text", border_width_checked=2,
+                                             border_width_unchecked=2)
+        self.audio_radio = ctk.CTkRadioButton(master, text="Audio", variable=self.mode,
+                                              value="audio",  border_width_checked=2,
+                                              border_width_unchecked=2)
+        self.text_radio.pack(padx=20, pady=10)
+        self.audio_radio.pack(padx=20, pady=10)
 
         # Create a "proceed" button
         self.proceed_button = ctk.CTkButton(master, text="Proceed", command=self.next_window)
-        self.proceed_button.pack()
+        self.proceed_button.pack(padx=20, pady=10)
         
     def clear_window(self):
         # Destroy all widgets in the window
@@ -83,7 +87,8 @@ class TextWindow:
         self.next_button.pack()
 
         # Create and place "Cancel" button at bottom left
-        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel)
+        cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel,
+                                      fg_color="red", hover_color="dark red")
         cancel_button.pack(side=tk.BOTTOM, padx=10, pady=10, anchor=tk.SW)
 
     
