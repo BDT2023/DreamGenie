@@ -60,12 +60,15 @@ def call_openai(text,command="Give short visual descriptions of the scenes in th
     return gen_list
 
 
-def separate_random():
+def separate():
     # load the dreams from the csv
     dream_list = load_dreams()
     # show a random dream
     rand.seed(os.urandom(32))
-    text = dream_list[0][rand.randint(0, len(dream_list)-1)]
+    return dream_list[0][rand.randint(0, len(dream_list)-1)]
+
+def separate_random():
+    text = separate()
     ic(text)
     return call_openai(text)
     
