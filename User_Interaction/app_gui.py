@@ -318,7 +318,8 @@ class ValidateInputWindow:
         self.response_text = response_text
         self.concat_text = "Did you mean: " + response_text + "?"
         
-        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text)
+        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
+                                           wraplength=400, justify='center')
         self.response_label.pack()
         
         self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
