@@ -165,8 +165,8 @@ class RecordWindow:
         self.record_thread = threading.Thread(target=self._record)
         self.record_thread.start()
 
-        self.record_button.config(state=tk.DISABLED)
-        self.stop_button.config(state=tk.NORMAL)
+        self.record_button.configure(state=tk.DISABLED)
+        self.stop_button.configure(state=tk.NORMAL)
 
     def on_cancel(self):
         # Display a messagebox asking if the user wants to cancel
@@ -205,10 +205,10 @@ class RecordWindow:
         self.stream.stop_stream()
         self.stream.close()
         self.p.terminate()
-        self.record_button.config(state=tk.NORMAL)
-        self.stop_button.config(state=tk.DISABLED)
-        self.play_button.config(state=tk.NORMAL)
-        self.save_button.config(state=tk.NORMAL)
+        self.record_button.configure(state=tk.NORMAL)
+        self.stop_button.configure(state=tk.DISABLED)
+        self.play_button.configure(state=tk.NORMAL)
+        self.save_button.configure(state=tk.NORMAL)
 
     def play_recording(self):
         self.p = pyaudio.PyAudio()  # Create an instance of PyAudio
@@ -245,8 +245,8 @@ class RecordWindow:
 
             wf.close()
         self.frames = []
-        self.play_button.config(state=tk.DISABLED)
-        self.save_button.config(state=tk.DISABLED)
+        self.play_button.configure(state=tk.DISABLED)
+        self.save_button.configure(state=tk.DISABLED)
         
         # Create and show the second window
         self.clear_window()
