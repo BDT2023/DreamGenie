@@ -1,0 +1,276 @@
+#Model:text-curie-001, price:0.0$ with 3 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+
+Such a good feeling to be home and see my brother and mom. We went to the street market where they sell rotisserie chicken on Sundays and brought some home for lunch. A kid not related to use was playing around in a car the size of a shoe box and went towards the charcoal where they were barbecuing. Don't know if because of my husband or the dog, my hand felt good tucked in.
+#Output: 
+
+OUT:
+
+Scene 1: A person is at home, seeing their brother and mom.
+Scene 2: They go to the street market and buy rotisserie chicken.
+Scene 3: The person is sitting at home, with their hand tucked in, feeling good.
+
+########################
+
+#Model:text-davinci-003, price:0.01$ with 3 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+
+Such a good feeling to be home and see my brother and mom. We went to the street market where they sell rotisserie chicken on Sundays and brought some home for lunch. A kid not related to use was playing around in a car the size of a shoe box and went towards the charcoal where they were barbecuing. Don't know if because of my husband or the dog, my hand felt good tucked in.
+#Output: 
+
+OUT:
+Scene 1: A family is home together, a child not related to them is playing around in a tiny car.
+Scene 2: The family is at a street market buying rotisserie chicken for lunch.
+Scene 3: The mother has her hand tucked in, either from her husband or the dog, feeling content.
+
+########################
+
+#Model:text-curie-001, price:0.00226$ with 5 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+
+Such a good feeling to be home and see my brother and mom. We went to the street market where they sell rotisserie chicken on Sundays and brought some home for lunch. A kid not related to use was playing around in a car the size of a shoe box and went towards the charcoal where they were barbecuing. Don't know if because of my husband or the dog, my hand felt good tucked in.
+#Output: 
+
+
+Scene 1: A person is at the street market, where they sell rotisserie chicken.
+Scene 2: The person is with their brother and mother, and they are buying rotisserie chicken.
+Scene 3: The person is eating rotisserie chicken with their brother and mother.
+
+########################
+
+#Model:text-davinci-003, price:0.02332$ with 5 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+
+Such a good feeling to be home and see my brother and mom. We went to the street market where they sell rotisserie chicken on Sundays and brought some home for lunch. A kid not related to use was playing around in a car the size of a shoe box and went towards the charcoal where they were barbecuing. Don't know if because of my husband or the dog, my hand felt good tucked in.
+#Output: 
+
+OUT:
+Scene 1: A person is home and seeing their brother and mom.
+Scene 2: The person and their family are at a street market, buying rotisserie chicken for lunch.
+Scene 3: A kid not related to them is playing around in a small car, going towards the charcoal where they are barbecuing.
+Scene 4: The person has their hand tucked in, feeling good, not sure if it's because of their husband or the dog.
+
+########################
+
+#Model:text-curie-001, price:0.00231$ with 5 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+So we were in this very nice and warm place. i think I know where. We had this large and very modern house, tropically bright and beautiful. My family and a long lost friend were there. I did not know how long we were staying so did not pack enough for the stay. We went out shopping so we could go dancing and site seeing later. It was so relaxing and fun filled. So warm and bright and fluid.  Just like a dream ...#Output: 
+
+
+OUT:
+Scene 1: A very nice and warm place.
+Scene 2: A person is with their family and a long lost friend, and they are shopping for clothes to bring with them on their stay.
+Scene 3: The person is dancing and sightseeing with their family and friend.
+Scene 4: The person is relaxing and having a lot of fun.
+
+########################
+
+#Model:text-davinci-003, price:0.02324$ with 5 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+So we were in this very nice and warm place. i think I know where. We had this large and very modern house, tropically bright and beautiful. My family and a long lost friend were there. I did not know how long we were staying so did not pack enough for the stay. We went out shopping so we could go dancing and site seeing later. It was so relaxing and fun filled. So warm and bright and fluid.  Just like a dream ...#Output: 
+
+
+OUT:
+Scene 1: A person is in a warm and bright place, a large modern house, with their family and a long lost friend.
+Scene 2: The person and their family go out shopping to get supplies for the stay.
+Scene 3: The person and their family go out dancing and sightseeing.
+Scene 4: The person is in a relaxing and fun filled atmosphere, warm and bright.
+
+########################
+
+#Model:text-curie-001, price:0.00181$ with 4 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am with the family in a picnic of some sort. There is a snake somewhere visible. I am aware of it, but not concern. Then comes another one - near, but not near enough to alarm. Saniee goes to kill them. He has a cane, but so short like a foot or so. A dance starts with Saniee using the cane to hit the snake and snake is moving around. The second snake is beautiful and each time goes on some pebbles, there are these radiating rainbow colors like jewels. Next thing the snake is shattered in rock size pieces, more like a broken statue than a living thing. Throughout, the mood is happiness and joy#Output: 
+
+
+
+########################
+
+#Model:text-davinci-003, price:0.02028$ with 4 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am with the family in a picnic of some sort. There is a snake somewhere visible. I am aware of it, but not concern. Then comes another one - near, but not near enough to alarm. Saniee goes to kill them. He has a cane, but so short like a foot or so. A dance starts with Saniee using the cane to hit the snake and snake is moving around. The second snake is beautiful and each time goes on some pebbles, there are these radiating rainbow colors like jewels. Next thing the snake is shattered in rock size pieces, more like a broken statue than a living thing. Throughout, the mood is happiness and joy#Output: 
+
+.
+OUT:
+Scene 1: A family is gathered for a picnic, with a visible snake nearby.
+Scene 2: A family member, goes to kill the snakes using a short cane, and the snake is moving around.
+Scene 3: The second snake is beautiful and each time goes on some pebbles, there are these radiating rainbow colors like jewels.
+Scene 4: The snake is shattered into rock-size pieces, more like a broken statue than a living thing. The mood throughout is happiness and joy.
+
+########################
+
+#Model:text-curie-001, price:0.00182$ with 4 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+OUT:
+Scene 1: Shawn's house with a party, people are in the other room eating.
+Scene 2: A karaoke machine is playing a German song for a few seconds, then switches to a Japanese song.
+Scene 3: Everyone is in the other room eating, Shawn and I are going to join them. We are going to go into the other room.
+
+########################
+
+#Model:text-davinci-003, price:0.01806$ with 4 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+ I am mesmerized.
+OUT:
+Scene 1: View of Shawn's house, with a party going on inside.
+Scene 2: Everyone is in the other room to eat, while karaoke is playing in the background.
+Scene 3: A song in German plays for a few seconds before switching to a soothing Japanese song, mesmerizing the person.
+
+########################
+
+#Model:text-curie-001, price:0.00234$ with 6 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+Scene 2: A party with people in the other room eating.
+Scene 3: Shawn's house, there is a karaoke machine. 
+Scene 4: The person is going to join the party in the other room, but they are not sure if they should. 
+Scene 5: The person joins the party in the other room.
+
+########################
+
+#Model:text-davinci-003, price:0.02386$ with 6 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+ I am in the corner, and I am feeling very peaceful.
+OUT:
+Scene 1: A person at Shawn's house, there is a party with a karaoke machine.
+Scene 2: Everyone is in the other room eating, and the person is about to join them.
+Scene 3: A song in German plays for a few seconds and then switches to a very soothing Japanese song.
+Scene 4: The person is in the corner and feeling very peaceful.
+
+########################
+
+#Model:text-curie-001, price:0.0008$ with 2 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+
+########################
+
+#Model:text-davinci-003, price:0.00902$ with 2 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+OUT:
+Scene 1: View of a house, with people gathered around, there is a karaoke machine in the corner.
+Scene 2: People in the room are singing, switching from German to Japanese, creating a soothing atmosphere.
+
+########################
+
+#Model:text-curie-001, price:0.00029$ with 0 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+
+I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is a song in German for a few second, but switches to a very soothing Japanese.
+
+########################
+
+#Model:text-davinci-003, price:0.00312$ with 0 examples
+
+#Prompt:
+
+Give short visual descriptions of the scenes in the following:
+
+I am at Shawn's house. There is a party,
+but I do not remember much. There is a karaoke machine.
+Everyone is in the other room to eat, I guess. We are going to join them. 
+There is song in German for a few second, but switches to a very soothing Japanese.
+
+#Output: 
+
+
+
+Scene 1: A group of people gathered in a living room, some dancing and singing along to the karaoke machine.
+
+Scene 2: A group of people gathered around a dining table, eating and talking.
+
+Scene 3: A group of people gathered around the karaoke machine, singing along to a song in German, then switching to a song in Japanese.
+
+########################
+
