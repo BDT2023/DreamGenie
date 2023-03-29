@@ -53,7 +53,8 @@ def build_prompt(dream,command="Give short visual descriptions of the scenes in 
     #print(prompt)
     return prompt
 
-def call_openai(dream,command="Give short visual descriptions of the scenes in the following:", test=True):
+def call_openai(dream,command="Give short visual descriptions of the scenes in the following:",
+                test=True):
     """
     A function to call the OpenAI API and return a list of scenes resulting from the separation.
     
