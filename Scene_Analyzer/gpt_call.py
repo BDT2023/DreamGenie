@@ -30,7 +30,8 @@ def get_samples():
             counter+=1
         return temp
 
-def build_prompt(dream,command="Give short visual descriptions of the scenes in the following:",n = 0):
+def build_prompt(dream,command="Give short visual descriptions of the scenes in the following:",
+                 n = 3):
     """
     Build the prompt for the API call.
     n = number of examples of manual separation to pass to the model
@@ -54,7 +55,7 @@ def build_prompt(dream,command="Give short visual descriptions of the scenes in 
     return prompt
 
 def call_openai(dream,command="Give short visual descriptions of the scenes in the following:",
-                test=True):
+                test=False):
     """
     A function to call the OpenAI API and return a list of scenes resulting from the separation.
     

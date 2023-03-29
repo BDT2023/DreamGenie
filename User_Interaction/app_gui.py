@@ -63,7 +63,7 @@ class StartWindow:
 
 
 class TextWindow:
-    def __init__(self, master):
+    def __init__(self, master, dream=None):
         self.master = master
         self.initial_message = "Hello there! I'm BotLisa! what do you want to draw?\n" + \
         "Please write your dream\n"
@@ -79,13 +79,17 @@ class TextWindow:
         self.textbox = ctk.CTkTextbox(master = self.master, width=300, 
                                       height=100, corner_radius=0)
         self.textbox.pack(padx=10, pady=10)
+        
         # Set up an event listener to check for changes in the text box
         self.textbox.bind("<KeyRelease>", self.check_text)
-        
         
         self.next_button = ctk.CTkButton(master, text="Save & Continue", 
                                          command=self.next, state=tk.DISABLED)
         self.next_button.pack()
+        
+        if dream:
+            self.next_button.configure(state=tk.NORMAL)
+            self.textbox.insert(tk.END, dream)
 
         # Create and place "Cancel" button at bottom left
         cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel,
@@ -378,7 +382,7 @@ class ValidateInputWindow:
         if self.mode == "audio":
             self.first_window = RecordWindow(self.master)
         else:
-            self.first_window = TextWindow(self.master)
+            self.first_window = TextWindow(self.master, self.response_text)
         
     def clear_window(self):
         # Destroy all widgets in the window
@@ -405,7 +409,7 @@ class ShowImageWindow:
         self.img = ImageTk.PhotoImage(Image.open(path))
         # Create a Label Widget to display the text or Image
         self.image_label = tk.Label(self.master, image = self.img)
-        self.image_label.pack(fill=tk.BOTH, expand=True)
+        self.image_label.pack()
 
 
 def on_closing():
@@ -420,7 +424,7 @@ if __name__ == "__main__":
     # root = tk.Tk()
     root = ctk.CTk()
     # size of the window
-    root.geometry("400x300")
+    root.geometry("500x350")
     app = StartWindow(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
