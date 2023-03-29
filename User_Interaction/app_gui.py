@@ -6,6 +6,7 @@ from tkinter import filedialog
 import pyaudio
 import threading
 import requests
+import time
 import sys
 from PIL import Image, ImageTk
 sys.path.append('../Scene_Analyzer')
@@ -15,7 +16,7 @@ from send_prompt import send_to_sd
 from send_prompt import get_service_urls
 import requests
 import customtkinter as ctk
-
+import string
 import os
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
@@ -306,29 +307,53 @@ class ValidateInputWindow:
         self.mode = mode
         self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         self.loading_label.pack()
+        self.count = 3
         
         if response_text is not None:
             self.update(response_text)
+    
+
+        
+    
+    def is_english(self, string_to_check):
+        
+        allowed_chars = set(string.ascii_letters + string.punctuation + ' ')
+        # is subset
+        return set(string_to_check) <= allowed_chars
+    
+    def countdown(self):
+        if self.count > 0:
+            self.master.configure(text=str(self.count))
+            self.count -= 1
+            self.master.after(1000, self.countdown)
+        else:
+            self.on_no_button()
 
     def update(self, response_text):
         # Destroy the loading label
         self.loading_label.destroy()
         
-        # Show the response text in the new window
-        self.response_text = response_text
-        self.concat_text = "Did you mean: " + response_text + "?"
+        if not self.is_english(response_text):
+            self.error_label = ctk.CTkLabel(self.master, text="Sorry, we only support English at this time."
+                                             + "\nPlease try again.\n" + 
+                                             "Going back in 3 seconds...")
+            self.error_label.pack()
+            self.countdown()
         
-        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
-                                           wraplength=400, justify='center')
-        self.response_label.pack()
-        
-        self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
-        self.yes_button.pack(padx=10, pady=10)
-        
-        self.no_button = ctk.CTkButton(self.master, text="No, go back", command=self.on_no_button)
-        self.no_button.pack(padx=10, pady=10)
-
-        
+        else:
+            # Show the response text in the new window
+            self.response_text = response_text
+            self.concat_text = "Did you mean: " + response_text + "?"
+            
+            self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
+                                            wraplength=400, justify='center')
+            self.response_label.pack()
+            
+            self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
+            self.yes_button.pack(padx=10, pady=10)
+            
+            self.no_button = ctk.CTkButton(self.master, text="No, go back", command=self.on_no_button)
+            self.no_button.pack(padx=10, pady=10)
     
 
     def on_yes_button(self):
