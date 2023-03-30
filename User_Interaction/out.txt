@@ -95,3 +95,65 @@ Scene 2:
 
 A man is walking down a dark alleyway, the walls of the buildings either side of him covered in graffiti. The street is illuminated by a single lamp post, casting eerie shadows across the ground. The man is looking around cautiously, as if he is expecting something to jump out at him.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    I am with the family in a picnic of some sort. There is a snake somewhere visible. I am aware of it, but not concern. Then comes another one - near, but not near enough to alarm. Saniee goes to kill them. He has a cane, but so short like a foot or so. A dance starts with Saniee using the cane to hit the snake and snake is moving around. The second snake is beautiful and each time goes on some pebbles, there are these radiating rainbow colors like jewels. Next thing the snake is shattered in rock size pieces, more like a broken statue than a living thing. Throughout, the mood is happiness and joyOutput: .
+OUT:
+Scene 1: A family is gathered for a picnic, with a snake visible nearby.
+Scene 2: Saniee approaches the snake with a short cane, and begins a dance-like motion with the cane and the snake, as the snake moves around.
+Scene 3: The second snake is beautiful and radiates rainbow colors like jewels.
+Scene 4: The snake is shattered into rock-sized pieces, and the mood is one of happiness and joy.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    I am with the family in a picnic of some sort. There is a snake somewhere visible. I am aware of it, but not concern. Then comes another one - near, but not near enough to alarm. Saniee goes to kill them. He has a cane, but so short like a foot or so. A dance starts with Saniee using the cane to hit the snake and snake is moving around. The second snake is beautiful and each time goes on some pebbles, there are these radiating rainbow colors like jewels. Next thing the snake is shattered in rock size pieces, more like a broken statue than a living thing. Throughout, the mood is happiness and joyOutput: .
+OUT:
+Scene 1: A family is gathered for a picnic, a snake is visible nearby.
+Scene 2: Saniee approaches the snake with a short cane in hand.
+Scene 3: A dance ensues between Saniee and the snake, with the snake moving around and radiating rainbow colors like jewels.
+Scene 4: The snake is shattered into rock-size pieces, and the mood is one of joy and happiness.
+########################
