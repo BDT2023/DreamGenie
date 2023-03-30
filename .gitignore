@@ -22,3 +22,5 @@ User_Interaction/voice_input.wav
 Image_Generation/my_secrets_ig.py
 my_secrets.py
 my_secrets_*.py
+.vscode/launch.json
+.gitignore
