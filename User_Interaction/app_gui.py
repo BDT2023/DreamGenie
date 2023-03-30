@@ -6,6 +6,7 @@ from tkinter import filedialog
 import pyaudio
 import threading
 import requests
+import time
 import sys
 from PIL import Image, ImageTk
 sys.path.append('../Scene_Analyzer')
@@ -13,9 +14,10 @@ sys.path.append('../Image_Generation')
 
 from send_prompt import send_to_sd
 from send_prompt import get_service_urls
+from gpt_call import call_openai
 import requests
 import customtkinter as ctk
-
+import string
 import os
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
@@ -62,7 +64,7 @@ class StartWindow:
 
 
 class TextWindow:
-    def __init__(self, master):
+    def __init__(self, master, dream=None):
         self.master = master
         self.initial_message = "Hello there! I'm BotLisa! what do you want to draw?\n" + \
         "Please write your dream\n"
@@ -78,13 +80,17 @@ class TextWindow:
         self.textbox = ctk.CTkTextbox(master = self.master, width=300, 
                                       height=100, corner_radius=0)
         self.textbox.pack(padx=10, pady=10)
+        
         # Set up an event listener to check for changes in the text box
         self.textbox.bind("<KeyRelease>", self.check_text)
-        
         
         self.next_button = ctk.CTkButton(master, text="Save & Continue", 
                                          command=self.next, state=tk.DISABLED)
         self.next_button.pack()
+        
+        if dream:
+            self.next_button.configure(state=tk.NORMAL)
+            self.textbox.insert(tk.END, dream)
 
         # Create and place "Cancel" button at bottom left
         cancel_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel,
@@ -306,46 +312,67 @@ class ValidateInputWindow:
         self.mode = mode
         self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         self.loading_label.pack()
+        self.count = 3
         
         if response_text is not None:
             self.update(response_text)
+    
+    def is_english(self, string_to_check):
+        
+        allowed_chars = set(string.ascii_letters + string.punctuation + ' ')
+        # is subset
+        return set(string_to_check) <= allowed_chars
+    
+    def countdown(self):
+        if self.count > 0:
+            self.master.configure(text=str(self.count))
+            self.count -= 1
+            self.master.after(1000, self.countdown)
+        else:
+            self.on_no_button()
 
     def update(self, response_text):
         # Destroy the loading label
         self.loading_label.destroy()
         
-        # Show the response text in the new window
-        self.response_text = response_text
-        self.concat_text = "Did you mean: " + response_text + "?"
+        if not self.is_english(response_text):
+            self.error_label = ctk.CTkLabel(self.master, text="Sorry, we only support English at this time."
+                                             + "\nPlease try again.\n" + 
+                                             "Going back in 3 seconds...")
+            self.error_label.pack()
+            self.countdown()
         
-        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
-                                           wraplength=400, justify='center')
-        self.response_label.pack()
-        
-        self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
-        self.yes_button.pack(padx=10, pady=10)
-        
-        self.no_button = ctk.CTkButton(self.master, text="No, go back", command=self.on_no_button)
-        self.no_button.pack(padx=10, pady=10)
-
-        
+        else:
+            # Show the response text in the new window
+            self.response_text = response_text
+            self.concat_text = "Did you mean: " + response_text + "?"
+            
+            self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
+                                            wraplength=400, justify='center')
+            self.response_label.pack()
+            
+            self.yes_button = ctk.CTkButton(self.master, text="Yes, continue", command=self.on_yes_button)
+            self.yes_button.pack(padx=10, pady=10)
+            
+            self.no_button = ctk.CTkButton(self.master, text="No, go back", command=self.on_no_button)
+            self.no_button.pack(padx=10, pady=10)
     
 
     def on_yes_button(self):
         
         # Create and show the second window
         self.clear_window()
-        self.show_image_window = ShowImageWindow(self.master)
+        self.separated_scenes_window = SeparatedScenesWindow(self.master)
 
         # TODO - destroy thread when window is closed
-        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        t = threading.Thread(target=self.send_request, args=(self.separated_scenes_window,))
         t.start()
     
-    def send_request(self, show_image_window):
+    def send_request(self, separated_scenes_window):
         # Create a new thread to send the request
-        path = send_to_sd(self.response_text)
+        scenes_list = call_openai(self.response_text)
         
-        show_image_window.update(path)
+        separated_scenes_window.update(scenes_list)
 
     def on_no_button(self):
         
@@ -353,34 +380,152 @@ class ValidateInputWindow:
         if self.mode == "audio":
             self.first_window = RecordWindow(self.master)
         else:
-            self.first_window = TextWindow(self.master)
+            self.first_window = TextWindow(self.master, self.response_text)
         
     def clear_window(self):
         # Destroy all widgets in the window
         for widget in self.master.winfo_children():
             widget.destroy()
             
-class ShowImageWindow:
+            
+
+class SeparatedScenesWindow:
     def __init__(self, master):
         self.master = master
+        self.loading_label = ctk.CTkLabel(master, text="Loading input...")
+        self.loading_label.pack()
+        
+    
+
+    def update(self, response_list):
+        # Destroy the loading label
+        self.loading_label.destroy()
+        
+        # Show the response text in the new window
+        self.response_text = response_list
+        self.paragraph = self.list_to_paragraph(response_list)
+        self.concat_text = "Here are the scenes I separated for you: " + self.paragraph + "\n" 
+        
+        self.response_label = ctk.CTkLabel(self.master, text=self.concat_text,
+                                        wraplength=500, justify='center')
+        self.response_label.pack()
+        
+        self.yes_button = ctk.CTkButton(self.master, text="Create the first dream", command=self.on_yes_button)
+        self.yes_button.pack(padx=10, pady=10)
+        
+        self.no_button = ctk.CTkButton(self.master, text="Cancel", command=self.on_cancel)
+        self.no_button.pack(padx=10, pady=10)
+        
+    def on_cancel(self):
+        # Display a messagebox asking if the user wants to cancel
+        result = messagebox.askquestion("Cancel", "Are you sure you want to cancel?")
+        if result == "yes":
+            self.master.quit() # Exit the program
+        else:
+            pass # Do nothing and return to the window
+    
+    def list_to_paragraph(self, lst):
+        paragraph = ''
+        for i, item in enumerate(lst):
+            paragraph += str(i+1) + ') ' + item + '\n'
+        return paragraph
+
+    def on_yes_button(self):
+        
+        # Create and show the second window
+        self.clear_window()
+        if len(self.response_text) == 1:
+            self.show_image_window = ShowImageWindow(self.master, self.response_text[0], None)
+        else:
+            self.show_image_window = ShowImageWindow(self.master, self.response_text[0], 
+                                                     self.response_text[1 : ])
+
+        # TODO - destroy thread when window is closed
+        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        t.start()
+    
+    def send_request(self, show_image_window):
+        # Create a new thread to send the request
+        path = send_to_sd(self.response_text[0])
+        
+        show_image_window.update(path)
+
+        
+    def clear_window(self):
+        # Destroy all widgets in the window
+        for widget in self.master.winfo_children():
+            widget.destroy()
+
+
+class ShowImageWindow:
+    def __init__(self, master, dream, dreams_list=None):
+        self.master = master
+        self.dream = dream
+        self.dreams_list = dreams_list
+        
         self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.065)
         self.progressbar.pack(padx=20, pady=10)
         self.progressbar.set(0)
         self.progressbar.start()
         # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         # self.loading_label.pack()
-        
+    
+    def on_cancel(self):
+        # Display a messagebox asking if the user wants to cancel
+        result = messagebox.askquestion("Cancel", "Are you sure you want to cancel?")
+        if result == "yes":
+            self.master.quit() # Exit the program
+        else:
+            pass # Do nothing and return to the window
 
     def update(self, path):
         # Destroy the loading label
         # self.loading_label.destroy()
         self.progressbar.destroy()
-
+        
+        self.loading_label = ctk.CTkLabel(self.master, text=self.dream)
+        self.loading_label.pack()
         # Create an object of tkinter ImageTk
         self.img = ImageTk.PhotoImage(Image.open(path))
         # Create a Label Widget to display the text or Image
         self.image_label = tk.Label(self.master, image = self.img)
-        self.image_label.pack(fill=tk.BOTH, expand=True)
+        self.image_label.pack()
+        
+        if self.dreams_list is not None:
+            self.yes_button = ctk.CTkButton(self.master, text="Next dream", command=self.on_yes_button)
+            self.yes_button.pack(padx=10, pady=10)
+        
+        
+        self.no_button = ctk.CTkButton(self.master, text="Quit", command=self.on_cancel,
+                                       fg_color="red", hover_color="dark red")
+        self.no_button.pack(padx=10, pady=10)
+        
+    
+    def on_yes_button(self):
+        
+        # Create and show the second window
+        self.clear_window()
+        if len(self.dreams_list) == 1:
+            self.show_image_window = ShowImageWindow(self.master, self.dreams_list[0], None)
+        else:
+            self.show_image_window = ShowImageWindow(self.master, self.dreams_list[0], 
+                                                     self.dreams_list[1 : ])
+
+        # TODO - destroy thread when window is closed
+        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        t.start()
+    
+    def send_request(self, show_image_window):
+        # Create a new thread to send the request
+        path = send_to_sd(self.dreams_list[0])
+        
+        show_image_window.update(path)
+
+        
+    def clear_window(self):
+        # Destroy all widgets in the window
+        for widget in self.master.winfo_children():
+            widget.destroy()
 
 
 def on_closing():
@@ -395,7 +540,7 @@ if __name__ == "__main__":
     # root = tk.Tk()
     root = ctk.CTk()
     # size of the window
-    root.geometry("400x300")
+    root.geometry("600x500")
     app = StartWindow(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
