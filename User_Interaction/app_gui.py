@@ -335,7 +335,8 @@ class ValidateInputWindow:
         # Destroy the loading label
         self.loading_label.destroy()
         
-        if not self.is_english(response_text):
+        #TODO remove!
+        if False and not self.is_english(response_text):
             self.error_label = ctk.CTkLabel(self.master, text="Sorry, we only support English at this time."
                                              + "\nPlease try again.\n" + 
                                              "Going back in 3 seconds...")

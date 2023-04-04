@@ -4,6 +4,7 @@ from my_secrets import API_KEY_OPENAI
 import os
 import random as rand
 import re
+import tiktoken
 import pandas as pd
 openai.api_key = API_KEY_OPENAI
 
@@ -31,15 +32,20 @@ def get_samples():
         return temp
 
 def build_prompt(dream,command="Give short visual descriptions of the scenes in the following:",
-                 n = 3):
+                 n = 3,model = "text-curie-001"):
     """
     Build the prompt for the API call.
     n = number of examples of manual separation to pass to the model
     """
+    model_limits ={'text-curie-001':1024,'text-davinci-003':2048}
     examples = ""
     samples = get_samples()
      # build the examples string from the manual separation data
     for i in range(0,min(len(samples),n)):
+        encoding = tiktoken.encoding_for_model(model)
+        num_tokens = len(encoding.encode(dream+os.linesep+examples))
+        if num_tokens >= model_limits[model]:
+            break
         examples+=samples[i]
         examples+=os.linesep
     #print(examples)
@@ -74,12 +80,13 @@ Scene 2:
         return text.split('Scene')
     #model_engine = "text-curie-001"
     model_engine = "text-davinci-003"
-
     
     #API call to OpenAI GPT-3 using this schema:
     #https://beta.openai.com/docs/api-reference/completions/create
+    #TODO check this 
+    #command = "Describe paintings depictinng the separate scenes in the following:"
     generated_text ="\n\n1. The first scene is of a person on an escalator, with plastic squares and water rolling along the side. The person later learns that they are filters. \n\n2. The second scene is of a large church where a mardi gras parade is taking place inside while mass is being celebrated in peace. \n\n3. The third scene is of a clerk coming to collect a bill which has already been paid. He has with him graded papers from a school, but the person does not see their son's name."
-    prompt = build_prompt(dream,command,n=3)
+    prompt = build_prompt(dream,command,n=3,model=model_engine)
     completions = openai.Completion.create(
         engine=model_engine,
         prompt=prompt,

@@ -12,12 +12,18 @@ import os
 from datetime import datetime
 import time
 import concurrent.futures
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 counter = 0
 URL = ""
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
 session = requests.Session()
 session.auth = (USERNAME, PASSWORD)
+retry = Retry(connect=3, backoff_factor=0.5)
+adapter = HTTPAdapter(max_retries=retry)
+session.mount('http://', adapter)
+session.mount('https://', adapter)
 
 def save_image(img, folder, filename):
     if not os.path.exists(folder):
@@ -124,7 +130,7 @@ def send_to_sd(prompt):
     is_style = True
     tokens = ''
     negative_prompt = ''
-    
+
     style = 'project_tokens'
     # ic.disable()
     if not is_style:
@@ -136,26 +142,21 @@ def send_to_sd(prompt):
         missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
         """
         style = ''
-    model_name = check_model_api()
-    if 'illuminati' in model_name:
-        negative_prompt += 'nfixer,nartfixer,nrealfixer'
-    else:
-        tokens += "<lora:epi_noiseoffset_v2:1>"
+    # model_name = check_model_api()
+    # if 'illuminati' in model_name:
+    #     negative_prompt += 'nfixer,nartfixer,nrealfixer'
+    # else:
+    #     tokens += "<lora:epi_noiseoffset_v2:1>"
     # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
+    #
+    # Using scripts that are always on: Check "title" field in the Script class of the extension source code
+    # to get arguments check "process_script_params" function in the extension source code
     payload = {
-        "enable_hr": 'false',
-        "denoising_strength": 0,
-        "firstphase_width": 0,
-        "firstphase_height": 0,
         "prompt": f'{prompt + tokens}',
         "styles": [
-            f'{style}'  # maybe we don't need to add all the tokens
+            #f'{style}'  # maybe we don't need to add all the tokens
         ],
         "seed": -1,
-        "subseed": -1,
-        "subseed_strength": 0,
-        "seed_resize_from_h": -1,
-        "seed_resize_from_w": -1,
         "sampler_name": "DPM++ 2M",  # TODO: play with the results
         "batch_size": 1,
         "n_iter": 1,
@@ -164,16 +165,19 @@ def send_to_sd(prompt):
         "width": 768,
         "height": 512,
         "restore_faces": 'false',
-        "tiling": 'false',
         "negative_prompt": f'{negative_prompt}',
+        #"""
+        #enabled: bool,
+        #raw_divisions: str, raw_positions: str, 
+        #raw_weights: str, raw_end_at_step: int):"""
+        "alwayson_scripts": {'Latent Couple extension':{"args":[True,
+                                                      "1:1,1:2,1:2",
+                                                      "0:0,0:0,0:1",
+                                                      "0.5,0.8,0.8",30]}},
         # "script_name": "CensorScript",
         # "script_args": ['true','false'], #Pass the script its arguments as a list
         # "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
-        "eta": 0,  # TODO: check about the following parameters
-        "s_churn": 0,
-        "s_tmax": 0,
-        "s_tmin": 0,
-        "s_noise": 1
+        "save_images": 'true',
         # "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
     }
     def post_prompt(payload):
@@ -195,7 +199,7 @@ def send_to_sd(prompt):
             # im.show()
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter+=1
-            now = datetime.now().strftime("%H%M") 
+            now = datetime.now().strftime("%H%M%S") 
             save_image(im, date_folder, f"image_{counter}_{now}.png")
 
             return f".\{date_folder}\image_{counter}_{now}.png"
@@ -215,5 +219,5 @@ if __name__ == "__main__":
     # prompt = input("Enter prompt: ")
     prompt = "A painting of a forest with a river flowing through it."
     prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
-    prompt = "two cats fighting each other"
+    prompt = "snowy landscape background AND two cats fighting each other AND a dog dancing"
     send_to_sd(prompt)
