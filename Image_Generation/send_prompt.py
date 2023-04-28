@@ -137,6 +137,15 @@ def interrogate_image(img):
     print(x.json()["caption"].split(",")[0])
 
 
+# TODO: implement
+def latent_couple_prompt_builder(prompt, tokens=""):
+    background = ""
+    subj1 = ""
+    subj2 = ""
+    prompt = f"{background} {tokens} AND {subj1} {tokens} AND {subj2} {tokens}"
+    pass
+
+
 def send_to_sd(prompt):
     global counter, URL
 
@@ -148,9 +157,14 @@ def send_to_sd(prompt):
     # ic(is_style)
     is_style = True
     style = ""
-    tokens = """expressive oil painting, oil paints, whimsical atmosphere, matte painting trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light"""
+    tokens = """expressive oil painting, oil paints, whimsical atmosphere, matte painting trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning, concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light,"""
     negative_prompt = """lowres, text, error, cropped, worst quality, low quality,jpeg artifacts, ugly, duplicate, morbid, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands,poorly drawn face, mutation, deformed, blurry, bad proportions, extra limbs, cloned face, disfigured, gross proportions, dehydrated, bad anatomy,malformed limbs,missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
     """
+    model_name = check_model_api()
+    if "illuminati" in model_name:
+        negative_prompt += "nfixer,nartfixer,nrealfixer"
+    else:
+        tokens += "<lora:epi_noiseoffset_v2:0.5>"
 
     latent_couple = False
     if "AND" in prompt:
@@ -160,19 +174,16 @@ def send_to_sd(prompt):
         for s in prompt.split("AND"):
             temp += s + " " + tokens + " AND"
         # remove the last "AND"
-        temp = temp.rsplit(' ', 1)[0]
+        temp = temp.rsplit(" ", 1)[0]
         prompt = temp
+        tokens = ""
     else:
         # ic.disable()
         if is_style:
             tokens = ""
             negative_prompt = ""
             style = "project_tokens"
-    # model_name = check_model_api()
-    # if 'illuminati' in model_name:
-    #     negative_prompt += 'nfixer,nartfixer,nrealfixer'
-    # else:
-    #     tokens += "<lora:epi_noiseoffset_v2:1>"
+
     # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
     #
     # Using scripts that are always on: Check "title" field in the Script class of the extension source code
@@ -191,22 +202,27 @@ def send_to_sd(prompt):
         "restore_faces": "false",
         "negative_prompt": f"{negative_prompt}",
         # """
+        # https://github.com/opparco/stable-diffusion-webui-two-shot
+        # The arguments are for latent_couple are:
         # enabled: bool,
-        # raw_divisions: str, raw_positions: str,
-        # raw_weights: str, raw_end_at_step: int):"""
+        # raw_divisions: str - the division of the canvas,
+        # raw_positions: str, - the position of the generated parts on the image
+        # raw_weights: str,
+        # raw_end_at_step: int):"""
         "alwayson_scripts": {
             "Latent Couple extension": {
                 "args": [
                     f"{latent_couple}",
-                    "1:1,1:2,1:2",
-                    "0:0,0:0,0:1",
-                    "0.5,0.8,0.8",
-                    30,
+                    # "1:1,1:2,1:2",
+                    # "0:0,0:0,0:1",
+                    # "0.5,0.7,0.8",
+                    "1:1,1:1",
+                    "0:0,0:0",
+                    "0.25,0.9",
+                    60,
                 ]
             }
         },
-        # "script_name": "CensorScript",
-        # "script_args": ['true','false'], #Pass the script its arguments as a list
         # "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
         "save_images": "true",
         "override_settings": {
@@ -217,12 +233,13 @@ def send_to_sd(prompt):
     def post_prompt(payload):
         return session.post(URL + "/sdapi/v1/txt2img", json=payload)
 
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        ic(f"sending prompt: {prompt}")
-        future = executor.submit(post_prompt, payload)
-        executor.submit(poll_results_until_done)
-        x = future.result()
+    # with concurrent.futures.ThreadPoolExecutor() as executor:
+    #     ic(f"sending prompt: {prompt}")
+    #     future = executor.submit(post_prompt, payload)
+    #     executor.submit(poll_results_until_done)
+    #     x = future.result()
     # x = session.post(URL + '/sdapi/v1/txt2img', json=payload)
+    x = post_prompt(payload)
     ic(x)
     if x.status_code != 200:
         raise Exception(f"API request failed: {x.text}")
@@ -254,10 +271,13 @@ if __name__ == "__main__":
     else:
         get_service_urls()["sd"]
     # prompt = input("Enter prompt: ")
-    # prompt = "A person stands in a cold stark landscape at twilight."
+    # prompt = "a cold stark landscape twilight AND A person stands in a cold stark landscape at twilight."
+    prompt = "a cold stark landscape twilight AND A person stands in a cold stark landscape at twilight."
+    # prompt = "a cold stark landscape twilight AND A wolf starts loping around (a person:1.5), panting."
+    # prompt = "a cold stark landscape twilight AND The person watches the wolf around them admiringly."
     # prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
-    prompt = (
-        "snowy landscape background AND two cats fighting each other AND a dog dancing"
-    )
-    # prompt = "an industrial warehouse pharmacy AND A person and Soraya's father are standing in front of an automatic door"
+    # prompt = (
+    #     "snowy landscape background AND two cats fighting ea ch other AND a dog dancing"
+    # )
+    # prompt = "an indsutrial warehouse an automatic door AND A person and Soraya's father are standing in front of an automatic door"
     send_to_sd(prompt)
