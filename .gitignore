@@ -24,3 +24,5 @@ my_secrets.py
 my_secrets_*.py
 .vscode/launch.json
 .gitignore
+app_gui.spec
+User_Interaction/recorder_gui.spec

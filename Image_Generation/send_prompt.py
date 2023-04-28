@@ -125,6 +125,34 @@ def check_model_api():
     return response.json()["sd_model_checkpoint"]
 
 
+def interrogate_image(img):
+    global URL
+    if URL == "":
+        URLS = get_service_urls()
+        URL = URLS['sd']
+    payload = {
+    "image": f'{img}',
+    "model": "clip"
+    }
+    x = session.post(URL + '/sdapi/v1/interrogate', json=payload)
+    if x.status_code != 200:
+        raise Exception(f'API request failed: {x.text}')
+    print(x.json()['caption'].split(',')[0])
+
+def interrogate_image(img):
+    global URL
+    if URL == "":
+        URLS = get_service_urls()
+        URL = URLS['sd']
+    payload = {
+    "image": f'{img}',
+    "model": "clip"
+    }
+    x = session.post(URL + '/sdapi/v1/interrogate', json=payload)
+    if x.status_code != 200:
+        raise Exception(f'API request failed: {x.text}')
+    print(x.json()['caption'].split(',')[0])
+
 def send_to_sd(prompt):
     global counter, URL
 
@@ -212,8 +240,10 @@ def send_to_sd(prompt):
     if x.status_code != 200:
         raise Exception(f"API request failed: {x.text}")
     # check if the image wasn't filterd due to nsfw
-    for i in range(0, len(x.json()["images"])):
-        im = Image.open(BytesIO(base64.b64decode(x.json()["images"][i])))
+    for i in range(0, len(x.json()['images'])):
+        im_b64 = x.json()['images'][i]
+        im = Image.open(BytesIO(base64.b64decode(im_b64)))
+        #interrogate_image(img=im_b64)
         extrema = im.convert("L").getextrema()
         if not extrema == (0, 0):
             # im.show()
@@ -237,9 +267,8 @@ if __name__ == "__main__":
     else:
         get_service_urls()["sd"]
     # prompt = input("Enter prompt: ")
-    prompt = "A person stands in a cold stark landscape at twilight"
-    # prompt = "A painting of a forest with a river flowing through it."
-    # prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
-    # prompt = "snowy landscape background AND two cats fighting each other AND a dog dancing"
-
+    #prompt = "A person stands in a cold stark landscape at twilight."
+    #prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
+    #prompt = "snowy landscape background AND two cats fighting each other AND a dog dancing"
+    prompt = "an industrial warehouse pharmacy AND A person and Soraya's father are standing in front of an automatic door"
     send_to_sd(prompt)
