@@ -117,13 +117,26 @@ def check_model_api():
         raise Exception(f'API request failed: {response.text}')
     return response.json()['sd_model_checkpoint']
 
+def interrogate_image(img):
+    global URL
+    if URL == "":
+        URLS = get_service_urls()
+        URL = URLS['sd']
+    payload = {
+    "image": f'{img}',
+    "model": "clip"
+    }
+    x = session.post(URL + '/sdapi/v1/interrogate', json=payload)
+    if x.status_code != 200:
+        raise Exception(f'API request failed: {x.text}')
+    print(x.json()['caption'].split(',')[0])
+
 def send_to_sd(prompt):
     global counter,URL
     
     if URL == "":
         URLS = get_service_urls()
         URL = URLS['sd']
-
         
     #is_style = check_style_api()  # check if the style is already added
     #ic(is_style)
@@ -170,10 +183,10 @@ def send_to_sd(prompt):
         #enabled: bool,
         #raw_divisions: str, raw_positions: str, 
         #raw_weights: str, raw_end_at_step: int):"""
-        "alwayson_scripts": {'Latent Couple extension':{"args":[True,
-                                                      "1:1,1:2,1:2",
-                                                      "0:0,0:0,0:1",
-                                                      "0.5,0.8,0.8",30]}},
+        # "alwayson_scripts": {'Latent Couple extension':{"args":[True,
+        #                                               "1:1,1:2,1:2",
+        #                                               "0:0,0:0,0:1",
+        #                                               "0.5,0.8,0.8",30]}},
         # "script_name": "CensorScript",
         # "script_args": ['true','false'], #Pass the script its arguments as a list
         # "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
@@ -193,7 +206,9 @@ def send_to_sd(prompt):
         raise Exception(f'API request failed: {x.text}')
     # check if the image wasn't filterd due to nsfw
     for i in range(0, len(x.json()['images'])):
-        im = Image.open(BytesIO(base64.b64decode(x.json()['images'][i])))
+        im_b64 = x.json()['images'][i]
+        im = Image.open(BytesIO(base64.b64decode(im_b64)))
+        #interrogate_image(img=im_b64)
         extrema = im.convert("L").getextrema()
         if not extrema == (0, 0):
             # im.show()
@@ -217,7 +232,8 @@ if __name__ == "__main__":
     else:
         get_service_urls()['sd']
     # prompt = input("Enter prompt: ")
-    prompt = "A painting of a forest with a river flowing through it."
-    prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
-    prompt = "snowy landscape background AND two cats fighting each other AND a dog dancing"
+    #prompt = "A person stands in a cold stark landscape at twilight."
+    #prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
+    #prompt = "snowy landscape background AND two cats fighting each other AND a dog dancing"
+    prompt = "an industrial warehouse pharmacy AND A person and Soraya's father are standing in front of an automatic door"
     send_to_sd(prompt)
