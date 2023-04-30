@@ -1,7 +1,7 @@
 import requests
 from icecream import ic
 URLS = {}  # dictionary of urls for each service (whisper, sd, etc)
-from my_secrets import NGROK_API_KEY
+from my_secrets_ut import NGROK_API_KEY
 
 '''
 A method to populate the URLS dictionary with the urls for each service, so that we can use them later
