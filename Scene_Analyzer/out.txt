@@ -588,3 +588,155 @@ Scene 1: A person sits at a computer, reading an email from an old partner.
 Scene 2: The person is thinking, their face displaying a mix of confusion and curiosity.
 Scene 3: The person opens a second email, a relieved expression on their face.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    I am at Shawn's house. There is a party, but I do not remember much. There is a karaoke machine. Everyone is in the other room to eat, I guess. We are going to join them. There is song in German for a few second, but switches to a very soothing Japanese.Output: 
+OUT:
+Scene 1: A group of people are gathered in a house for a party, there is a karaoke machine in the background.
+Scene 2: Everyone is in the other room eating, the person is about to join them.
+Scene 3: A song in German is playing for a few seconds, before switching to a soothing Japanese song.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    I am making out in the supply room in a high school, but I am not me. I am just someone else going to school. I do not know who I am with.Output: 
+
+OUT:
+Scene 1: View of a high school supply room, filled with shelves and school supplies.
+Scene 2: Two people are in the supply room, making out. The person is not recognizable and it's unclear who they are with.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    It was night time and I was with my younger brother and sister, we were walking in the with tattered clothes on and they were soiled as well as our faces, other people were walking around with no real purpose the we decided to check a car that had the back door open and found a few pieces of food and candy then I had lifted the seat cushion up and there was a small safe that had about four or fivr hundred dollars in it but we were not that excited about it because all businesses were closed and had been closed for years, I stashed the dough in my shirt pocketOutput:  and we continued our journey.
+OUT:
+Scene 1: Three people, a brother and two sisters, are walking at night in tattered clothes.
+Scene 2: They come across an open car and find food and candy.
+Scene 3: The brother discovers a small safe with money inside and stashes it in his pocket.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+    I dreamed I was talking to donald trump we were sitting and talking I don't remember any feelings or the conversation but he was there talking to meOutput: 
+OUT:
+Scene 1: A person is sitting in an unknown setting with Donald Trump.
+Scene 2: They are talking, but the details of the conversation and the person's feelings are unknown.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+    In my dream, my 7/8th grade students are to be heading out on a field trip. I am standing in the parking lot waiting for the drivers to file out. Donald Trump has his driver-side door open standing between it and the car gesticulating to the bystanders. I want him to get in the car and drive my students to the destination. However, I cannot bring myself to say the words, "President Trump" in order to get his attention and tell him to get in the car and drive it. Instead, I call out, "The car needs to be moving; we need to get to our destination." Nothing happens. Trump keeps talking and waving his hands and is standing wedged between the open black car door. I try again. I yell out, "Get in the car and get it moving; the students need to get to their field trip." He doesn't stop talking. I turn to someone standing next to me and I ask them, "Could you walk over to him and tell him he needs to drive the car - I can't get his attention, and I just can't bear to call out the name 'President Trump.'" I woke up and my dream was so real I am still bothered by it.Output: 
+OUT:
+Scene 1: A person is standing in a parking lot, waiting for drivers to file out. 
+Scene 2: Donald Trump is standing between his driver-side door and the car, gesticulating to the bystanders. 
+Scene 3: The person calls out for the car to move, but Trump doesn't stop talking. 
+Scene 4: The person turns to someone standing next to them and asks them to go tell Trump to drive the car.
+########################

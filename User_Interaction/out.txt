@@ -9,8 +9,10 @@ The scene is of Soraya's father and the person standing on either side of the cl
 
 Scene 3:
 
-The scene is of the person asking the workers to help. One of them is on a ladder playing with the control box, trying to figure out how to open the door.
-########################
+The scene is of the person asking the workers to help. One of them is on a ladder playing with the control box, trying to figure out how to open the door.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
     Scene 1:
     Output:  A dark, cold landscape at twilight. A lone figure stands still, admiring the beauty of the moment. 
@@ -19,15 +21,19 @@ Prompt: Give short visual descriptions of the scenes in the following: y dream l
      A large wolf appears around the corner, loping along with its tongue hanging out. The figure watches it, mesmerized. 
  
  Scene 3:
-     The wolf disappears around another corner, leaving the figure standing there, feeling like something momentous has just happened.
-########################
+     The wolf disappears around another corner, leaving the figure standing there, feeling like something momentous has just happened.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ... 
     Scene 1:
     Output:  A bustling city street, filled with people and the hustle and bustle of everyday life. Suddenly, the sound of foreign soldiers and the sight of guns disrupts the peaceful atmosphere. 
     
     Scene 2:
-     A family, huddled together in a small room. The adults are franticly trying to send a text message for help without being caught, while the children look on with fear in their eyes. The language being spoken is unfamiliar, but it sounds like Arabic.
-########################
+     A family, huddled together in a small room. The adults are franticly trying to send a text message for help without being caught, while the children look on with fear in their eyes. The language being spoken is unfamiliar, but it sounds like Arabic.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: My dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
     Scene 1:
     Output:  A cold, stark landscape is illuminated by the fading light of twilight. A lone figure stands in the middle of the scene, feeling a sense of calm. 
@@ -36,8 +42,10 @@ Prompt: Give short visual descriptions of the scenes in the following: My dream 
      A wolf appears around the corner, slowly loping across the scene. Its panting breath is the only sound in the stillness. The figure stands in awe, admiring the beauty of the animal. 
  
  Scene 3:
-     The wolf quickly disappears around another corner, leaving the figure alone in the twilight. Though the figure does not follow, a feeling of anticipation lingers in the air.
-########################
+     The wolf quickly disappears around another corner, leaving the figure alone in the twilight. Though the figure does not follow, a feeling of anticipation lingers in the air.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
     Scene 1:
     Output:  A cold, stark landscape, illuminated by the soft light of twilight. A lone figure stands in the middle of the scene, feeling a sense of calm.
@@ -46,8 +54,10 @@ Prompt: Give short visual descriptions of the scenes in the following: y dream l
     A wolf appears from around the corner and lopes briskly across the landscape. Its panting breaths can be heard as it moves. The figure stands in awe, admiring the animal.
     
     Scene 3:
-    The wolf disappears around another corner, and the figure remains standing, feeling like the animal has led to something, though the rest of the dream is forgotten.
-########################
+    The wolf disappears around another corner, and the figure remains standing, feeling like the animal has led to something, though the rest of the dream is forgotten.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: y dream last night started in a cold stark landscape at twilight. I was just standing there. I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf. I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting. I was standing there admiring it. Then it went around another corner and was gone. I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
     Scene 1:
     Output:  A barren landscape is illuminated by the orange and purple hues of twilight. A lone figure stands in the center, admiring the calmness of the moment.
@@ -56,36 +66,46 @@ Prompt: Give short visual descriptions of the scenes in the following: y dream l
      A large wolf appears from around the corner and begins to lope across the landscape, its breath visible in the cold air. The figure watches the wolf in admiration.
     
     Scene 3:
-     The wolf disappears around another corner, leaving the figure alone in the landscape. The figure feels like the wolf has led them to something, though they cannot remember what.
-########################
+     The wolf disappears around another corner, leaving the figure alone in the landscape. The figure feels like the wolf has led them to something, though they cannot remember what.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: hey
     Scene 1:
     Output:  A young woman stands in an open field, her arms outstretched and her face upturned to the bright blue sky. The sun is shining and a gentle breeze rustles the grass around her. 
 
 Scene 2:
-     Two friends are sitting on a park bench, laughing and talking. The sun is setting and the sky is painted in a beautiful array of oranges and pinks. The trees around them are silhouetted against the sky.
-########################
+     Two friends are sitting on a park bench, laughing and talking. The sun is setting and the sky is painted in a beautiful array of oranges and pinks. The trees around them are silhouetted against the sky.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: two cats fighting
     Scene 1:
     Output:  Two cats stand in the center of a room, facing each other. They are hissing and snarling, their fur standing on end. One of the cats swipes a paw at the other, and they both jump back, ready to fight.
     
     Scene 2:
-     The two cats are now locked in a fierce battle. They are clawing and biting at each other, fur flying in all directions. The air is filled with their loud yowling and snarling. The fight continues until one of the cats finally backs off, defeated.
-########################
+     The two cats are now locked in a fierce battle. They are clawing and biting at each other, fur flying in all directions. The air is filled with their loud yowling and snarling. The fight continues until one of the cats finally backs off, defeated.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: 2 cats fighting
     Scene 1:
     Output:  Two cats crouched in a defensive stance, fur bristling and eyes narrowed. They circle each other, hissing and swatting with their paws.
     
     Scene 2:
-    One of the cats jumps forward and swipes at the other, claws outstretched. The other cat jumps back and yowls in surprise.
-########################
+    One of the cats jumps forward and swipes at the other, claws outstretched. The other cat jumps back and yowls in surprise.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: two cats fighting
     Scene 1:
     Output:  Two cats are facing each other, their fur bristling, their backs arched and their tails lashing. They are hissing and growling at each other, their ears flat against their heads. 
 
 Scene 2:
-     The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
-########################
+     The two cats are now in mid-air, their claws outstretched, their fur standing on end. They are yowling and screeching, their eyes wide and their teeth bared.
+
+########################
+
 Prompt: Give short visual descriptions of the scenes in the following: two
     Scene 1:
     Output: 
@@ -93,15 +113,19 @@ A woman is standing in a field of tall grass, with a bright blue sky overhead an
 
 Scene 2:
 
-A man is walking down a dark alleyway, the walls of the buildings either side of him covered in graffiti. The street is illuminated by a single lamp post, casting eerie shadows across the ground. The man is looking around cautiously, as if he is expecting something to jump out at him.
-########################
-Prompt: Give short visual descriptions of the scenes in the following:
+A man is walking down a dark alleyway, the walls of the buildings either side of him covered in graffiti. The street is illuminated by a single lamp post, casting eerie shadows across the ground. The man is looking around cautiously, as if he is expecting something to jump out at him.
+
+########################
+
+Prompt: Give short visual descriptions of the scenes in the following:
+
 Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
 caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
 realize someone is there. I go back to the house and I wake up.
 OUT:
 Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
-Scene 2: The man is about to leave, he looks back and sees a person in the window.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+
 My dream setting is in a classroom, like a yoga studio.
 The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
 It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
@@ -110,7 +134,8 @@ I'm amazed that this approach is actually working and it doesn't feel strenuous 
 and I wonder why I never thought about doing it this way before.
 OUT:
 Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
-Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+
 My dream last night started in a cold stark landscape at twilight. I was just standing there.
 I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
 I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
@@ -124,15 +149,19 @@ OUT:
 Scene 1: A family is gathered for a picnic, with a snake visible nearby.
 Scene 2: Saniee approaches the snake with a short cane, and begins a dance-like motion with the cane and the snake, as the snake moves around.
 Scene 3: The second snake is beautiful and radiates rainbow colors like jewels.
-Scene 4: The snake is shattered into rock-sized pieces, and the mood is one of happiness and joy.
-########################
-Prompt: Give short visual descriptions of the scenes in the following:
+Scene 4: The snake is shattered into rock-sized pieces, and the mood is one of happiness and joy.
+
+########################
+
+Prompt: Give short visual descriptions of the scenes in the following:
+
 Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
 caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
 realize someone is there. I go back to the house and I wake up.
 OUT:
 Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
-Scene 2: The man is about to leave, he looks back and sees a person in the window.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+
 My dream setting is in a classroom, like a yoga studio.
 The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
 It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
@@ -141,7 +170,8 @@ I'm amazed that this approach is actually working and it doesn't feel strenuous 
 and I wonder why I never thought about doing it this way before.
 OUT:
 Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
-Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+
 My dream last night started in a cold stark landscape at twilight. I was just standing there.
 I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
 I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
@@ -155,5 +185,44 @@ OUT:
 Scene 1: A family is gathered for a picnic, a snake is visible nearby.
 Scene 2: Saniee approaches the snake with a short cane in hand.
 Scene 3: A dance ensues between Saniee and the snake, with the snake moving around and radiating rainbow colors like jewels.
-Scene 4: The snake is shattered into rock-size pieces, and the mood is one of joy and happiness.
-########################
+Scene 4: The snake is shattered into rock-size pieces, and the mood is one of joy and happiness.
+
+########################
+
+Prompt: Give short visual descriptions of the scenes in the following:
+
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+
+    I took a pair of faulty boots back to my local market. The man told me I had to give them to the owner, I looked in the small back room and it was Donald trump sat in a small office. I thought as to how to approach him, should I say Mr trump or Mr president. As I wanted the boots replaced I thought I would go with Mr president, to stroke his ego and assure my boot exchange. I then woke up as I said hello Mr president.Output: 
+OUT:
+Scene 1: A person stands in a local market, looking for the owner of the store.
+Scene 2: The person enters a small back room and finds Donald Trump sitting in a small office.
+Scene 3: The person contemplates how to address Trump, before deciding to go with "Mr President" in order to get the boots exchanged.
+
+########################
+
