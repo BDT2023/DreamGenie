@@ -79,7 +79,7 @@ class TextWindow:
     def __init__(self, master, dream=None):
         self.master = master
         self.initial_message = (
-            "Hello there! I'm BotLisa! what do you want to draw?\n"
+            "Hello there! I'm am the dream genie! Tell me about a dream you want painted!\n"
             + "Please write your dream\n"
         )
         # self.font = ("Helvetica", 18, "normal", "roman")
@@ -471,19 +471,22 @@ class SeparatedScenesWindow:
     def on_create_first_button(self):
         # Create and show the second window
         self.clear_window()
-        if len(self.scenes_list) == 1:
-            self.show_image_window = ShowImageWindow(
-                self.master, self.scenes_list[0], None
-            )
-        else:
-            self.show_image_window = ShowImageWindow(
-                self.master, self.scenes_list[0], self.scenes_list[1:]
-            )
+        self.show_image_window = ShowImageWindow(
+            self.master, self.scenes_list[0], self.scenes_list, idx=0
+        )
+        # if len(self.scenes_list) == 1:
+        #     self.show_image_window = ShowImageWindow(
+        #         self.master, self.scenes_list[0], None
+        #     )
+        # else:
+        #     self.show_image_window = ShowImageWindow(
+        #         self.master, self.scenes_list[0], self.scenes_list[1:]
+        #     )
         # TODO - destroy thread when window is closed
         # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
         # run function that print hello world in lambda function.
         t = threading.Thread(
-            target=self.scenes_images_factory, args=(self.scenes_list,)
+            target=self.scenes_images_factory, args=(self.scenes_list.copy(),)
         )
         t.start()
 
@@ -506,25 +509,27 @@ class SeparatedScenesWindow:
 
 
 class ShowImageWindow:
-    def __init__(self, master, dream, dreams_list=None):
+    def __init__(self, master, dream, dreams_list=None, idx=0):
         self.master = master
         self.dream = dream
         self.dreams_list = dreams_list
-
+        self.idx = idx
         self.progressbar = ctk.CTkProgressBar(master=master, determinate_speed=0.065)
         self.progressbar.pack(padx=20, pady=10)
         self.progressbar.set(0)
         self.progressbar.start()
-        t = threading.Thread(target=self.wait_for_path)
+        t = threading.Thread(target=self.wait_for_path, args=(self.dream,))
         t.start()
-    def wait_for_path(self):
-            global PATH_DICT
-            while PATH_DICT[self.dream] is None:
-                time.sleep(2)
-            path = PATH_DICT[self.dream]
-            self.update()
-        # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
-        # self.loading_label.pack()
+
+    def wait_for_path(self, dream):
+        global PATH_DICT
+        while PATH_DICT[dream] is None:
+            time.sleep(2)
+        # path = PATH_DICT[self.dream]
+        self.update()
+
+    # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
+    # self.loading_label.pack()
 
     def on_cancel(self):
         # Display a messagebox asking if the user wants to cancel
@@ -548,11 +553,11 @@ class ShowImageWindow:
         self.image_label = tk.Label(self.master, image=self.img)
         self.image_label.pack()
 
-        if self.dreams_list is not None:
-            self.yes_button = ctk.CTkButton(
-                self.master, text="Next dream", command=self.on_yes_button
+        if self.idx < len(self.dreams_list) - 1:
+            self.next_button = ctk.CTkButton(
+                self.master, text="Next dream", command=self.on_next_button
             )
-            self.yes_button.pack(padx=10, pady=10)
+            self.next_button.pack(padx=10, pady=10)
 
         self.no_button = ctk.CTkButton(
             self.master,
@@ -563,25 +568,31 @@ class ShowImageWindow:
         )
         self.no_button.pack(padx=10, pady=10)
 
-    def on_yes_button(self):
+    # TODO: add a previous button
+    def on_next_button(self):
         # Create and show the second window
         self.clear_window()
-        if len(self.dreams_list) == 1:
-            self.show_image_window = ShowImageWindow(
-                self.master, self.dreams_list[0], None
-            )
-        else:
-            self.show_image_window = ShowImageWindow(
-                self.master, self.dreams_list[0], self.dreams_list[1:]
-            )
+        self.show_image_window = ShowImageWindow(
+            self.master,
+            self.dreams_list[self.idx + 1],
+            self.dreams_list,
+            idx=self.idx + 1,
+        )
+        # if len(self.dreams_list) == 1:
+        #     self.show_image_window = ShowImageWindow(
+        #         self.master, self.dreams_list[0], None
+        #     )
+        # else:
+        #     self.show_image_window = ShowImageWindow(
+        #         self.master, self.dreams_list[0], self.dreams_list[1:]
+        #     )
         # TODO - destroy thread when window is closed
         # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
         # t.start()
 
     def send_request(self, show_image_window):
         # Create a new thread to send the request
-        path = send_to_sd(self.dreams_list[0])
-
+        path = send_to_sd(self.dreams_list[self.idx])
         show_image_window.update(path)
 
     def clear_window(self):
