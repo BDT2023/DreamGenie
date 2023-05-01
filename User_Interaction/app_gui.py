@@ -27,6 +27,9 @@ os.chdir(os.path.dirname(__file__))
 # os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()["whisper"]
 
+PATH_DICT = {}
+
+
 
 class StartWindow:
     def __init__(self, master):
@@ -421,13 +424,16 @@ class SeparatedScenesWindow:
         self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         self.loading_label.pack()
 
-    def update(self, response_list):
+    def update(self, scenes_list):
         # Destroy the loading label
+        global PATH_DICT
         self.loading_label.destroy()
 
         # Show the response text in the new window
-        self.response_text = response_list
-        self.paragraph = self.list_to_paragraph(response_list)
+        self.scenes_list = scenes_list
+        PATH_DICT = {scene : None for scene in scenes_list}
+        # print(PATH_DICT)
+        self.paragraph = self.list_to_paragraph(scenes_list)
         self.concat_text = (
             "Here are the scenes I separated for you: " + self.paragraph + "\n"
         )
@@ -466,21 +472,32 @@ class SeparatedScenesWindow:
     def on_create_first_button(self):
         # Create and show the second window
         self.clear_window()
-        if len(self.response_text) == 1:
+        if len(self.scenes_list) == 1:
             self.show_image_window = ShowImageWindow(
-                self.master, self.response_text[0], None
+                self.master, self.scenes_list[0], None
             )
         else:
             self.show_image_window = ShowImageWindow(
-                self.master, self.response_text[0], self.response_text[1:]
+                self.master, self.scenes_list[0], self.scenes_list[1:]
             )
         # TODO - destroy thread when window is closed
-        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        # run function that print hello world in lambda function.
+        t = threading.Thread(target=self.scenes_images_factory, args=(self.scenes_list,))
         t.start()
-
+        
+    
+    
+    def scenes_images_factory(self, scenes_list):
+        global PATH_DICT
+        while len(scenes_list) > 0:
+            scene = scenes_list.pop(0)
+            path = send_to_sd(scene)
+            PATH_DICT[scene] = path
+            
     def send_request(self, show_image_window):
         # Create a new thread to send the request
-        path = send_to_sd(self.response_text[0])
+        path = send_to_sd(self.scenes_list[0])
         show_image_window.update(path)
 
     def clear_window(self):
@@ -499,6 +516,7 @@ class ShowImageWindow:
         self.progressbar.pack(padx=20, pady=10)
         self.progressbar.set(0)
         self.progressbar.start()
+        self.update()
         # self.loading_label = ctk.CTkLabel(master, text="Loading input...")
         # self.loading_label.pack()
 
@@ -510,9 +528,14 @@ class ShowImageWindow:
         else:
             pass  # Do nothing and return to the window
 
-    def update(self, path):
+    def update(self):
         # Destroy the loading label
         # self.loading_label.destroy()
+        global PATH_DICT
+        while PATH_DICT[self.dream] is None:
+            time.sleep(2)
+            
+        path = PATH_DICT[self.dream]
         self.progressbar.destroy()
 
         self.loading_label = ctk.CTkLabel(self.master, text=self.dream)
@@ -550,8 +573,8 @@ class ShowImageWindow:
                 self.master, self.dreams_list[0], self.dreams_list[1:]
             )
         # TODO - destroy thread when window is closed
-        t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
-        t.start()
+        # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
+        # t.start()
 
     def send_request(self, show_image_window):
         # Create a new thread to send the request
@@ -573,6 +596,7 @@ def on_closing():
 
 
 if __name__ == "__main__":
+    
     ctk.set_appearance_mode("dark")
     # root = tk.Tk()
     root = ctk.CTk()
