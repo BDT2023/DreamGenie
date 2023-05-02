@@ -533,7 +533,7 @@ class ShowImageWindow:
 
     def on_cancel(self):
         # Display a messagebox asking if the user wants to cancel
-        result = messagebox.askquestion("Cancel", "Are you sure you want to cancel?")
+        result = messagebox.askquestion("Cancel", "Are you sure you want to quit?")
         if result == "yes":
             self.master.quit()  # Exit the program
         else:
@@ -546,8 +546,8 @@ class ShowImageWindow:
         path = PATH_DICT[self.dream]
         if self.progressbar:
             self.progressbar.destroy()
-        self.loading_label = ctk.CTkLabel(self.master, text=self.dream)
-        self.loading_label.pack()
+        self.scene_text_label = ctk.CTkLabel(self.master, text=self.dream,wraplength=500, justify="center")
+        self.scene_text_label.pack()
         # Create an object of tkinter ImageTk
         self.img = ImageTk.PhotoImage(Image.open(path))
         # Create a Label Widget to display the text or Image
