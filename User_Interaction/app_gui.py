@@ -544,7 +544,8 @@ class ShowImageWindow:
         # self.loading_label.destroy()
         global PATH_DICT
         path = PATH_DICT[self.dream]
-        self.progressbar.destroy()
+        if self.progressbar:
+            self.progressbar.destroy()
         self.loading_label = ctk.CTkLabel(self.master, text=self.dream)
         self.loading_label.pack()
         # Create an object of tkinter ImageTk
@@ -558,6 +559,12 @@ class ShowImageWindow:
                 self.master, text="Next dream", command=self.on_next_button
             )
             self.next_button.pack(padx=10, pady=10)
+        
+        if self.idx > 0:
+            self.prev_button = ctk.CTkButton(
+                self.master, text="Previous dream", command=self.on_prev_button
+            )
+            self.prev_button.pack(padx=10, pady=7)
 
         self.no_button = ctk.CTkButton(
             self.master,
@@ -568,7 +575,6 @@ class ShowImageWindow:
         )
         self.no_button.pack(padx=10, pady=10)
 
-    # TODO: add a previous button
     def on_next_button(self):
         # Create and show the second window
         self.clear_window()
@@ -578,17 +584,16 @@ class ShowImageWindow:
             self.dreams_list,
             idx=self.idx + 1,
         )
-        # if len(self.dreams_list) == 1:
-        #     self.show_image_window = ShowImageWindow(
-        #         self.master, self.dreams_list[0], None
-        #     )
-        # else:
-        #     self.show_image_window = ShowImageWindow(
-        #         self.master, self.dreams_list[0], self.dreams_list[1:]
-        #     )
-        # TODO - destroy thread when window is closed
-        # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
-        # t.start()
+
+    def on_prev_button(self):
+        self.clear_window()
+        self.show_image_window = ShowImageWindow(
+        self.master,
+        self.dreams_list[self.idx - 1],
+        self.dreams_list,
+        idx=self.idx - 1,
+        )
+        
 
     def send_request(self, show_image_window):
         # Create a new thread to send the request
@@ -613,7 +618,7 @@ if __name__ == "__main__":
     # root = tk.Tk()
     root = ctk.CTk()
     # size of the window
-    root.geometry("600x500")
+    root.geometry("800x700")
     app = StartWindow(root)
     root.protocol("WM_DELETE_WINDOW", on_closing)
     root.mainloop()
