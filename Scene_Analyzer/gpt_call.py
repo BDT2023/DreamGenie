@@ -137,13 +137,13 @@ def separate():
     return dream_list[0][rand.randint(0, len(dream_list) - 1)]
 
 
-def separate_random(test = False):
+def separate_random(test = False,command="Give short visual descriptions of the scenes in the following:"):
     """
     load a random dream from the csv and return the call to openai scene separator on it.
     """
     text = separate()
     ic(text)
-    return call_openai(text, test=test)
+    return call_openai(text, test=test,command=command)
 
 
 if __name__ == "__main__":

@@ -26,7 +26,7 @@ import os
 os.chdir(os.path.dirname(__file__))
 # os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()["whisper"]
-
+IS_TEST = False
 PATH_DICT = {}
 
 
@@ -151,8 +151,8 @@ class RecordWindow:
     def __init__(self, master):
         self.master = master
         self.initial_message = (
-            "Hello there! I'm BotLisa! what do you want to draw?\n"
-            + "Please click on record\n"
+            "Hello there! I'm am the dream genie! Tell me about a dream you want painted!\n"
+            + "Please press record, and describe your dream\n"
         )
         # self.font = ("Helvetica", 18, "normal", "roman")
         # Create and place "Hello World" label at top middle
@@ -400,7 +400,7 @@ class ValidateInputWindow:
 
     def send_request(self, separated_scenes_window):
         # Create a new thread to send the request
-        scenes_list = call_openai(self.response_text, test=True)
+        scenes_list = call_openai(self.response_text, test=IS_TEST)
 
         separated_scenes_window.update(scenes_list)
 
@@ -434,7 +434,7 @@ class SeparatedScenesWindow:
         # print(PATH_DICT)
         self.paragraph = self.list_to_paragraph(scenes_list)
         self.concat_text = (
-            "Here are the scenes I separated for you: " + self.paragraph + "\n"
+            "Here are the scenes I separated for you: \n" + self.paragraph + "\n"
         )
 
         self.response_label = ctk.CTkLabel(
@@ -546,7 +546,9 @@ class ShowImageWindow:
         path = PATH_DICT[self.dream]
         if self.progressbar:
             self.progressbar.destroy()
-        self.scene_text_label = ctk.CTkLabel(self.master, text=self.dream,wraplength=500, justify="center")
+        self.scene_text_label = ctk.CTkLabel(
+            self.master, text=self.dream, wraplength=500, justify="center"
+        )
         self.scene_text_label.pack()
         # Create an object of tkinter ImageTk
         self.img = ImageTk.PhotoImage(Image.open(path))
@@ -559,7 +561,7 @@ class ShowImageWindow:
                 self.master, text="Next dream", command=self.on_next_button
             )
             self.next_button.pack(padx=10, pady=10)
-        
+
         if self.idx > 0:
             self.prev_button = ctk.CTkButton(
                 self.master, text="Previous dream", command=self.on_prev_button
@@ -588,12 +590,11 @@ class ShowImageWindow:
     def on_prev_button(self):
         self.clear_window()
         self.show_image_window = ShowImageWindow(
-        self.master,
-        self.dreams_list[self.idx - 1],
-        self.dreams_list,
-        idx=self.idx - 1,
+            self.master,
+            self.dreams_list[self.idx - 1],
+            self.dreams_list,
+            idx=self.idx - 1,
         )
-        
 
     def send_request(self, show_image_window):
         # Create a new thread to send the request
