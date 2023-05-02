@@ -26,7 +26,7 @@ import os
 os.chdir(os.path.dirname(__file__))
 # os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()["whisper"]
-IS_TEST = False
+IS_TEST = True
 PATH_DICT = {}
 
 
@@ -308,7 +308,7 @@ class FunWindow:
         fun_label = tk.Label(self.master, text="Fun!!!")
         fun_label.pack(side=tk.TOP)
         # Create a text box
-        self.text_box = tk.Text(self.master, height=5, width=50)
+        self.text_box = tk.Text(self.master, height=5, width=100)
         self.text_box.pack(side=tk.TOP, pady=10)
         # Create and place "Submit" button
         submit_button = tk.Button(self.master, text="Submit", command=self.on_submit)
@@ -338,6 +338,7 @@ class ValidateInputWindow:
             + string.punctuation
             + string.whitespace
             + "/"
+            + "’'‘"
             + string.digits
         )
         # is subset
@@ -618,6 +619,7 @@ if __name__ == "__main__":
     ctk.set_appearance_mode("dark")
     # root = tk.Tk()
     root = ctk.CTk()
+    root.title("Dream Genie")
     # size of the window
     root.geometry("800x700")
     app = StartWindow(root)
