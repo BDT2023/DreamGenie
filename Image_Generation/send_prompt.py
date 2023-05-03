@@ -125,6 +125,8 @@ def send_to_sd(prompt):
     if URL == "":
         URLS = get_service_urls()
         URL = URLS["sd"]
+    # BACKUP URL FOR PRESENTATION
+    #URL = "https://9d6dbf0643353de5a3.gradio.live"
 
     # is_style = check_style_api()  # check if the style is already added
     # ic(is_style)
@@ -137,7 +139,7 @@ def send_to_sd(prompt):
     # if not is_style:
     tokens = """
     dream,expressive oil painting, whimsical atmosphere,
-    matte painting trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning,
+    trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning,
     concept art, intricate details, realistic, Hyperdetailed, 8K resolution, Dramatic light,By Salvador Dalí
     """
     negative_prompt = """
@@ -231,4 +233,5 @@ if __name__ == "__main__":
     prompt = "A painting of a forest with a river flowing through it."
     prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
     prompt = "two cats fighting each other"
+    prompt = "A wolf starts loping around the person, panting"
     send_to_sd(prompt)
