@@ -619,7 +619,10 @@ if __name__ == "__main__":
     ctk.set_appearance_mode("dark")
     # root = tk.Tk()
     root = ctk.CTk()
-    root.title("Dream Genie")
+    tittle = "Dream Genie"
+    if IS_TEST:
+        tittle += " TEST MODE"
+    root.title(tittle)
     # size of the window
     root.geometry("800x700")
     app = StartWindow(root)
