@@ -126,7 +126,7 @@ def send_to_sd(prompt):
         URLS = get_service_urls()
         URL = URLS["sd"]
     # BACKUP URL FOR PRESENTATION
-    #URL = "https://9d6dbf0643353de5a3.gradio.live"
+    # URL = "https://9d6dbf0643353de5a3.gradio.live"
 
     # is_style = check_style_api()  # check if the style is already added
     # ic(is_style)
@@ -195,6 +195,8 @@ def send_to_sd(prompt):
     def post_prompt(payload):
         return session.post(URL + "/sdapi/v1/txt2img", json=payload)
 
+    # TODO: add timing meter to check how long it takes to get a result
+    start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         ic(f'sending prompt: {payload["prompt"]}')
         future = executor.submit(post_prompt, payload)
@@ -205,6 +207,7 @@ def send_to_sd(prompt):
     if x.status_code != 200:
         raise Exception(f"API request failed: {x.text}")
     # check if the image wasn't filterd due to nsfw
+    ic(f"Time taken: {time.time() - start_time} seconds")
     for i in range(0, len(x.json()["images"])):
         im = Image.open(BytesIO(base64.b64decode(x.json()["images"][i])))
         extrema = im.convert("L").getextrema()
