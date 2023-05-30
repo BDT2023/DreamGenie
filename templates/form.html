@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<head>
+    <title>Dream Genie</title>
+</head>
+<body>
+    <form action="/" method="post">
+        <label for="dream_input">Enter your dream:</label><br>
+        <textarea id="dream_input" name="dream_input" rows="4" cols="50"></textarea><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
