@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My Web App</title>
+  </head>
+  <body>
+    <h1>Welcome to my web app!</h1>
+    <input type="text" id="inputBox">
+    <button onclick="sendInput()">Send</button>
+    <div id="messageContainer"></div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
+    <script type="text/javascript">
+      var socket = io.connect();
+
+      function sendInput() {
+        var input_data = document.getElementById('inputBox').value;
+        socket.emit('user_input', input_data);
+      }
+
+      socket.on('output', function(output_data) {
+        console.log(output_data);
+        var messageDiv = document.createElement('div');
+        messageDiv.innerHTML = output_data;
+
+        var messageContainer = document.getElementById('messageContainer');
+        messageContainer.appendChild(messageDiv);
+      });
+    </script>
+  </body>
+</html>

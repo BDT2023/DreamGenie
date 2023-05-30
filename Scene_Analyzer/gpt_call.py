@@ -14,21 +14,21 @@ def load_dreams(file_name="..\\Scene_Analyzer\\sample_texts_normalized.csv"):
     return dream_list
 
 
-def get_samples():
+def get_samples(file_name="manual_scene_separation_data.txt"):
     """
     Open the file with the manually separated scenes and return a list of the separated dreams.
+
+    file_name: Name of the file containing the separated scenes. Default is 'manual_scene_separation_data.txt'.
     """
-    with open("manual_scene_separation_data.txt", "r") as f:
-        data = f.read()
-        samples = data.split("###")[1:-1]
-        counter = 1
-        temp = []
-        for counter, s in enumerate(samples):
-            s = s.replace("IN:", "").strip()
-            temp.append(s)
-            # print(s)
-            counter += 1
-        return temp
+    samples = []
+    try:
+        with open(file_name, "r") as f:
+            data = f.read()
+            samples = data.split("###")[1:-1]
+            samples = [s.replace("IN:", "").strip() for s in samples]
+    except FileNotFoundError:
+        print(f"File '{file_name}' not found.")
+    return samples
 
 
 def build_prompt(

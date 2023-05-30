@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.8/socket.io.min.js"></script>
+  </head>
+  <body>
+    <ul id="output"></ul>
+    <script>
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on('output', function(msg) {
+        $('#output').append($('<li>').text(msg));
+      });
+    </script>
+  </body>
+</html>
