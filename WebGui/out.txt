@@ -3,3 +3,16 @@ I dreamt of two cats fighting each other in the middle of the forest Output:
 
 The dream scene was filled with a thick blanket of fog, creating an eerie atmosphere. Two cats, one black and one white, were crouched in the middle of a dense forest, their fur bristling and their tails swishing as they faced off against each other. The trees around them were dark and looming, and the only sound was the occasional rustle of the leaves as the cats circled each other, ready to pounce.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following:
+benOutput: ign neglect
+
+Scene 1: A father and son are sitting together on a park bench. The father is looking away from the son, lost in thought, while the son is looking up at the father with a hopeful expression.
+
+Scene 2: A mother and daughter are walking together through a garden. The daughter is looking up at the mother with a questioning expression, while the mother looks away with a distant expression.
+########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Output: 
+1. A thunderstorm:
+
+Dark, ominous clouds looming in the sky, flashes of lightning illuminating the sky, and the sound of thunder rumbling in the distance.
+########################

@@ -8,13 +8,21 @@ body {
 form {
     margin: auto;
     width: 50%;
-    padding: 10px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 textarea {
     width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
 h1 {
     color: #333;
+    text-align: center;
+    margin-bottom: 20px;
 }
