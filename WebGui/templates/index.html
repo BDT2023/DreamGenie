@@ -8,15 +8,77 @@
     <h1>Welcome to my web app!</h1>
     <input type="text" id="inputBox">
     <button onclick="sendInput()">Send</button>
+    <button id="recordButton" onclick="startRecording()">Start Recording</button>
+    <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
+    <audio id="audioPlayback" controls></audio>
+
+
     <div id="messageContainer"></div>
+    <img id="sceneImage" src="" alt="Scene image"> 
     <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
     <script type="text/javascript">
-      var socket = io.connect();
+      //var socket = io.connect();
+      var socket = io.connect('http://localhost:5000');
+      var mediaRecorder;
+      var chunks = [];
 
       function sendInput() {
         var input_data = document.getElementById('inputBox').value;
         socket.emit('user_input', input_data);
       }
+
+    let stream;  // declare stream variable outside of the function
+
+    function startRecording() {
+        navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(streamData => {
+            stream = streamData;  // assign the stream data to the variable
+            mediaRecorder = new MediaRecorder(streamData);
+            mediaRecorder.ondataavailable = e => {
+                chunks.push(e.data);
+            }
+            mediaRecorder.start();
+        })
+        .catch(err => {
+            console.error('Permission Denied or Error Occured: ', err);
+        });
+    }
+
+function stopRecording() {
+    if (mediaRecorder) {
+        mediaRecorder.stop();
+        mediaRecorder.onstop = () => {
+            processAudioData();
+            // stop all tracks on the stream
+            stream.getTracks().forEach(track => track.stop());
+            playbackAudio();
+        }
+    }
+}
+
+function playbackAudio() {
+    // Create a Blob from the chunks
+    let blob = new Blob(chunks, {'type' : 'audio/wav; codecs=opus'});
+    chunks = [];
+
+    // Create an audio URL from the Blob
+    let audioURL = window.URL.createObjectURL(blob);
+
+    // Get the audio element and set the source
+    let audioElement = document.getElementById("audioPlayback");
+    audioElement.src = audioURL;
+}
+
+
+      // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
+      function processAudioData() {
+          // Create a new Blob object from the concatenated chunks and specify the MIME type.
+          var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
+
+          // Emit the audio data to the server via a socket.
+          socket.emit('audio', audioBlob);
+      }
+
 
       socket.on('output', function(output_data) {
         console.log(output_data);
@@ -25,6 +87,16 @@
 
         var messageContainer = document.getElementById('messageContainer');
         messageContainer.appendChild(messageDiv);
+      });
+
+      socket.on('image', function(image_path) {  
+        var imageElement = document.getElementById('sceneImage');
+        imageElement.src = image_path;
+      });
+
+      socket.on('audio_result', function(audio_result) {
+        console.log(audio_result);
+        alert("1");
       });
     </script>
   </body>

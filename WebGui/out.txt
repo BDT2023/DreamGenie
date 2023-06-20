@@ -16,3 +16,8 @@ Output:
 
 Dark, ominous clouds looming in the sky, flashes of lightning illuminating the sky, and the sound of thunder rumbling in the distance.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following:
+foobarOutput: 
+
+This is not a valid description.
+########################
