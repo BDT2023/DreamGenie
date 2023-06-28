@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./Image_Generation",
+        "./Scene_Analyzer"
+    ]
+}

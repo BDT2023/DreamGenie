@@ -1,0 +1,12 @@
+Flask==2.2.2
+Flask_SocketIO==5.3.3
+ipython==8.11.0
+Pillow==9.4.0
+pyttsx3==2.90
+requests==2.28.1
+spacy==3.4.4
+torch==1.13.1
+transformers==4.26.1
+happytransformer==2.4.1
+accelerate==0.18.0
+diffusers==2.28.1

@@ -59,7 +59,7 @@ class StartWindow:
         self.proceed_button = ctk.CTkButton(
             master, text="Proceed", command=self.next_window
         )
-        self.proceed_button.pack(padx=20, pady=10)
+        self.proceed_button.pack(padx=20, pady=10)  
 
     def clear_window(self):
         # Destroy all widgets in the window
