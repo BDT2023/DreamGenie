@@ -9,11 +9,12 @@ from flask_socketio import SocketIO, emit
 import requests
 import io
 from io import BytesIO
+import os
+import datetime
 
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
 sys.path.append("../Utils")
-import os
 
 os.chdir(
     f"{os.path.dirname(os.path.realpath(__file__))}"
@@ -41,6 +42,7 @@ URLS = get_service_urls()
 
 @app.route("/")
 def index():
+    print(f"Current working directory in main route: {os.getcwd()}")
     return render_template("index.html")
 
 
@@ -77,16 +79,13 @@ def handle_get_scene():
 @socketio.on("audio")
 def process_audio(audioBlob):
     app.logger.info("Audio received")
-    # app.logger.info(audioBlob)
-    # audio_io = io.BytesIO(audio)
-    # data = audio_io.read()
 
     def send_request(audio_data):
         url = URLS["whisper"] + "/whisper"
 
         # Wraps the audio data in a BytesIO object to mimic a file
         audio_file = BytesIO(audio_data)
-        audio_file.name = "audio.wav"  # Name it as per your requirement
+        audio_file.name = "audio.wav"
 
         # The 'files' parameter for 'requests.post' should be a dictionary or a list of tuples
         files = {"file": audio_file}
@@ -116,13 +115,16 @@ def process_input(input_data):
     progress = 100
     socketio.emit("progress", progress)
 
+    # Get today's date
+    today = datetime.date.today()
+
     # Generate images for scenes
     for scene in scenes_list:
         # Update progress for each scene
         progress = 0
         socketio.emit("progress", progress)
 
-        # Generate image for scene5
+        # Generate image for scene
         image_path = send_to_sd(scene)
 
         # Update progress
@@ -130,8 +132,9 @@ def process_input(input_data):
         socketio.emit("progress", progress)
 
         # Display the image to the user
-        socketio.emit("image", image_path)
-
+        # Extract only the part of the path from the 'static' directory onwards
+        relative_image_path = os.path.join('static', today.isoformat(), os.path.basename(image_path))
+        socketio.emit("image", relative_image_path)
 
 if __name__ == "__main__":
     socketio.run(app, debug=True)

@@ -22,9 +22,10 @@ session.auth = (USERNAME, PASSWORD)
 
 
 def save_image(img, folder, filename):
-    if not os.path.exists(folder):
-        os.makedirs(folder)
-    img.save(os.path.join(folder, filename))
+    static_folder = os.path.join('static', folder)
+    if not os.path.exists(static_folder):
+        os.makedirs(static_folder)
+    img.save(os.path.join(static_folder, filename))
 
 
 # Deprecated
