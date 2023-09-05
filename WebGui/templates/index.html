@@ -1,103 +1,88 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My Web App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body>
-    <h1>Welcome to my web app!</h1>
-    <input type="text" id="inputBox">
-    <button onclick="sendInput()">Send</button>
-    <button id="recordButton" onclick="startRecording()">Start Recording</button>
-    <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
-    <audio id="audioPlayback" controls></audio>
+<head>
+  <title>My Web App</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <h1>Welcome to my web app!</h1>
+  <input type="text" id="inputBox">
+  <button onclick="sendInput()">Send</button>
+  <button id="recordButton" onclick="startRecording()">Start Recording</button>
+  <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
+  <audio id="audioPlayback" controls></audio>
+  <div id="messageContainer"></div>
 
+  <!-- Bootstrap Carousel -->
+  <div id="imageCarousel" class="carousel slide">
+    <div class="carousel-inner" id="imageContainer">
+      <!-- Images will be appended here -->
+    </div>
+    <a class="left carousel-control" href="#imageCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#imageCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
 
-    <div id="messageContainer"></div>
-    <img id="sceneImage" src="" alt="Scene image"> 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
-    <script type="text/javascript">
-      //var socket = io.connect();
-      var socket = io.connect('http://localhost:5000');
-      var mediaRecorder;
-      var chunks = [];
+  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-      function sendInput() {
-        var input_data = document.getElementById('inputBox').value;
-        socket.emit('user_input', input_data);
-      }
+  <script type="text/javascript">
+    var socket = io.connect('http://localhost:5000');
+    var mediaRecorder;
+    var chunks = [];
+    var imageArray = [];
 
-    let stream;  // declare stream variable outside of the function
+    // ... your existing functions for voice recording here ...
 
-    function startRecording() {
-        navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(streamData => {
-            stream = streamData;  // assign the stream data to the variable
-            mediaRecorder = new MediaRecorder(streamData);
-            mediaRecorder.ondataavailable = e => {
-                chunks.push(e.data);
-            }
-            mediaRecorder.start();
-        })
-        .catch(err => {
-            console.error('Permission Denied or Error Occured: ', err);
-        });
+    function sendInput() {
+      var input_data = document.getElementById('inputBox').value;
+      socket.emit('user_input', input_data);
     }
 
-function stopRecording() {
-    if (mediaRecorder) {
-        mediaRecorder.stop();
-        mediaRecorder.onstop = () => {
-            processAudioData();
-            // stop all tracks on the stream
-            stream.getTracks().forEach(track => track.stop());
-            playbackAudio();
+    socket.on('output', function(output_data) {
+      console.log(output_data);
+      var messageDiv = document.createElement('div');
+      messageDiv.innerHTML = output_data;
+      var messageContainer = document.getElementById('messageContainer');
+      messageContainer.appendChild(messageDiv);
+    });
+
+    socket.on('image', function(image_path) {
+      console.log(image_path);
+      imageArray.push(image_path);
+      addImageToCarousel();
+    });
+
+    function addImageToCarousel() {
+      if (imageArray.length > 0) {
+        var imagePath = imageArray.shift();
+        var imageContainer = document.getElementById('imageContainer');
+        var firstChild = imageContainer.firstChild;
+        var itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+        
+        if(firstChild === null) {
+            itemDiv.className += ' active';
         }
-    }
-}
 
-function playbackAudio() {
-    // Create a Blob from the chunks
-    let blob = new Blob(chunks, {'type' : 'audio/wav; codecs=opus'});
-    chunks = [];
-
-    // Create an audio URL from the Blob
-    let audioURL = window.URL.createObjectURL(blob);
-
-    // Get the audio element and set the source
-    let audioElement = document.getElementById("audioPlayback");
-    audioElement.src = audioURL;
-}
-
-
-      // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
-      function processAudioData() {
-          // Create a new Blob object from the concatenated chunks and specify the MIME type.
-          var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
-
-          // Emit the audio data to the server via a socket.
-          socket.emit('audio', audioBlob);
+        var imageElement = document.createElement('img');
+        imageElement.src =  imagePath;
+        imageElement.alt = "Image";
+        imageElement.width = 300;
+        imageElement.height = 300;
+        itemDiv.appendChild(imageElement);
+        imageContainer.appendChild(itemDiv);
+        $('#imageCarousel').carousel();
       }
-
-
-      socket.on('output', function(output_data) {
-        console.log(output_data);
-        var messageDiv = document.createElement('div');
-        messageDiv.innerHTML = output_data;
-
-        var messageContainer = document.getElementById('messageContainer');
-        messageContainer.appendChild(messageDiv);
-      });
-
-      socket.on('image', function(image_path) {  
-        var imageElement = document.getElementById('sceneImage');
-        imageElement.src = image_path;
-      });
-
-      socket.on('audio_result', function(audio_result) {
-        console.log(audio_result);
-        alert("1");
-      });
-    </script>
-  </body>
+    }
+  </script>
+</body>
 </html>
