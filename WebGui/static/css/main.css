@@ -26,3 +26,17 @@ h1 {
     text-align: center;
     margin-bottom: 20px;
 }
+  #imageCarousel {
+    height: 500px; /* Adjust this value as needed */
+    margin-bottom: 20px; /* Space below the carousel */
+  }
+  .carousel-inner > .item > img {
+    max-height: 500px; /* Adjust this value as needed */
+  }
+    .carousel-caption {
+        background-color: rgba(0, 0, 0, 0.5); /* Almost transparent dark grey */
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 0;
+    }
