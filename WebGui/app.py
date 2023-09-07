@@ -12,6 +12,7 @@ sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
 sys.path.append("../Utils")
 import os
+os.chdir(os.path.dirname(__file__))
 cwd = os.getcwd()
 print(70000000000)
 print(cwd)
@@ -36,6 +37,8 @@ def index():
 
 @socketio.on('user_input')
 def handle_user_input(input_data):
+    app.log_info(input_data)
+    print(input_data)
     global progress, scenes_list, current_scene_index
 
     # Reset global variables
@@ -93,4 +96,4 @@ def process_input(input_data):
 
 
 if __name__ == "__main__":
-    socketio.run(app, allow_unsafe_werkzeug=True, debug=True)
+    socketio.run(app, debug=True)

@@ -8,8 +8,10 @@ import threading
 import requests
 import time
 import sys
+import os
 from PIL import Image, ImageTk
 
+os.chdir(os.path.dirname(__file__))
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
 sys.path.append("../Utils")
@@ -23,7 +25,6 @@ import os
 
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
-os.chdir(os.path.dirname(__file__))
 # os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()["whisper"]
 IS_TEST = True
