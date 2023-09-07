@@ -4,7 +4,6 @@ import time
 import tkinter as tk
 import wave
 from tkinter import filedialog, messagebox
-
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import requests
@@ -16,8 +15,6 @@ import datetime
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
 sys.path.append("../Utils")
-import os
-os.chdir(os.path.dirname(__file__))
 
 os.chdir(
     f"{os.path.dirname(os.path.realpath(__file__))}"
@@ -51,8 +48,6 @@ def index():
 
 @socketio.on("user_input")
 def handle_user_input(input_data):
-    app.log_info(input_data)
-    print(input_data)
     global progress, scenes_list, current_scene_index
 
     # Reset global variables
