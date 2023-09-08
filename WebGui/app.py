@@ -10,6 +10,7 @@ import requests
 import io
 from io import BytesIO
 import os
+import logging
 import datetime
 
 sys.path.append("../Scene_Analyzer")
@@ -30,6 +31,7 @@ from utils import get_service_urls
 IS_TEST = True
 
 app = Flask(__name__)
+app.logger.setLevel(logging.INFO)
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
 
@@ -49,7 +51,7 @@ def index():
 @socketio.on("user_input")
 def handle_user_input(input_data):
     global progress, scenes_list, current_scene_index
-
+    app.logger.info("User input received")
     # Reset global variables
     progress = 0
     scenes_list = []
@@ -61,13 +63,14 @@ def handle_user_input(input_data):
 
 @socketio.on("get_progress")
 def handle_get_progress():
+    app.logger.info("Progress requested")
     emit("progress", progress)
 
 
 @socketio.on("get_scene")
 def handle_get_scene():
     global scenes_list, current_scene_index
-
+    app.logger.info("Scene requested")
     if current_scene_index < len(scenes_list):
         scene = scenes_list[current_scene_index]
         current_scene_index += 1
