@@ -81,17 +81,74 @@ def handle_get_scene():
         emit("scene", scene)
     else:
         emit("no_more_scenes")
+        
+
+# Create an empty list to store received chunks
+audio_chunks = []
+
+# Receive base64 encoded audio chunk
+@socketio.on("audioChunk")
+def process_audio_chunk(chunk):
+    app.logger.info("Received audio chunk")
+    audio_chunks.append(chunk)
 
 
+# When all audio chunks are received, reassemble the WAV file
+@socketio.on("audioComplete")
+def process_complete_audio():
+    app.logger.info("Received all audio chunks")
+
+    # Combine the received chunks into a single base64 string
+    complete_base64 = ''.join(audio_chunks)
+
+    # Decode the complete base64 string to obtain binary audio data
+    decoded_data = base64.b64decode(complete_base64)
+
+    # Create a BytesIO object to mimic a file
+    audio_file = BytesIO(decoded_data)
+    audio_file.name = "audio.wav"
+
+    # Save the audio file to disk for debugging (optional)
+    with open("audio.wav", "wb") as f:
+        f.write(decoded_data)
+    
+    # Further processing or sending the audio file to the server can be done here
+    # ...
+
+    app.logger.info("Processing complete audio")
+    
+@socketio.on("endAudio")
+def end_audio(data):
+    global audio_chunks
+    print("End of audio received. Processing...")
+    
+    # Here, concatenate all the audio chunks
+    complete_audio_data = base64.b64decode("".join(audio_chunks))
+    
+    send_request(complete_audio_data)
+    audio_chunks = []
+    # Create an empty list to store received chunks
+
+def send_request(audio_data):
+    url = URLS["whisper"] + "/whisper"
+    audio_file = BytesIO(audio_data)
+    audio_file.name = "audio.wav"
+
+    files = {"file": audio_file}
+    response = requests.post(url, files=files, auth=("bdt", "12xmnxqgkpzj9cjb"))
+
+    result = response.json()["results"][0]["transcript"]
+    socketio.emit("result", result)
+    print(f"Result: {result}")
+    
+    
+#Receive base64 encoded audio
 @socketio.on("audio")
-def process_audio(audioBlob):
+def process_audio(audioData):
     app.logger.info("Audio received")
-    # log the blob in hex
-    app.logger.info(bytes(audioBlob).hex())
     @copy_current_request_context
     def send_request(audio_data):
         url = URLS["whisper"] + "/whisper"
-
         # Wraps the audio data in a BytesIO object to mimic a file
         audio_file = BytesIO(audio_data)
         audio_file.name = "audio.wav"
@@ -112,52 +169,8 @@ def process_audio(audioBlob):
         # Emitting to the originating client
         socketio.emit("result", result, room=request.sid)
         app.logger.info("Emitted audio")
-
-    #t = threading.Thread(target=send_request, args=(audioBlob,))
-    #t.start()
-    #t.join()
-    
-    #save blob to disk
-    with open("audio2.wav", "wb") as f:
-       f.write(audioBlob)
-       
-    socketio.start_background_task(send_request, audioBlob)
-
-
-# Receive base64 encoded audio
-# @socketio.on("audio")
-# def process_audio(audioData):
-#     app.logger.info("Audio received")
-#     @copy_current_request_context
-#     def send_request(audio_data):
-#         url = URLS["whisper"] + "/whisper"
-#         # Wraps the audio data in a BytesIO object to mimic a file
-#         audio_file = BytesIO(audio_data)
-#         audio_file.name = "audio.wav"
-#         # save the audio file to disk for debugging
-#         with open("audio.wav", "wb") as f:
-#            f.write(audio_data)
-#            f.close()
-    
-#         # The 'files' parameter for 'requests.post' should be a dictionary or a list of tuples
-#         files = {"file": audio_file}
-#         app.logger.info(files)
-#         response = requests.post(url, files=files, auth=("bdt", "12xmnxqgkpzj9cjb"))
-#         app.logger.info(response)
-#         result = response.json()["results"][0]["transcript"]
-#         print(result)
-#         app.logger.info(result)
-        
-#         # Emitting to the originating client
-#         socketio.emit("result", result, room=request.sid)
-#         app.logger.info("Emitted audio")
-
-#     #t = threading.Thread(target=send_request, args=(audioBlob,))
-#     #t.start()
-#     #t.join()
-#     #app.logger.info(audioData)
-#     decoded_data = base64.b64decode(audioData)
-#     socketio.start_background_task(send_request, decoded_data)
+    decoded_data = base64.b64decode(audioData)
+    socketio.start_background_task(send_request, decoded_data)
 
 
 def process_input(input_data):

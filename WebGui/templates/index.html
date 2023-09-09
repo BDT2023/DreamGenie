@@ -6,7 +6,6 @@
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
   <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
-
 </head>
 <body>
   <h1>Welcome to Dream Genie!</h1>
@@ -16,7 +15,6 @@
   <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
   <audio id="audioPlayback" controls></audio>
   <div id="messageContainer"></div>
-
   <!-- Bootstrap Carousel -->
   <div id="imageCarousel" class="carousel slide">
     <div class="carousel-inner" id="imageContainer">
@@ -35,23 +33,15 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-
-
   <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
     integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
-
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
   <script type="text/javascript">
     var socket = io.connect('http://localhost:5000');
     var mediaRecorder;
     var chunks = [];
     var imageArray = [];
-
-
-
 
     function blobToHex(blob) {
     return new Promise((resolve, reject) => {
@@ -119,43 +109,60 @@ function playbackAudio() {
     // Get the audio element and set the source
     let audioElement = document.getElementById("audioPlayback");
     audioElement.src = audioURL;
-    //socket.emit('audio', blob);
 }
-
-
 function blobToBase64(blob, cb) {
     let reader = new FileReader();
-    reader.onload = function () {
+    reader.onload = function() {
       let dataUrl = reader.result;
       let base64 = dataUrl.split(',')[1];
       cb(base64);
     };
     reader.readAsDataURL(blob);
   }
+  
+/*
     // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
 function processAudioData() {
         // Create a new Blob object from the concatenated chunks and specify the MIME type.
         var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
         console.log("Number of chunks:", chunks.length);
         console.log("Blob size:", audioBlob.size);
-        // print blob in hex to console
-        let audioURL = window.URL.createObjectURL(audioBlob);
-        
-        // blobToHex(audioBlob).then(hexString => {
-        //     console.log(hexString);
-        // }).catch(err => {
-        //     console.log('Error:', err);
-        // });
-        // Emit the audio data to the server via a socket.
-        //socket.emit('audio', audioBlob);
-        console.log("Sending audio data to server:"+audioURL+" ");
-        //socket.emit('audio', audioURL);
-        blobToBase64(audioBlob, function(base64){  // audioBlob is the Blob object
+
+        blobToBase64(audioBlob, function(base64){
+        // audioBlob is the Blob object
         console.log("Im...Im... EMiiiiitiiing");
         console.log("Base64 String:", base64);
         socket.emit('audio', base64);  // send base64 to server
     });
     }
+    */
+
+    // Define the chunk size (you can adjust this value as needed)
+      const chunkSize = 1024*10; // For example, split the base64 string into 1KB chunks
+
+      function processAudioData() {
+        // Create a new Blob object from the concatenated chunks and specify the MIME type.
+        var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
+        console.log("Number of chunks:", chunks.length);
+        console.log("Blob size:", audioBlob.size);
+
+        blobToBase64(audioBlob, function (base64) {
+          // audioBlob is the Blob object
+          console.log("Im...Im... EMiiiiitiiing");
+
+          // Split the base64 string into chunks
+          const totalChunks = Math.ceil(base64.length / chunkSize);
+          for (let i = 0; i < totalChunks; i++) {
+            const start = i * chunkSize;
+            const end = (i + 1) * chunkSize;
+            const chunk = base64.substring(start, end);
+
+            console.log(`Sending chunk ${i + 1} of ${totalChunks}`);
+            socket.emit('audioChunk', chunk); // send chunk to server
+          }
+          socket.emit('endAudio',{}); // send complete event to server
+        });
+      }
 
 
     function sendInput() {
@@ -199,11 +206,9 @@ function processAudioData() {
         var firstChild = imageContainer.firstChild;
         var itemDiv = document.createElement('div');
         itemDiv.className = 'item';
-        
         if(firstChild === null) {
             itemDiv.className += ' active';
         }
-
         var imageElement = document.createElement('img');
         imageElement.src =  imagePath;
         imageElement.alt = "Image";
