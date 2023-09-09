@@ -21,11 +21,16 @@ session = requests.Session()
 session.auth = (USERNAME, PASSWORD)
 
 
-def save_image(img, folder, filename):
-    static_folder = os.path.join('static', folder)
-    if not os.path.exists(static_folder):
-        os.makedirs(static_folder)
-    img.save(os.path.join(static_folder, filename))
+def save_image(img, folder, filename,isWeb = False):
+    if isWeb:
+        static_folder = os.path.join('static', folder)
+        if not os.path.exists(static_folder):
+            os.makedirs(static_folder)
+        img.save(os.path.join(static_folder, filename))
+    else:
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        img.save(os.path.join(folder, filename))
 
 
 # Deprecated
@@ -120,7 +125,7 @@ def check_model_api():
     return response.json()["sd_model_checkpoint"]
 
 
-def send_to_sd(prompt):
+def send_to_sd(prompt,isWeb = False):
     global counter, URL
 
     if URL == "":
@@ -217,7 +222,7 @@ def send_to_sd(prompt):
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter += 1
             now = datetime.now().strftime("%H%M")
-            save_image(im, date_folder, f"image_{counter}_{now}.png")
+            save_image(im, date_folder, f"image_{counter}_{now}.png",isWeb)
 
             return f".\{date_folder}\image_{counter}_{now}.png"
         else:

@@ -218,7 +218,7 @@ def process_input(input_data):
         socketio.emit("progress", progress)
 
         # Generate image for scene using SD
-        image_path = send_to_sd(scene)
+        image_path = send_to_sd(scene,isWeb=True)
         socketio.start_background_task(poll_results_until_done)
 
         # with concurrent.futures.ThreadPoolExecutor() as executor:
