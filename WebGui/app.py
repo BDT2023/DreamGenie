@@ -11,6 +11,9 @@ from flask import copy_current_request_context
 import requests
 import io
 from io import BytesIO
+from socketio import Server
+from urllib.request import urlopen
+import base64
 import os
 import logging
 import datetime
@@ -35,8 +38,7 @@ IS_TEST = True
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 app.config["SECRET_KEY"] = "secret!"
-socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*", max_message_size=2000020 * 1024 * 1024)  # 20MB
-
+socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*", max_http_buffer_size = 20000 * 1024 * 1024)  # 20MB
 # Global variables
 progress = 0
 scenes_list = []
@@ -84,7 +86,8 @@ def handle_get_scene():
 @socketio.on("audio")
 def process_audio(audioBlob):
     app.logger.info("Audio received")
-    
+    # log the blob in hex
+    app.logger.info(bytes(audioBlob).hex())
     @copy_current_request_context
     def send_request(audio_data):
         url = URLS["whisper"] + "/whisper"
@@ -119,6 +122,43 @@ def process_audio(audioBlob):
        f.write(audioBlob)
        
     socketio.start_background_task(send_request, audioBlob)
+
+
+# Receive base64 encoded audio
+# @socketio.on("audio")
+# def process_audio(audioData):
+#     app.logger.info("Audio received")
+#     @copy_current_request_context
+#     def send_request(audio_data):
+#         url = URLS["whisper"] + "/whisper"
+#         # Wraps the audio data in a BytesIO object to mimic a file
+#         audio_file = BytesIO(audio_data)
+#         audio_file.name = "audio.wav"
+#         # save the audio file to disk for debugging
+#         with open("audio.wav", "wb") as f:
+#            f.write(audio_data)
+#            f.close()
+    
+#         # The 'files' parameter for 'requests.post' should be a dictionary or a list of tuples
+#         files = {"file": audio_file}
+#         app.logger.info(files)
+#         response = requests.post(url, files=files, auth=("bdt", "12xmnxqgkpzj9cjb"))
+#         app.logger.info(response)
+#         result = response.json()["results"][0]["transcript"]
+#         print(result)
+#         app.logger.info(result)
+        
+#         # Emitting to the originating client
+#         socketio.emit("result", result, room=request.sid)
+#         app.logger.info("Emitted audio")
+
+#     #t = threading.Thread(target=send_request, args=(audioBlob,))
+#     #t.start()
+#     #t.join()
+#     #app.logger.info(audioData)
+#     decoded_data = base64.b64decode(audioData)
+#     socketio.start_background_task(send_request, decoded_data)
+
 
 def process_input(input_data):
     global progress, scenes_list
@@ -157,4 +197,5 @@ def process_input(input_data):
         socketio.emit("image", relative_image_path)
 
 if __name__ == "__main__":
+    print(f"Version 2.0.0")
     socketio.run(app, debug=True)

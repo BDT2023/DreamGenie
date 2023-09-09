@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Web App</title>
+  <title>Dream Genie</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
   <!-- Bootstrap CSS -->
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+
 </head>
 <body>
   <h1>Welcome to Dream Genie!</h1>
@@ -48,6 +50,26 @@
     var chunks = [];
     var imageArray = [];
 
+
+
+
+    function blobToHex(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = function(evt) {
+            if (evt.target.readyState === FileReader.DONE) {
+                const arrayBuffer = evt.target.result;
+                const byteArray = new Uint8Array(arrayBuffer);
+                const hexArray = Array.from(byteArray, byte => {
+                    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+                });
+                resolve(hexArray.join(' '));
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+    });
+}
     function startRecording() {
       // Disable the record button until we get a result or error
         var button = document.getElementById("recordButton");
@@ -77,6 +99,7 @@ function stopRecording() {
             // stop all tracks on the stream
             stream.getTracks().forEach(track => track.stop());
             playbackAudio();
+            chunks = [];
         }
         // Enable the record button again
         var button = document.getElementById("recordButton");
@@ -88,7 +111,6 @@ function stopRecording() {
 function playbackAudio() {
     // Create a Blob from the chunks
     var blob = new Blob(chunks, {'type' : 'audio/wav; codecs=opus'});
-    var chunks = [];
     console.log("Number of chunks when playing:", chunks.length);
     console.log("Blob size when playing:", blob.size);
     // Create an audio URL from the Blob
@@ -101,15 +123,38 @@ function playbackAudio() {
 }
 
 
+function blobToBase64(blob, cb) {
+    let reader = new FileReader();
+    reader.onload = function () {
+      let dataUrl = reader.result;
+      let base64 = dataUrl.split(',')[1];
+      cb(base64);
+    };
+    reader.readAsDataURL(blob);
+  }
     // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
-    
 function processAudioData() {
         // Create a new Blob object from the concatenated chunks and specify the MIME type.
         var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
         console.log("Number of chunks:", chunks.length);
         console.log("Blob size:", audioBlob.size);
+        // print blob in hex to console
+        let audioURL = window.URL.createObjectURL(audioBlob);
+        
+        // blobToHex(audioBlob).then(hexString => {
+        //     console.log(hexString);
+        // }).catch(err => {
+        //     console.log('Error:', err);
+        // });
         // Emit the audio data to the server via a socket.
-        socket.emit('audio', audioBlob);
+        //socket.emit('audio', audioBlob);
+        console.log("Sending audio data to server:"+audioURL+" ");
+        //socket.emit('audio', audioURL);
+        blobToBase64(audioBlob, function(base64){  // audioBlob is the Blob object
+        console.log("Im...Im... EMiiiiitiiing");
+        console.log("Base64 String:", base64);
+        socket.emit('audio', base64);  // send base64 to server
+    });
     }
 
 
