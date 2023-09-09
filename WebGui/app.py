@@ -9,6 +9,7 @@ from flask_socketio import SocketIO, emit
 from flask import request
 from flask import copy_current_request_context
 import requests
+import string
 import io
 from io import BytesIO
 from socketio import Server
@@ -17,6 +18,7 @@ import base64
 import os
 import logging
 import datetime
+import concurrent
 
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
@@ -27,11 +29,11 @@ os.chdir(
 )  # Change directory to current file location  ')")
 cwd = os.getcwd()
 print(cwd)
-import string
 
 from gpt_call import call_openai
 from send_prompt import send_to_sd
 from utils import get_service_urls
+from send_prompt import poll_results
 
 IS_TEST = True
 
@@ -40,16 +42,34 @@ app.logger.setLevel(logging.INFO)
 app.config["SECRET_KEY"] = "secret!"
 socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*", max_http_buffer_size = 20000 * 1024 * 1024)  # 20MB
 # Global variables
-progress = 0
+progress1 = 0
 scenes_list = []
 current_scene_index = 0
 URLS = get_service_urls()
+
+
+def poll_results_until_done():
+    time_started = time.time()
+    TIMEOUT = 50  # seconds
+    while True:
+        progress = poll_results()
+        if progress <= 0 or progress >= 99 or time.time() > time_started + TIMEOUT:
+            break
+        #print(f"Progress: {progress}%")
+        socketio.emit("progress", progress)
+        time.sleep(0.5)
+        
+        
 
 
 @app.route("/")
 def index():
     print(f"Current working directory in main route: {os.getcwd()}")
     return render_template("index.html")
+
+@app.route("/gallery")
+def gallery():
+    return render_template("gallery.html")
 
 
 @socketio.on("user_input")
@@ -174,17 +194,18 @@ def process_audio(audioData):
 
 
 def process_input(input_data):
-    global progress, scenes_list
+    global progress1, scenes_list
 
     # Update progress
-    progress = 10
+    progress1 = 10
     socketio.emit("progress", progress)
 
+    # TODO: change the placeholder!
     # Call OpenAI GPT-3 to separate scenes
     #scenes_list = call_openai(input_data, test=IS_TEST)
     scenes_list = [input_data]
     # Update progress
-    progress = 100
+    progress1 = 100
     socketio.emit("progress", progress)
 
     # Get today's date
@@ -193,22 +214,26 @@ def process_input(input_data):
     # Generate images for scenes
     for scene in scenes_list:
         # Update progress for each scene
-        progress = 0
+        progress1 = 0
         socketio.emit("progress", progress)
 
-        # Generate image for scene
+        # Generate image for scene using SD
         image_path = send_to_sd(scene)
+        socketio.start_background_task(poll_results_until_done)
+
+        # with concurrent.futures.ThreadPoolExecutor() as executor:
+        #     executor.submit(poll_results_until_done)
 
         # Update progress
-        progress = 100
+        progress1 = 100
         socketio.emit("progress", progress)
 
         # Display the image to the user
         # Extract only the part of the path from the 'static' directory onwards
         relative_image_path = os.path.join('static', today.isoformat(), os.path.basename(image_path))
         app.logger.info(f"Emitted: Image path: {relative_image_path}")
-        socketio.emit("image", relative_image_path)
+        socketio.emit("image_and_scene", {'image_path': relative_image_path, 'scene': scene})
 
 if __name__ == "__main__":
-    print(f"Version 2.0.0")
+    print(f"Version 2.0.13")
     socketio.run(app, debug=True)

@@ -15,8 +15,11 @@
   <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
   <audio id="audioPlayback" controls></audio>
   <div id="messageContainer"></div>
+  <span id="spinner" class="loader" style="visibility: hidden;"></span>
   <!-- Bootstrap Carousel -->
   <div id="imageCarousel" class="carousel slide">
+    <ol class="carousel-indicators" id="imageIndicators">
+    </ol>
     <div class="carousel-inner" id="imageContainer">
       <!-- Placeholder image -->
       <div class="item active">
@@ -38,10 +41,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript">
+
+
+
+
     var socket = io.connect('http://localhost:5000');
     var mediaRecorder;
     var chunks = [];
     var imageArray = [];
+    var state =
 
     function blobToHex(blob) {
     return new Promise((resolve, reject) => {
@@ -120,25 +128,8 @@ function blobToBase64(blob, cb) {
     reader.readAsDataURL(blob);
   }
   
-/*
-    // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
-function processAudioData() {
-        // Create a new Blob object from the concatenated chunks and specify the MIME type.
-        var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
-        console.log("Number of chunks:", chunks.length);
-        console.log("Blob size:", audioBlob.size);
-
-        blobToBase64(audioBlob, function(base64){
-        // audioBlob is the Blob object
-        console.log("Im...Im... EMiiiiitiiing");
-        console.log("Base64 String:", base64);
-        socket.emit('audio', base64);  // send base64 to server
-    });
-    }
-    */
-
     // Define the chunk size (you can adjust this value as needed)
-      const chunkSize = 1024*10; // For example, split the base64 string into 1KB chunks
+      const chunkSize = 1024*10; // For example, split the base64 string into 10 x 1KB chunks
 
       function processAudioData() {
         // Create a new Blob object from the concatenated chunks and specify the MIME type.
@@ -166,6 +157,9 @@ function processAudioData() {
 
 
     function sendInput() {
+      state = 'loading';
+      var spinner = document.getElementById('spinner');
+      spinner.style.visibility = 'visible';
       var input_data = document.getElementById('inputBox').value;
       console.log(input_data);
       socket.emit('user_input', input_data);
@@ -175,6 +169,10 @@ function processAudioData() {
       console.log(message_data);
     });
 
+    socket.on('progress', function (progress) {
+            console.log(progress);
+          });
+
     socket.on('output', function(output_data) {
       console.log(output_data);
       var messageDiv = document.createElement('div');
@@ -183,13 +181,18 @@ function processAudioData() {
       messageContainer.appendChild(messageDiv);
     });
 
-    socket.on('image', function(image_path) {
-      console.log("Received image path: ", image_path); // <-- Add this
-      alert(image_path);
-      imageArray.push(image_path);
-      addImageToCarousel();
+    socket.on('image_and_scene', function(data) {
+      // TODO: change to navigating to gallery page
+      window.location.href = '/gallery';
+      const imagePath = data.image_path;
+      const scene = data.scene;
+      console.log("Received image path: ", imagePath); // <-- Add this
+      alert(imagePath);
+      imageArray.push(imagePath);
+      addImageToCarousel(scene);
     });
 
+    // TODO: rename result to audio_result
     socket.on('result', function(audio_result) {
         alert(audio_result);
         console.log(audio_result);
@@ -197,7 +200,7 @@ function processAudioData() {
         textBox.value = audio_result;
       });
 
-    function addImageToCarousel() {
+      function addImageToCarousel(scene) {
       console.log("Adding image to carousel, array: ", imageArray); // <-- Add this
       if (imageArray.length > 0) {
         var imagePath = imageArray.shift();
@@ -214,13 +217,25 @@ function processAudioData() {
         imageElement.alt = "Image";
         imageElement.width = 300;
         imageElement.height = 300;
+    // Create the caption element
+        var captionElement = document.createElement('div');
+        captionElement.className = 'carousel-caption d-none d-md-block';
+        var captionText = document.createElement('p');
+        captionText.innerText = scene;
+        captionElement.appendChild(captionText);
+
+        // Append image and caption to carousel item
         itemDiv.appendChild(imageElement);
+        itemDiv.appendChild(captionElement);
+
+        // Append new carousel item to carousel
         imageContainer.appendChild(itemDiv);
         $(document).ready(function() {
           $('#imageCarousel').carousel();
         });
       }
     }
+
   </script>
 </body>
 </html>
