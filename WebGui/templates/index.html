@@ -1,41 +1,86 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My Web App</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-  </head>
-  <body>
-    <h1>Welcome to my web app!</h1>
-    <input type="text" id="inputBox">
-    <button onclick="sendInput()">Send</button>
-    <button id="recordButton" onclick="startRecording()">Start Recording</button>
-    <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
-    <audio id="audioPlayback" controls></audio>
+<head>
+  <title>Dream Genie</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Bootstrap CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+</head>
+<body>
+  <h1>Welcome to Dream Genie!</h1>
+  <input type="text" id="inputBox">
+  <button onclick="sendInput()">Send</button>
+  <button id="recordButton" onclick="startRecording()">Start Recording</button>
+  <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
+  <audio id="audioPlayback" controls></audio>
+  <div id="messageContainer"></div>
+  <span id="spinner" class="loader" style="visibility: hidden;"></span>
+  <!-- Bootstrap Carousel -->
+  <div id="imageCarousel" class="carousel slide">
+    <ol class="carousel-indicators" id="imageIndicators">
+    </ol>
+    <div class="carousel-inner" id="imageContainer">
+      <!-- Placeholder image -->
+      <div class="item active">
+        <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" width="300" height="300">
+      </div>
+      <!-- Other Images will be appended here -->
+    </div>
+    <a class="left carousel-control" href="#imageCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#imageCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+    integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
 
 
-    <div id="messageContainer"></div>
-    <img id="sceneImage" src="" alt="Scene image"> 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.0/socket.io.min.js"></script>
-    <script type="text/javascript">
-      //var socket = io.connect();
-      var socket = io.connect('http://localhost:5000');
-      var mediaRecorder;
-      var chunks = [];
 
-      function sendInput() {
-        var input_data = document.getElementById('inputBox').value;
-        socket.emit('user_input', input_data);
-      }
 
-    let stream;  // declare stream variable outside of the function
+    var socket = io.connect('http://localhost:5000');
+    var mediaRecorder;
+    var chunks = [];
+    var imageArray = [];
+    var state =
 
+    function blobToHex(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = function(evt) {
+            if (evt.target.readyState === FileReader.DONE) {
+                const arrayBuffer = evt.target.result;
+                const byteArray = new Uint8Array(arrayBuffer);
+                const hexArray = Array.from(byteArray, byte => {
+                    return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+                });
+                resolve(hexArray.join(' '));
+            }
+        };
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(blob);
+    });
+}
     function startRecording() {
+      // Disable the record button until we get a result or error
+        var button = document.getElementById("recordButton");
+        button.disabled = true;
+        button.style.color = "red";
+
         navigator.mediaDevices.getUserMedia({ audio: true })
         .then(streamData => {
             stream = streamData;  // assign the stream data to the variable
             mediaRecorder = new MediaRecorder(streamData);
             mediaRecorder.ondataavailable = e => {
                 chunks.push(e.data);
+                console.log(chunks.length);
             }
             mediaRecorder.start();
         })
@@ -52,15 +97,20 @@ function stopRecording() {
             // stop all tracks on the stream
             stream.getTracks().forEach(track => track.stop());
             playbackAudio();
+            chunks = [];
         }
+        // Enable the record button again
+        var button = document.getElementById("recordButton");
+        button.disabled = false;
+        button.style.color = "black";
     }
 }
 
 function playbackAudio() {
     // Create a Blob from the chunks
-    let blob = new Blob(chunks, {'type' : 'audio/wav; codecs=opus'});
-    chunks = [];
-
+    var blob = new Blob(chunks, {'type' : 'audio/wav; codecs=opus'});
+    console.log("Number of chunks when playing:", chunks.length);
+    console.log("Blob size when playing:", blob.size);
     // Create an audio URL from the Blob
     let audioURL = window.URL.createObjectURL(blob);
 
@@ -68,36 +118,124 @@ function playbackAudio() {
     let audioElement = document.getElementById("audioPlayback");
     audioElement.src = audioURL;
 }
+function blobToBase64(blob, cb) {
+    let reader = new FileReader();
+    reader.onload = function() {
+      let dataUrl = reader.result;
+      let base64 = dataUrl.split(',')[1];
+      cb(base64);
+    };
+    reader.readAsDataURL(blob);
+  }
+  
+    // Define the chunk size (you can adjust this value as needed)
+      const chunkSize = 1024*10; // For example, split the base64 string into 10 x 1KB chunks
 
-
-      // This function takes in audio data that has been recorded in chunks, concatenates it into a Blob object, and sends it to the server via a socket.
       function processAudioData() {
-          // Create a new Blob object from the concatenated chunks and specify the MIME type.
-          var audioBlob = new Blob(chunks, { 'type' : 'audio/wav; codecs=opus' });
+        // Create a new Blob object from the concatenated chunks and specify the MIME type.
+        var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
+        console.log("Number of chunks:", chunks.length);
+        console.log("Blob size:", audioBlob.size);
 
-          // Emit the audio data to the server via a socket.
-          socket.emit('audio', audioBlob);
+        blobToBase64(audioBlob, function (base64) {
+          // audioBlob is the Blob object
+          console.log("Im...Im... EMiiiiitiiing");
+
+          // Split the base64 string into chunks
+          const totalChunks = Math.ceil(base64.length / chunkSize);
+          for (let i = 0; i < totalChunks; i++) {
+            const start = i * chunkSize;
+            const end = (i + 1) * chunkSize;
+            const chunk = base64.substring(start, end);
+
+            console.log(`Sending chunk ${i + 1} of ${totalChunks}`);
+            socket.emit('audioChunk', chunk); // send chunk to server
+          }
+          socket.emit('endAudio',{}); // send complete event to server
+        });
       }
 
 
-      socket.on('output', function(output_data) {
-        console.log(output_data);
-        var messageDiv = document.createElement('div');
-        messageDiv.innerHTML = output_data;
+    function sendInput() {
+      state = 'loading';
+      var spinner = document.getElementById('spinner');
+      spinner.style.visibility = 'visible';
+      var input_data = document.getElementById('inputBox').value;
+      console.log(input_data);
+      socket.emit('user_input', input_data);
+    }
 
-        var messageContainer = document.getElementById('messageContainer');
-        messageContainer.appendChild(messageDiv);
-      });
+    socket.on('message', function(message_data) {
+      console.log(message_data);
+    });
 
-      socket.on('image', function(image_path) {  
-        var imageElement = document.getElementById('sceneImage');
-        imageElement.src = image_path;
-      });
+    socket.on('progress', function (progress) {
+            console.log(progress);
+          });
 
-      socket.on('audio_result', function(audio_result) {
+    socket.on('output', function(output_data) {
+      console.log(output_data);
+      var messageDiv = document.createElement('div');
+      messageDiv.innerHTML = output_data;
+      var messageContainer = document.getElementById('messageContainer');
+      messageContainer.appendChild(messageDiv);
+    });
+
+    socket.on('image_and_scene', function(data) {
+      // TODO: change to navigating to gallery page
+      window.location.href = '/gallery';
+      const imagePath = data.image_path;
+      const scene = data.scene;
+      console.log("Received image path: ", imagePath); // <-- Add this
+      alert(imagePath);
+      imageArray.push(imagePath);
+      addImageToCarousel(scene);
+    });
+
+    // TODO: rename result to audio_result
+    socket.on('result', function(audio_result) {
+        alert(audio_result);
         console.log(audio_result);
-        alert("1");
+        var textBox = document.getElementById('inputBox');
+        textBox.value = audio_result;
       });
-    </script>
-  </body>
+
+      function addImageToCarousel(scene) {
+      console.log("Adding image to carousel, array: ", imageArray); // <-- Add this
+      if (imageArray.length > 0) {
+        var imagePath = imageArray.shift();
+        var imageContainer = document.getElementById('imageContainer');
+        console.log("Image Container: ", imageContainer); // <-- Add this
+        var firstChild = imageContainer.firstChild;
+        var itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+        if(firstChild === null) {
+            itemDiv.className += ' active';
+        }
+        var imageElement = document.createElement('img');
+        imageElement.src =  imagePath;
+        imageElement.alt = "Image";
+        imageElement.width = 300;
+        imageElement.height = 300;
+    // Create the caption element
+        var captionElement = document.createElement('div');
+        captionElement.className = 'carousel-caption d-none d-md-block';
+        var captionText = document.createElement('p');
+        captionText.innerText = scene;
+        captionElement.appendChild(captionText);
+
+        // Append image and caption to carousel item
+        itemDiv.appendChild(imageElement);
+        itemDiv.appendChild(captionElement);
+
+        // Append new carousel item to carousel
+        imageContainer.appendChild(itemDiv);
+        $(document).ready(function() {
+          $('#imageCarousel').carousel();
+        });
+      }
+    }
+
+  </script>
+</body>
 </html>

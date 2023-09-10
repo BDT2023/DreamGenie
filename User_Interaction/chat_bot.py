@@ -22,6 +22,7 @@ os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()['whisper']
 
 
+
 '''
 A hard coded chat bot that will guide the user through the process of creating an image
 '''
