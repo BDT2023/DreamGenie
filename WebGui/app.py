@@ -1,4 +1,6 @@
+# IMPORTANT! this should be first, otherwise the code breaks
 import eventlet
+
 eventlet.monkey_patch()
 
 import sys
@@ -228,8 +230,8 @@ def process_input(input_data):
 
     # TODO: change the placeholder!
     # Call OpenAI GPT-3 to separate scenes
-    # scenes_list = call_openai(input_data, test=IS_TEST)
-    scenes_list = [input_data]
+    scenes_list = call_openai(input_data, test=IS_TEST)
+    # scenes_list = [input_data]
     # Update progress
     # progress1 = 100
     # socketio.emit("progress", progress)
