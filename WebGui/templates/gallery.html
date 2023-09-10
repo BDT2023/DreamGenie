@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dream Genie</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+</head>
+
+<body>
+    <h1>Gallery Page</h1>
+    <p>Images will be displayed here</p>
+    <!-- Bootstrap Carousel -->
+    <span id="spinner" class="loader" style="visibility: visible;"></span>
+    <br>
+    <div id="imageCarousel" class="carousel slide" style="visibility: hidden;">
+
+        <ol class="carousel-indicators" id="imageIndicators">
+        </ol>
+        <div class="carousel-inner" id="imageContainer">
+            <!-- Placeholder image -->
+
+            <div class="item active" id="placeholder">
+                <img src="{{ url_for('static', filename='placeholder.png') }}" alt="Placeholder" width="300"
+                    height="300">
+            </div>
+
+            <!-- Other Images will be appended here -->
+        </div>
+        <a class="left carousel-control" href="#imageCarousel" data-slide="prev">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#imageCarousel" data-slide="next">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+        integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+    <script type="text/javascript">
+        var imageArray = [];
+        var socket = io.connect('http://localhost:5000');
+
+        function addImageToCarousel(scene) {
+            console.log("Adding image to carousel, array: ", imageArray); // <-- Add this
+            if (imageArray.length > 0) {
+                var imagePath = imageArray.shift();
+                var imageContainer = document.getElementById('imageContainer');
+                console.log("Image Container: ", imageContainer); // <-- Add this
+                var firstChild = imageContainer.firstChild;
+                var itemDiv = document.createElement('div');
+                itemDiv.className = 'item';
+                if (firstChild === null) {
+                    itemDiv.className += ' active';
+                }
+                var imageElement = document.createElement('img');
+                imageElement.src = imagePath;
+                imageElement.alt = "Image";
+                imageElement.width = 300;
+                imageElement.height = 300;
+                // Create the caption element
+                var captionElement = document.createElement('div');
+                captionElement.className = 'carousel-caption d-none d-md-block';
+                var captionText = document.createElement('p');
+                captionText.innerText = scene;
+                captionElement.appendChild(captionText);
+
+                // Append image and caption to carousel item
+                itemDiv.appendChild(imageElement);
+                itemDiv.appendChild(captionElement);
+
+                // Append new carousel item to carousel
+                imageContainer.appendChild(itemDiv);
+                $(document).ready(function () {
+                    $('#imageCarousel').carousel();
+                });
+            }
+
+        }
+        socket.on('image_and_scene', function (data) {
+            var spinner = document.getElementById('spinner');
+            spinner.style.visibility = 'hidden';
+            var imageCarousel = document.getElementById('imageCarousel');
+            imageCarousel.style.visibility = 'visible';
+
+            const imagePath = data.image_path;
+            const scene = data.scene;
+            console.log("Received image path: ", imagePath); // <-- Add this
+            //alert(imagePath);
+            imageArray.push(imagePath);
+            addImageToCarousel(scene);
+            
+        });
+
+    </script>
+</body>
+
+</html>
