@@ -14,7 +14,7 @@
 
 <body>
     <h1>Gallery Page</h1>
-    <p>Images will be displayed here</p>
+    <p>Your Images will be displayed here</p>
     <!-- Bootstrap Carousel -->
     <span id="spinner" class="loader" style="visibility: visible;"></span>
     <br>
@@ -53,27 +53,38 @@
         var socket = io.connect('http://localhost:5000');
 
         function addImageToCarousel(scene) {
-            console.log("Adding image to carousel, array: ", imageArray); // <-- Add this
+            console.log("Adding image to carousel, array: ", imageArray);
             if (imageArray.length > 0) {
                 var imagePath = imageArray.shift();
                 var imageContainer = document.getElementById('imageContainer');
-                console.log("Image Container: ", imageContainer); // <-- Add this
-                var firstChild = imageContainer.firstChild;
+                console.log("Image Container: ", imageContainer);
+                var firstChild = imageContainer.firstElementChild;
                 var itemDiv = document.createElement('div');
                 itemDiv.className = 'item';
                 if (firstChild === null) {
                     itemDiv.className += ' active';
                 }
+                else if (firstChild.id === 'placeholder') {
+                    imageContainer.removeChild(firstChild);
+                    itemDiv.className += ' active';
+                }
                 var imageElement = document.createElement('img');
                 imageElement.src = imagePath;
                 imageElement.alt = "Image";
-                imageElement.width = 300;
-                imageElement.height = 300;
+                imageElement.width = 768;
+                imageElement.height = 512;
                 // Create the caption element
                 var captionElement = document.createElement('div');
                 captionElement.className = 'carousel-caption d-none d-md-block';
+                // Apply CSS styles to the caption for a transparent dark background
+                captionElement.style.backgroundColor = 'rgba(0, 0, 0, 0.5)'; // Transparent black
+                captionElement.style.color = '#fff'; // White text
+                captionElement.style.padding = '10px'; // Padding for better appearance
+                // center the text in the box
+                captionElement.style.alignContent = 'center';
                 var captionText = document.createElement('p');
                 captionText.innerText = scene;
+
                 captionElement.appendChild(captionText);
 
                 // Append image and caption to carousel item
@@ -93,14 +104,12 @@
             spinner.style.visibility = 'hidden';
             var imageCarousel = document.getElementById('imageCarousel');
             imageCarousel.style.visibility = 'visible';
-
             const imagePath = data.image_path;
             const scene = data.scene;
             console.log("Received image path: ", imagePath); // <-- Add this
             //alert(imagePath);
             imageArray.push(imagePath);
             addImageToCarousel(scene);
-            
         });
 
     </script>
