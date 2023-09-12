@@ -9,7 +9,7 @@ import time
 import tkinter as tk
 import wave
 from tkinter import filedialog, messagebox
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from flask_socketio import SocketIO, emit
 from flask import request
 from flask import copy_current_request_context
@@ -23,9 +23,10 @@ import base64
 import os
 import logging
 import datetime
-
-
 import concurrent
+import flask
+import uuid
+from flask_socketio import join_room
 
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
@@ -46,9 +47,9 @@ IS_TEST = True
 
 app = Flask(__name__)
 
-app.logger.setLevel(logging.INFO)
+app.config["SECRET_KEY"] = "secret!"  # TODO: change this to something more secure
 
-app.config["SECRET_KEY"] = "secret!"
+app.logger.setLevel(logging.INFO)
 
 
 socketio = SocketIO(
@@ -56,7 +57,7 @@ socketio = SocketIO(
     async_mode="eventlet",
     cors_allowed_origins="*",
     max_http_buffer_size=20000 * 1024 * 1024,
-    manage_session=False,
+    manage_session=True,
 )  # 20MB
 
 # Global variables
@@ -81,6 +82,8 @@ def poll_results_until_done():
 @app.route("/")
 def index():
     print(f"Current working directory in main route: {os.getcwd()}")
+    if "user_id" not in session:
+        session["user_id"] = str(uuid.uuid4())
     return render_template("index.html")
 
 
@@ -88,6 +91,14 @@ def index():
 def gallery():
     app.logger.info("Gallery requested")
     return render_template("gallery.html")
+
+
+@socketio.on("connect")
+def handle_connect():
+    user_id = session.get("user_id")
+    if user_id:
+        join_room(user_id)
+        app.logger.info(f"User {user_id} has joined room {user_id}")
 
 
 @socketio.on("user_input")
@@ -103,7 +114,10 @@ def handle_user_input(input_data):
 
     # Start processing the input
     # task = socketio.start_background_task(process_input, input_data)
-    eventlet.spawn_n(process_input, input_data)
+    # TODO: check why is this spawn_n
+    user_id = session.get("user_id")
+    eventlet.spawn_n(process_input, input_data, user_id)
+    # eventlet.spawn_n(process_input, input_data)
     app.logger.info("Started background task")
 
 
@@ -220,8 +234,9 @@ def process_audio(audioData):
     socketio.start_background_task(send_request, decoded_data)
 
 
-def process_input(input_data):
+def process_input(input_data, user_id):
     global progress1, scenes_list
+    print(f"User ID from session: {user_id}")
 
     # socketio.emit("progress", progress)
     # Update progress
@@ -258,16 +273,16 @@ def process_input(input_data):
 
         # Update progress
         progress1 = 100
-
         # Display the image to the user
         # Extract only the part of the path from the 'static' directory onwards
         relative_image_path = os.path.join(
-            "static", today.isoformat(), os.path.basename(image_path)
+            "static", today.isoformat(), user_id + os.path.basename(image_path)
         )
         app.logger.info(f"Emitted: Image path: {relative_image_path}")
         socketio.emit(
             "image_and_scene",
             {"image_path": relative_image_path, "scene": f"Scene {i+1}: \n" + scene},
+            room=user_id,
         )
 
 
