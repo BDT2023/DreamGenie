@@ -27,6 +27,9 @@ import concurrent
 import flask
 import uuid
 from flask_socketio import join_room
+import shutil
+from datetime import timedelta
+from flask_cors import CORS
 
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
@@ -46,10 +49,15 @@ from send_prompt import poll_results
 IS_TEST = True
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 app.config["SECRET_KEY"] = "secret!"  # TODO: change this to something more secure
-
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(
+    days=31
+)  # or whatever time frame you'd like
+app.save_session = True
 app.logger.setLevel(logging.INFO)
+app.app_context().push()
 
 
 socketio = SocketIO(
@@ -57,7 +65,7 @@ socketio = SocketIO(
     async_mode="eventlet",
     cors_allowed_origins="*",
     max_http_buffer_size=20000 * 1024 * 1024,
-    manage_session=True,
+    manage_session=False,
 )  # 20MB
 
 # Global variables
@@ -81,9 +89,11 @@ def poll_results_until_done():
 
 @app.route("/")
 def index():
+    session.permanent = True  # make the session last indefinitely until it expires
     print(f"Current working directory in main route: {os.getcwd()}")
     if "user_id" not in session:
         session["user_id"] = str(uuid.uuid4())
+    session.modified = True
     return render_template("index.html")
 
 
@@ -96,13 +106,19 @@ def gallery():
 @socketio.on("connect")
 def handle_connect():
     user_id = session.get("user_id")
+    # global unique_id
+    # unique_id = request.sid
+
+    # user_id = unique_id
     if user_id:
         join_room(user_id)
-        app.logger.info(f"User {user_id} has joined room {user_id}")
+        app.logger.info("connected")
+        print(f"User {user_id} has joined room {user_id}")
 
 
 @socketio.on("user_input")
 def handle_user_input(input_data):
+    print("Debug: session['user_id'] in handle_user_input:", session.get("user_id"))
     global progress, scenes_list, current_scene_index
     app.logger.info("User input received")
     socketio.emit("received", {})
@@ -116,8 +132,8 @@ def handle_user_input(input_data):
     # task = socketio.start_background_task(process_input, input_data)
     # TODO: check why is this spawn_n
     user_id = session.get("user_id")
-    eventlet.spawn_n(process_input, input_data, user_id)
-    # eventlet.spawn_n(process_input, input_data)
+    app.logger.info(f"User id: {user_id}")
+    socketio.start_background_task(process_input, input_data, user_id)
     app.logger.info("Started background task")
 
 
@@ -234,9 +250,8 @@ def process_audio(audioData):
     socketio.start_background_task(send_request, decoded_data)
 
 
-def process_input(input_data, user_id):
+def process_input(input_data, unique_id):
     global progress1, scenes_list
-    print(f"User ID from session: {user_id}")
 
     # socketio.emit("progress", progress)
     # Update progress
@@ -253,9 +268,14 @@ def process_input(input_data, user_id):
 
     # Get today's date
     today = datetime.date.today()
+    # of the form: static/2021-03-31/unique_id
+    unique_path = os.path.join(os.getcwd(), "static", today.isoformat(), unique_id)
+    logging.info(f"Unique path: {unique_path}")
 
+    # create dir for unique id
+    # os.mkdir(unique_path)
+    os.makedirs(unique_path, exist_ok=True)
     # Generate images for scenes
-
     for i, scene in enumerate(scenes_list):
         socketio.sleep(0)
         # Update progress for each scene
@@ -263,9 +283,9 @@ def process_input(input_data, user_id):
         # socketio.emit("progress", progress)
 
         # Generate image for scene using SD
-
-        image_path = send_to_sd(scene, isWeb=True)
         app.logger.info(f"send_to_sd called")
+        image_path = send_to_sd(scene, isWeb=True)
+
         # socketio.start_background_task(poll_results_until_done)
 
         # with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -273,16 +293,24 @@ def process_input(input_data, user_id):
 
         # Update progress
         progress1 = 100
+
         # Display the image to the user
         # Extract only the part of the path from the 'static' directory onwards
         relative_image_path = os.path.join(
-            "static", today.isoformat(), user_id + os.path.basename(image_path)
+            "static", today.isoformat(), os.path.basename(image_path)
         )
-        app.logger.info(f"Emitted: Image path: {relative_image_path}")
+
+        new_image_path = os.path.join(unique_path, os.path.basename(image_path))
+        shutil.move(relative_image_path, new_image_path)
+        relative_image_path = new_image_path
+
+        app.logger.info(
+            f"Emitted: Image path: {relative_image_path} to room {unique_id}"
+        )
         socketio.emit(
             "image_and_scene",
             {"image_path": relative_image_path, "scene": f"Scene {i+1}: \n" + scene},
-            room=user_id,
+            room=unique_id,
         )
 
 
