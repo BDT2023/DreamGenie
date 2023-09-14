@@ -45,6 +45,7 @@ REDIS_PORT = 6379
 IS_TEST = False # set to True to use dummy test data - previous scene separations, False to use real call to OpenAI
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
+app.app_context().push()
 
 app.config["SESSION_TYPE"] = "redis"
 host = os.getenv("REDIS_HOST", "localhost")
@@ -212,7 +213,13 @@ def process_input(dream_input, user_id):
 
     # Get today's date
     today = datetime.date.today()
+    # of the form: static/2021-03-31/unique_id
+    unique_path = os.path.join(os.getcwd(), "static", today.isoformat(), unique_id)
+    logging.info(f"Unique path: {unique_path}")
 
+    # create dir for unique id
+    # os.mkdir(unique_path)
+    os.makedirs(unique_path, exist_ok=True)
     # Generate images for scenes
     for i, scene in enumerate(scenes_list):
         # Update progress for each scene
