@@ -29,33 +29,23 @@
     const source = new EventSource("{{ url_for('sse.stream') }}?channel=" + encodeURIComponent(user_id));
     console.log("My source is:" + source.url);
     /*
-    TODO: add event listeners for the following events:
-    'image_and_scene'
     'audio_result'
     */
+
+    source.addEventListener('audio_result', function (e) {
+      const data = JSON.parse(event.data);
+      console.log("Received message: ", data['audio_result']);
+      var audio_result = data['audio_result'];
+      alert(audio_result);
+      console.log(audio_result);
+      var textBox = document.getElementById('inputBox');
+      textBox.value = audio_result;
+    }, false);
 
     var mediaRecorder;
     var chunks = [];
     var imageArray = [];
     var state = 'idle';
-
-    function blobToHex(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = function (evt) {
-          if (evt.target.readyState === FileReader.DONE) {
-            const arrayBuffer = evt.target.result;
-            const byteArray = new Uint8Array(arrayBuffer);
-            const hexArray = Array.from(byteArray, byte => {
-              return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-            });
-            resolve(hexArray.join(' '));
-          }
-        };
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(blob);
-      });
-    }
 
     function startRecording() {
       // Disable the record button until we get a result or error
@@ -111,6 +101,25 @@
       audioElement.src = audioURL;
     }
 
+    
+      // TODO: check if needed
+      function blobToHex(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = function (evt) {
+            if (evt.target.readyState === FileReader.DONE) {
+              const arrayBuffer = evt.target.result;
+              const byteArray = new Uint8Array(arrayBuffer);
+              const hexArray = Array.from(byteArray, byte => {
+                return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+              });
+              resolve(hexArray.join(' '));
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(blob);
+        });
+      }
 
     function blobToBase64(blob, cb) {
       let reader = new FileReader();
@@ -125,33 +134,32 @@
     // Define the chunk size (you can adjust this value as needed)
     const chunkSize = 1024 * 10; // For example, split the base64 string into 10 x 1KB chunks
 
-    function processAudioData() {
+    async function processAudioData() {
       // Create a new Blob object from the concatenated chunks and specify the MIME type.
-      var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
-      blobByte64 = blobToHex(audioBlob);
-      // Convert the blob to base64 and send in POST
-      const formData = new FormData();
-      formData.append('audio', audioBlob, 'audio.wav');
-      console.log("Sending audio blob to server");
-      try {
-        const response = fetch('/audio', {
-          method: 'POST',
-          body: formData
-        });
-        const result = response.json();
-        if (response.ok) {
-          console.log("Audio posted successfully");
-        } else {
-          console.error("Failed to post audio");
+      
+      const sendDataToServer = async (audioBlob) => {
+        try {
+          const formData = new FormData();
+          formData.append('audio', audioBlob, 'audio.wav');
+          console.log("Sending audio input to server");
+          const response = await fetch('/audio', {
+            method: 'POST',
+            body: formData
+          });
+          // Handle response if needed
+        } catch (error) {
+          console.error("Error sending audio to server:", error);
+          // Handle error if needed
         }
-      } catch (error) {
-        console.error("Error posting audio:", error);
-      }
+      };
 
+      var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
+      await sendDataToServer(audioBlob);
 
       console.log("Number of chunks:", chunks.length);
       console.log("Blob size:", audioBlob.size);
-
+      
+      /*
       blobToBase64(audioBlob, function (base64) {
         // audioBlob is the Blob object
         console.log("Im...Im... EMiiiiitiiing");
@@ -167,7 +175,7 @@
           socket.emit('audioChunk', chunk); // send chunk to server
         }
         socket.emit('endAudio', {}); // send complete event to server
-      });
+      });*/
     }
 
 

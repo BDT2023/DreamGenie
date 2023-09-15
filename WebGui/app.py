@@ -1,3 +1,4 @@
+# Run with gunicorn app:app --worker-class eventlet --bind 127.0.0.1:5000
 # IMPORTANT! this should be first, otherwise the code breaks
 import eventlet
 
@@ -98,23 +99,6 @@ def gallery():
     return render_template("gallery.html", user_id=user_id)
 
 
-# DEPRECATED - need to convert to SSE
-# @socketio.on("user_input")
-# def handle_user_input(input_data):
-#     global progress, scenes_list, current_scene_index
-#     app.logger.info("User input received")
-#     socketio.emit("received", {})
-#     eventlet.sleep(0)
-#     # Reset global variables
-#     progress = 0
-#     scenes_list = []
-#     current_scene_index = 0
-#     # Start processing the input
-#     # task = socketio.start_background_task(process_input, input_data)
-#     eventlet.spawn(process_input, input_data)
-#     app.logger.info("Started background task")
-
-
 @app.route("/user_input", methods=["POST"])
 def receive_user_input():
     """
@@ -150,8 +134,8 @@ def process_input(input_data, user_id):
 
     # TODO: change the placeholder!
     # Call OpenAI GPT-3 to separate scenes
-    # scenes_list = call_openai(input_data, test=IS_TEST)
-    scenes_list = [input_data]
+    scenes_list = call_openai(input_data, test=IS_TEST)
+    # scenes_list = [input_data]
     # Update progress
     # progress1 = 100
     # socketio.emit("progress", progress)
@@ -202,14 +186,7 @@ def process_input(input_data, user_id):
                 channel=user_id,
             )
 
-        # DEPRECATED - need to convert to SSE
-        # socketio.emit("image", base64_image)
-
         app.logger.info(f"Emitted: Image path: {relative_image_path}")
-        # socketio.emit(
-        #     "image_and_scene",
-        #     {"image_path": relative_image_path, "scene": f"Scene {i+1}: \n" + scene},
-        # )
 
 
 # # DEPRECATED
@@ -284,20 +261,67 @@ audio_chunks = []
 #     # Create an empty list to store received chunks
 
 
-def send_request(audio_data):
+# def send_request(audio_data):
+#     url = URLS["whisper"] + "/whisper"
+#     audio_file = BytesIO(audio_data)
+#     audio_file.name = "audio.wav"
+
+#     files = {"file": audio_file}
+#     response = requests.post(url, files=files, auth=("bdt", "12xmnxqgkpzj9cjb"))
+
+#     result = response.json()["results"][0]["transcript"]
+#     # socketio.emit("result", result)
+#     print(f"Result: {result}")
+
+
+def send_request(audio_data, user_id):
     url = URLS["whisper"] + "/whisper"
+    # Wraps the audio data in a BytesIO object to mimic a file
     audio_file = BytesIO(audio_data)
     audio_file.name = "audio.wav"
+    # save the audio file to disk for debugging
+    with open("audio.wav", "wb") as f:
+        f.write(audio_data)
+        f.close()
 
+    # The 'files' parameter for 'requests.post' should be a dictionary or a list of tuples
     files = {"file": audio_file}
+    app.logger.info(files)
     response = requests.post(url, files=files, auth=("bdt", "12xmnxqgkpzj9cjb"))
-
+    app.logger.info(response)
     result = response.json()["results"][0]["transcript"]
-    # socketio.emit("result", result)
-    print(f"Result: {result}")
+    print(result)
+    app.logger.info(result)
+
+    # TODO: update to SSE
+    # Emitting to the originating client
+    with app.app_context():
+        sse.publish(
+            {"audio_result": result},
+            type="audio_result",
+            channel=user_id,
+        )
+    app.logger.info("Emitted audio")
 
 
-# DEPRECATED - need to convert to SSE
+@app.route("/audio", methods=["POST"])
+def process_audio():
+    audioData = request.files["audio"]
+    app.logger.info("Audio received")
+    app.logger.info(audioData)
+    try:
+        # decoded_data = base64.b64decode(audioData.read())
+        with app.app_context():
+            eventlet.spawn(send_request, audioData.read(), session["user_id"])
+        success = True
+    except Exception as e:
+        app.logger.error(e)
+        success = False
+
+    return jsonify(success)
+
+
+# #DEPRECATED - need to convert to SSE
 # @socketio.on("audio")
 # def process_audio(audioData):
 #     app.logger.info("Audio received")
