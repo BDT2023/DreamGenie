@@ -41,22 +41,53 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
-        integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
-        crossorigin="anonymous"></script>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
     <script type="text/javascript">
+        const user_id = "{{ user_id }}"; // get the user id passed in the context
+        console.log("I'm user: {{ user_id }}");
+        const source = new EventSource("{{ url_for('sse.stream') }}?channel=" + encodeURIComponent(user_id));
+        console.log("My source is:" + source.url);
+
+
         document.addEventListener("DOMContentLoaded", function () {
             var backButton = document.getElementById("backButton");
             backButton.addEventListener("click", function () {
                 window.location.href = "/";
             });
         });
+
+
+
+        source.addEventListener('image_and_scene', function (event) {
+            var spinner = document.getElementById('spinner');
+            spinner.style.visibility = 'hidden';
+            var imageCarousel = document.getElementById('imageCarousel');
+            imageCarousel.style.visibility = 'visible';
+            const data = JSON.parse(event.data);
+
+            // image from base64 to blob
+            const binaryString = window.atob(data.image.split(',')[1]);
+            const arrayBuffer = new ArrayBuffer(binaryString.length);
+            const uint8Array = new Uint8Array(arrayBuffer);
+            for (let i = 0; i < binaryString.length; i++) {
+                uint8Array[i] = binaryString.charCodeAt(i);
+            }
+            const imageBlob = new Blob([arrayBuffer], { type: 'image/png' }); // Create a BLOB object
+            const imagePath = URL.createObjectURL(imageBlob);
+            const scene = data.scene;
+            console.log("Received image path: ", imagePath);
+            imageArray.push(imagePath);
+            addImageToCarousel(scene);
+        }, false);
+
+
         var imageArray = [];
-        var socket = io.connect('http://localhost:5000');
+
 
         function addImageToCarousel(scene) {
             console.log("Adding image to carousel, array: ", imageArray);
@@ -147,18 +178,7 @@
             }
 
         }
-        socket.on('image_and_scene', function (data) {
-            var spinner = document.getElementById('spinner');
-            spinner.style.visibility = 'hidden';
-            var imageCarousel = document.getElementById('imageCarousel');
-            imageCarousel.style.visibility = 'visible';
-            const imagePath = data.image_path;
-            const scene = data.scene;
-            console.log("Received image path: ", imagePath); // <-- Add this
-            //alert(imagePath);
-            imageArray.push(imagePath);
-            addImageToCarousel(scene);
-        });
+
 
     </script>
 </body>

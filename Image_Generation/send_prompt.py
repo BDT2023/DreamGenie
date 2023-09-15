@@ -21,16 +21,19 @@ session = requests.Session()
 session.auth = (USERNAME, PASSWORD)
 
 
-def save_image(img, folder, filename,isWeb = False):
+def save_image(img, folder, filename, isWeb):
     if isWeb:
-        static_folder = os.path.join('static', folder)
+        static_folder = os.path.join("static", folder)
         if not os.path.exists(static_folder):
             os.makedirs(static_folder)
-        img.save(os.path.join(static_folder, filename))
+        save_path = os.path.join(static_folder, filename)
     else:
         if not os.path.exists(folder):
             os.makedirs(folder)
-        img.save(os.path.join(folder, filename))
+        save_path = os.path.join(folder, filename)
+
+    img.save(save_path)
+    return save_path
 
 
 # Deprecated
@@ -45,6 +48,7 @@ def get_url():
         raise Exception(f"No endpoints found")
     URL = response.json()["endpoints"][0]["public_url"]
     return URL
+
 
 # TODO: check edge cases
 def poll_results():
@@ -84,7 +88,8 @@ def check_model_api():
     return response.json()["sd_model_checkpoint"]
 
 
-def send_to_sd(prompt,isWeb = False):
+def send_to_sd(prompt, isWeb=False):
+    print(f"web= {isWeb}")
     global counter, URL
 
     if URL == "":
@@ -181,9 +186,8 @@ def send_to_sd(prompt,isWeb = False):
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter += 1
             now = datetime.now().strftime("%H%M")
-            save_image(im, date_folder, f"image_{counter}_{now}.png",isWeb)
-
-            return f".\{date_folder}\image_{counter}_{now}.png"
+            save_path = save_image(im, date_folder, f"image_{counter}_{now}.png", isWeb)
+            return save_path
         else:
             ic("Image completely black!")
 

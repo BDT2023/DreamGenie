@@ -12,7 +12,7 @@
 <body>
   <h1>Welcome to Dream Genie!</h1>
   <div class="input-group">
-  <textarea id="inputBox" rows="5" cols="100"></textarea>
+    <textarea id="inputBox" rows="5" cols="100"></textarea>
   </div>
   <button onclick="sendInput()">Send</button>
   <button id="recordButton" onclick="startRecording()">Start Recording</button>
@@ -20,16 +20,20 @@
   <audio id="audioPlayback" controls style="visibility: hidden;"></audio>
   <div id="messageContainer"></div>
 
-
-  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
-    integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
-    crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript">
 
+    const user_id = "{{ user_id }}"; // get the user id passed in the context
+    console.log("I'm user: {{ user_id }}");
+    const source = new EventSource("{{ url_for('sse.stream') }}?channel=" + encodeURIComponent(user_id));
+    console.log("My source is:" + source.url);
+    /*
+    TODO: add event listeners for the following events:
+    'image_and_scene'
+    'audio_result'
+    */
 
-    var socket = io.connect('http://localhost:5000');
     var mediaRecorder;
     var chunks = [];
     var imageArray = [];
@@ -52,6 +56,7 @@
         reader.readAsArrayBuffer(blob);
       });
     }
+
     function startRecording() {
       // Disable the record button until we get a result or error
       var button = document.getElementById("recordButton");
@@ -105,6 +110,8 @@
       let audioElement = document.getElementById("audioPlayback");
       audioElement.src = audioURL;
     }
+
+
     function blobToBase64(blob, cb) {
       let reader = new FileReader();
       reader.onload = function () {
@@ -121,6 +128,27 @@
     function processAudioData() {
       // Create a new Blob object from the concatenated chunks and specify the MIME type.
       var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
+      blobByte64 = blobToHex(audioBlob);
+      // Convert the blob to base64 and send in POST
+      const formData = new FormData();
+      formData.append('audio', audioBlob, 'audio.wav');
+      console.log("Sending audio blob to server");
+      try {
+        const response = fetch('/audio', {
+          method: 'POST',
+          body: formData
+        });
+        const result = response.json();
+        if (response.ok) {
+          console.log("Audio posted successfully");
+        } else {
+          console.error("Failed to post audio");
+        }
+      } catch (error) {
+        console.error("Error posting audio:", error);
+      }
+
+
       console.log("Number of chunks:", chunks.length);
       console.log("Blob size:", audioBlob.size);
 
@@ -143,37 +171,57 @@
     }
 
 
-    function sendInput() {
+    async function sendInput() {
       var textBox = document.getElementById('inputBox');
       input_data = textBox.value;
       console.log(input_data);
-      socket.emit('user_input', input_data);
-      socket.disconnect();
-      //socket.sleep(0);
+
+
+      const sendDataToServer = async (inputData) => {
+        try {
+          const formData = new FormData();
+          formData.append('user_input', inputData);
+          console.log("Sending user input to server");
+          const response = await fetch('/user_input', {
+            method: 'POST',
+            body: formData
+          });
+          // Handle response if needed
+        } catch (error) {
+          console.error("Error sending user input to server:", error);
+          // Handle error if needed
+        }
+      };
+
+
+      
+      await sendDataToServer(input_data);
       navigateToGallery();
     }
 
-    function navigateToGallery() {
-      window.location.href = '/gallery';
-    }
-
-    socket.on('received', function (data) {
-      //navigateToGallery();
-      return false;
-    });
-
-    socket.on('message', function (message_data) {
-      console.log(message_data);
-    });
-
-
-    socket.on('output', function (output_data) {
-      console.log(output_data);
-      var messageDiv = document.createElement('div');
-      messageDiv.innerHTML = output_data;
-      var messageContainer = document.getElementById('messageContainer');
-      messageContainer.appendChild(messageDiv);
-    });
+        function navigateToGallery() {
+          window.location.href = '/gallery';
+        }
+            /*
+    
+        socket.on('received', function (data) {
+          //navigateToGallery();
+          return false;
+        });
+    
+        socket.on('message', function (message_data) {
+          console.log(message_data);
+        });
+    
+    
+        socket.on('output', function (output_data) {
+          console.log(output_data);
+          var messageDiv = document.createElement('div');
+          messageDiv.innerHTML = output_data;
+          var messageContainer = document.getElementById('messageContainer');
+          messageContainer.appendChild(messageDiv);
+        });
+        */
 
     /*
       function addImageToCarousel(scene) {
@@ -225,12 +273,14 @@
     */
 
     // TODO: rename result to audio_result
+    /*
     socket.on('result', function (audio_result) {
       alert(audio_result);
       console.log(audio_result);
       var textBox = document.getElementById('inputBox');
       textBox.value = audio_result;
     });
+    */
 
   </script>
 </body>
