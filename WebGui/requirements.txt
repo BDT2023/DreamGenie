@@ -1,8 +1,5 @@
+eventlet==0.33.3
 Flask==2.2.2
-Flask_SocketIO==5.3.3
-ipython==8.11.0
-Pillow==9.4.0
-pyttsx3==2.90
-requests==2.28.1
-spacy==3.4.4
-
+Flask_SSE==1.0.0
+requests==2.25.1
+gunicorn==21.2.0
