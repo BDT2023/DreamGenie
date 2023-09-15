@@ -43,7 +43,7 @@ IS_TEST = True
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
-app.config["REDIS_URL"] = "redis://localhost"
+app.config["REDIS_URL"] = os.getenv("REDIS_URL", "redis://localhost")
 app.config["SESSION_TYPE"] = "redis"
 app.config["SECRET_KEY"] = "secret!"
 app.register_blueprint(sse, url_prefix="/stream")
