@@ -22,6 +22,7 @@ import os
 import logging
 import datetime
 import uuid
+import redis
 
 
 sys.path.append("../Scene_Analyzer")
@@ -43,8 +44,19 @@ IS_TEST = True
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
-app.config["REDIS_URL"] = os.getenv("REDIS_URL", "redis://localhost")
 app.config["SESSION_TYPE"] = "redis"
+host = os.getenv("REDIS_HOST", "localhost")
+app.logger.info(f"REDIS_HOST: {host}")
+r = redis.Redis(host=host, port=6379)
+r.ping()
+
+# get redis url:
+# redis_url = r.connection_pool.connection_kwargs.get("url")
+app.config["SESSION_REDIS"] = r
+app.config["SSE_REDIS_URL"] = app.config["REDIS_URL"] = os.getenv(
+    "REDIS_URL", "redis://localhost"
+)
+app.logger.info(app.config["REDIS_URL"])
 app.config["SECRET_KEY"] = "secret!"
 app.register_blueprint(sse, url_prefix="/stream")
 Session(app)
@@ -113,12 +125,6 @@ def receive_user_input():
 
 
 def process_input(input_data, user_id):
-    with app.app_context():
-        sse.publish(
-            {"message": "foo"},
-            type="message",
-            channel=user_id,
-        )
     global progress1, scenes_list
 
     # TODO: change the placeholder!
@@ -199,7 +205,7 @@ def send_request(audio_data, user_id):
             type="audio_result",
             channel=user_id,
         )
-    app.logger.info("Emitted audio")
+    app.logger.info("Emitted audio result to" + user_id)
 
 
 @app.route("/audio", methods=["POST"])
