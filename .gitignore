@@ -25,3 +25,4 @@ my_secrets.py
 my_secrets_*.py
 .vscode/launch.json
 .gitignore
+nginx/nginx_cert/*
