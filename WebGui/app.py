@@ -24,6 +24,7 @@ import logging
 import datetime
 import uuid
 import redis
+from pymongo import MongoClient
 
 
 sys.path.append("../Scene_Analyzer")
@@ -40,6 +41,7 @@ from gpt_call import call_openai
 from send_prompt import send_to_sd
 from utils import get_service_urls
 from send_prompt import poll_results
+from my_secrets_web import MGDB_PASS
 
 IS_TEST = True
 app = Flask(__name__)
@@ -62,11 +64,22 @@ app.config["SECRET_KEY"] = "secret!"
 app.register_blueprint(sse, url_prefix="/stream")
 Session(app)
 
+def get_database():
+    # Create a connection
+    CONNECTION_STRING = f"mongodb+srv://BenEliz:{MGDB_PASS}@cluster0.q59ddrd.mongodb.net"
+    client = MongoClient(CONNECTION_STRING)
+    return client['DreamGenie'] # Replace with your database name
+
+dbname = get_database()
+# Your collection, for example, 'feedback'
+feedback_collection = dbname["Feedback"]
 # Global variables
 progress1 = 0
 scenes_list = []
 current_scene_index = 0
 URLS = get_service_urls()
+
+
 
 #currently not used
 def poll_results_until_done():
@@ -236,8 +249,17 @@ def submit_feedback():
     scene_rating = request.form.get('scene_rating')
     experience_rating = request.form.get('experience_rating')
     
-    # Save the ratings to a database or a file
-    # (Your logic here)
+    # Prepare the document to insert
+    feedback_data = {
+        "user_id" : session["user_id"],
+        "image_rating": int(image_rating),
+        "sound_rating": int(sound_rating),
+        "scene_rating": int(scene_rating),
+        "experience_rating": int(experience_rating),
+    }
+    
+    # Insert into MongoDB
+    feedback_collection.insert_one(feedback_data)
     
     return render_template('thank_you.html')
     
