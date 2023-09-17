@@ -41,8 +41,8 @@ from gpt_call import call_openai
 from send_prompt import send_to_sd
 from utils import get_service_urls
 from send_prompt import poll_results
-from my_secrets_web import MGDB_PASS
-
+#from my_secrets_web import MGDB_PASS
+MGDB_PASS = os.environ.get("MGDB_PASS")
 IS_TEST = True
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)

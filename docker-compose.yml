@@ -5,8 +5,8 @@ services:
             - 6379:6379
         
     genie:
-        build: .
-        #image: my-gunicorn
+        #build: .
+        image: benxxdmage/dreamgenie:tagname
         #ports:
         #   - 5000:5000
         depends_on:
