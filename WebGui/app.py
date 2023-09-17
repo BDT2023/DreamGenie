@@ -151,7 +151,6 @@ def process_input(input_data, user_id):
     today = datetime.date.today()
 
     # Generate images for scenes
-
     for i, scene in enumerate(scenes_list):
         # Update progress for each scene
         progress1 = 0
@@ -187,6 +186,13 @@ def process_input(input_data, user_id):
             )
 
         app.logger.info(f"Emitted: Image path: {relative_image_path}")
+    with app.app_context():
+        sse.publish(
+            {"message": 'finished'},
+            type="message",
+            channel=user_id,
+        )
+        app.logger.info('Published finished message')
 
 
 # Create an empty list to store received chunks
@@ -245,17 +251,25 @@ def feedback():
 @app.route('/submit_feedback', methods=['POST'])
 def submit_feedback():
     image_rating = request.form.get('image_rating')
-    sound_rating = request.form.get('sound_rating')
     scene_rating = request.form.get('scene_rating')
     experience_rating = request.form.get('experience_rating')
     
+    # New fields
+    age = request.form.get('age')
+    gender = request.form.get('gender')
+    familiarity = request.form.get('familiarity')
+    comments = request.form.get('comments')
+    
     # Prepare the document to insert
     feedback_data = {
-        "user_id" : session["user_id"],
+        "user_id": session["user_id"],
         "image_rating": int(image_rating),
-        "sound_rating": int(sound_rating),
         "scene_rating": int(scene_rating),
         "experience_rating": int(experience_rating),
+        "age": int(age) if age else None, 
+        "gender": gender,
+        "familiarity": familiarity,
+        "comments": comments
     }
     
     # Insert into MongoDB
