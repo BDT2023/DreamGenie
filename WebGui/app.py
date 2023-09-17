@@ -3,7 +3,6 @@
 import eventlet
 
 eventlet.monkey_patch()
-
 import sys
 import time
 from flask import (
@@ -12,6 +11,8 @@ from flask import (
     render_template,
     session,
     jsonify,
+    redirect,
+    url_for
 )
 from flask_sse import sse
 from flask_session import Session
@@ -222,5 +223,21 @@ def process_audio():
     except Exception as e:
         app.logger.error(e)
         success = False
+    return jsonify(success)    
 
-    return jsonify(success)
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
+
+@app.route('/submit_feedback', methods=['POST'])
+def submit_feedback():
+    image_rating = request.form.get('image_rating')
+    sound_rating = request.form.get('sound_rating')
+    scene_rating = request.form.get('scene_rating')
+    experience_rating = request.form.get('experience_rating')
+    
+    # Save the ratings to a database or a file
+    # (Your logic here)
+    
+    return render_template('thank_you.html')
+    

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dream Genie - Thank You</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+</head>
+
+<body>
+
+
+    <h1>Thank You for Your Feedback!</h1>
+    <p>Your insights help us improve Dream Genie. We appreciate your time and effort.</p>
+    <button id="backButton" class="btn btn-primary">Go Back</button>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function () {
+            var backButton = document.getElementById("backButton");
+            backButton.addEventListener("click", function () {
+                window.location.href = "/";
+            });
+        });
+    </script>
+</body>
+
+</html>
