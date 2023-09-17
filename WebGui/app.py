@@ -67,7 +67,7 @@ scenes_list = []
 current_scene_index = 0
 URLS = get_service_urls()
 
-
+#currently not used
 def poll_results_until_done():
     time_started = time.time()
     TIMEOUT = 50  # seconds
@@ -204,8 +204,9 @@ def send_request(audio_data, user_id):
             {"audio_result": result},
             type="audio_result",
             channel=user_id,
+            retry=1000
         )
-    app.logger.info("Emitted audio result to" + user_id)
+    app.logger.info("Emitted audio result to " + user_id)
 
 
 @app.route("/audio", methods=["POST"])
