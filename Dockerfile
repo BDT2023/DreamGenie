@@ -15,7 +15,7 @@ RUN pip install pymongo
 #COPY Scene_Analyzer/my_secrets.py DreamGenie/Scene_Analyzer/my_secrets.py 
 
 #COPY my_secrets.py DreamGenie/my_secrets.py 
-COPY WebGui/my_secrets_web.py DreamGenie/WebGui/my_secrets_web.py
+#COPY WebGui/my_secrets_web.py DreamGenie/WebGui/my_secrets_web.py
 #COPY WebGui/my_secrets_web.py DreamGenie/WebGui/my_secrets_web.py
 
 #COPY Utils/my_secrets_ut.py DreamGenie/Utils/my_secrets_ut.py
