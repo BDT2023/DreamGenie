@@ -26,3 +26,4 @@ my_secrets_*.py
 .vscode/launch.json
 .gitignore
 nginx/nginx_cert/*
+api_keys.env
