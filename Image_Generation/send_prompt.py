@@ -8,11 +8,15 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
-from my_secrets_ig import USERNAME, PASSWORD
+#from my_secrets_ig import USERNAME, PASSWORD
 import os
 from datetime import datetime
 import time
 import concurrent.futures
+
+USERNAME = os.getenv('USERNAME')
+PASSWORD = os.getenv('PASSWORD')
+
 
 counter = 0
 URL = ""

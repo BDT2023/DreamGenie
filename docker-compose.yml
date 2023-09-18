@@ -6,7 +6,7 @@ services:
         
     genie:
         #build: .
-        image: my-gunicorn
+        image: benxxdmage/dreamgenie:tagname
         #ports:
         #   - 5000:5000
         depends_on:
@@ -14,6 +14,7 @@ services:
         environment:
            -  REDIS_HOST=redis 
            -  REDIS_URL=redis://redis
+           
     nginx:
         image: nginx:latest
         volumes:

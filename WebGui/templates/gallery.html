@@ -2,11 +2,22 @@
 <html lang="en">
 
 <head>
-    <title>Dream Genie</title>
+    <title>Dream Genie - Gallery</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <script type="text/javascript">
+        window.onbeforeunload = function(e) {
+            e.preventDefault();
+            return 'Are you sure you want to leave? All progress will be lost.';
+        };
+        window.onunload = function(e) {
+            console.log("Unloaded");
+            navigator.sendBeacon('/interrupt');
+
+        }
+    </script>
 </head>
 
 <body>
@@ -16,7 +27,8 @@
     <p>Your Images will be displayed here</p>
     <!-- Bootstrap Carousel -->
     <span id="spinner" class="loader" style="visibility: visible;"></span>
-    <br>
+    <button id="feedbackButton" class="btn btn-primary" style="visibility: hidden;"
+            onclick="window.location.href='/feedback' ">Give Feedback</button>
     <div id="imageCarousel" class="carousel slide" style="visibility: hidden;" data-interval="false">
 
         <ol class="carousel-indicators" id="imageIndicators">
@@ -57,15 +69,22 @@
         document.addEventListener("DOMContentLoaded", function () {
             var backButton = document.getElementById("backButton");
             backButton.addEventListener("click", function () {
+                navigator.sendBeacon('/interrupt');
                 window.location.href = "/";
             });
         });
-
-
+        source.addEventListener('message', function (event) {
+                const data = JSON.parse(event.data);
+                if (data.message == 'finished'){
+                    var btn = document.getElementById('feedbackButton');
+                    document.getElementById("spinner").remove();
+                    btn.style.visibility = 'visible'
+                    //spinner.style.visibility = 'hidden';
+                }
+            }, false);
 
         source.addEventListener('image_and_scene', function (event) {
             var spinner = document.getElementById('spinner');
-            spinner.style.visibility = 'hidden';
             var imageCarousel = document.getElementById('imageCarousel');
             imageCarousel.style.visibility = 'visible';
             const data = JSON.parse(event.data);
@@ -181,6 +200,7 @@
 
 
     </script>
+
 </body>
 
 </html>

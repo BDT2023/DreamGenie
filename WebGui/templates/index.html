@@ -9,8 +9,12 @@
   <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
 </head>
 
+
+
+
 <body>
   <h1>Welcome to Dream Genie!</h1>
+  <p>Share your dream, and watch it come alive through scenes and art.</p>
   <div class="input-group">
     <textarea id="inputBox" rows="5" cols="100"></textarea>
   </div>
@@ -18,12 +22,16 @@
   <button id="recordButton" onclick="startRecording()">Start Recording</button>
   <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
   <audio id="audioPlayback" controls style="visibility: hidden;"></audio>
-  <div id="messageContainer"></div>
+  <br>
+  <div id="spinnerContainer" style="text-align: center;">
+    <div id="spinner" class="loader" style="visibility: visibile;"></div>
+  </div>
+
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript">
-
+    document.getElementById("spinner").style.display = "none";
     const user_id = "{{ user_id }}"; // get the user id passed in the context
     console.log("I'm user: {{ user_id }}");
     const source = new EventSource("{{ url_for('sse.stream') }}?channel=" + encodeURIComponent(user_id));
@@ -36,7 +44,8 @@
       const data = JSON.parse(event.data);
       console.log("Received message: ", data['audio_result']);
       var audio_result = data['audio_result'];
-      alert(audio_result);
+      //alert(audio_result);
+      document.getElementById("spinner").style.display = "none";
       console.log(audio_result);
       var textBox = document.getElementById('inputBox');
       textBox.value = audio_result;
@@ -142,6 +151,7 @@
           const formData = new FormData();
           formData.append('audio', audioBlob, 'audio.wav');
           console.log("Sending audio input to server");
+          document.getElementById("spinner").style.display = "block";
           const response = await fetch('/audio', {
             method: 'POST',
             body: formData

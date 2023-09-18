@@ -1,12 +1,12 @@
 import openai
 from icecream import ic  # for debugging https://github.com/gruns/icecream
-from my_secrets import API_KEY_OPENAI
+#from my_secrets import API_KEY_OPENAI
 import os
 import random as rand
 import re
 import pandas as pd
 
-openai.api_key = API_KEY_OPENAI
+openai.api_key = os.environ.get('API_KEY_OPENAI')
 
 
 def load_dreams(file_name="..\\Scene_Analyzer\\sample_texts_normalized.csv"):

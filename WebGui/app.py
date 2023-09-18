@@ -3,7 +3,6 @@
 import eventlet
 
 eventlet.monkey_patch()
-
 import sys
 import time
 from flask import (
@@ -12,6 +11,8 @@ from flask import (
     render_template,
     session,
     jsonify,
+    redirect,
+    url_for
 )
 from flask_sse import sse
 from flask_session import Session
@@ -23,6 +24,7 @@ import logging
 import datetime
 import uuid
 import redis
+from pymongo import MongoClient
 
 
 sys.path.append("../Scene_Analyzer")
@@ -39,7 +41,8 @@ from gpt_call import call_openai
 from send_prompt import send_to_sd
 from utils import get_service_urls
 from send_prompt import poll_results
-
+#from my_secrets_web import MGDB_PASS
+MGDB_PASS = os.environ.get("MGDB_PASS")
 IS_TEST = True
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
@@ -61,6 +64,15 @@ app.config["SECRET_KEY"] = "secret!"
 app.register_blueprint(sse, url_prefix="/stream")
 Session(app)
 
+def get_database():
+    # Create a connection
+    CONNECTION_STRING = f"mongodb+srv://BenEliz:{MGDB_PASS}@cluster0.q59ddrd.mongodb.net"
+    client = MongoClient(CONNECTION_STRING)
+    return client['DreamGenie'] # Replace with your database name
+
+dbname = get_database()
+# Your collection, for example, 'feedback'
+feedback_collection = dbname["Feedback"]
 # Global variables
 progress1 = 0
 scenes_list = []
@@ -68,6 +80,8 @@ current_scene_index = 0
 URLS = get_service_urls()
 
 
+
+#currently not used
 def poll_results_until_done():
     time_started = time.time()
     TIMEOUT = 50  # seconds
@@ -137,7 +151,6 @@ def process_input(input_data, user_id):
     today = datetime.date.today()
 
     # Generate images for scenes
-
     for i, scene in enumerate(scenes_list):
         # Update progress for each scene
         progress1 = 0
@@ -173,6 +186,13 @@ def process_input(input_data, user_id):
             )
 
         app.logger.info(f"Emitted: Image path: {relative_image_path}")
+    with app.app_context():
+        sse.publish(
+            {"message": 'finished'},
+            type="message",
+            channel=user_id,
+        )
+        app.logger.info('Published finished message')
 
 
 # Create an empty list to store received chunks
@@ -204,8 +224,9 @@ def send_request(audio_data, user_id):
             {"audio_result": result},
             type="audio_result",
             channel=user_id,
+            retry=1000
         )
-    app.logger.info("Emitted audio result to" + user_id)
+    app.logger.info("Emitted audio result to " + user_id)
 
 
 @app.route("/audio", methods=["POST"])
@@ -221,5 +242,38 @@ def process_audio():
     except Exception as e:
         app.logger.error(e)
         success = False
+    return jsonify(success)    
 
-    return jsonify(success)
+@app.route('/feedback')
+def feedback():
+    return render_template('feedback.html')
+
+@app.route('/submit_feedback', methods=['POST'])
+def submit_feedback():
+    image_rating = request.form.get('image_rating')
+    scene_rating = request.form.get('scene_rating')
+    experience_rating = request.form.get('experience_rating')
+    
+    # New fields
+    age = request.form.get('age')
+    gender = request.form.get('gender')
+    familiarity = request.form.get('familiarity')
+    comments = request.form.get('comments')
+    
+    # Prepare the document to insert
+    feedback_data = {
+        "user_id": session["user_id"],
+        "image_rating": int(image_rating),
+        "scene_rating": int(scene_rating),
+        "experience_rating": int(experience_rating),
+        "age": int(age) if age else None, 
+        "gender": gender,
+        "familiarity": familiarity,
+        "comments": comments
+    }
+    
+    # Insert into MongoDB
+    feedback_collection.insert_one(feedback_data)
+    
+    return render_template('thank_you.html')
+    
