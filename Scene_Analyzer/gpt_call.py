@@ -51,7 +51,8 @@ def build_prompt(
         prompt = f"{command}{os.linesep}Examples:\
     {examples.strip()}\
     {os.linesep}\
-    {dream}"
+    {dream}\
+    Scene 1:"
     else:
         prompt = f"{command}{os.linesep}{dream}"
     # print(prompt)
@@ -148,4 +149,4 @@ def separate_random(test = False,command="Give short visual descriptions of the 
 
 if __name__ == "__main__":
     # Load a random dream from the csv and call the openai scene separator on it.
-    separate_random(test=True)
+    separate_random(test=False)
