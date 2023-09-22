@@ -1,5 +1,6 @@
 *.pyc
 *.png
+!WebGui/static/favicon.png
 *.spec
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/misc.xml
