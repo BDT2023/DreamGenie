@@ -101,9 +101,10 @@ def index():
         user_id = str(uuid.uuid4())
         session["user_id"] = user_id
         session.modified = True
+        app.logger.info("User id " + user_id+" added to session")
     else:
         user_id = session["user_id"]
-    print("User id: " + user_id)
+    app.logger.info("User id: " + user_id)
     return render_template("index.html", user_id=user_id)
 
 
@@ -113,7 +114,7 @@ def gallery():
         return "No user id found. Please go back to the home page and try again."
     else:
         user_id = session["user_id"]
-    print("User id: " + user_id)
+    app.logger.info("User id: " + user_id)
     app.logger.info("Gallery requested")
     return render_template("gallery.html", user_id=user_id)
 
