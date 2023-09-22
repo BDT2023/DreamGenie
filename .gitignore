@@ -28,3 +28,7 @@ my_secrets_*.py
 .gitignore
 nginx/nginx_cert/*
 WebGui\my_secrets_web.py
+api_keys.env
+*.__wz_cache
+*\flask_session
+/ses
