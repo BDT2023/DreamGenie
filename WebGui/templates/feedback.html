@@ -15,10 +15,10 @@
 
 <form action="/submit_feedback" method="post">
     <label for="age">Age:</label>
-    <input type="number" id="age" name="age" min="1" max="150"><br><br>
+    <input type="number" id="age" name="age" min="1" max="150" required><br><br>
 
     <label for="gender">Gender:</label>
-    <select id="gender" name="gender">
+    <select id="gender" name="gender" required>
         <option value="male">Male</option>
         <option value="female">Female</option>
         <option value="other">Other</option>
@@ -26,7 +26,7 @@
     </select><br><br>
 
     <label for="familiarity">How familiar are you with AI image generation?</label>
-    <select id="familiarity" name="familiarity">
+    <select id="familiarity" name="familiarity" required>
         <option value="No experience">No experience</option>
         <option value="Somewhat knowledgeable">Somewhat knowledgeable</option>
         <option value="Well-versed">Well-versed</option>
@@ -34,13 +34,13 @@
     
 
     <label for="imageRating">How close were the images to the scenes they represent? (1-5)</label>
-    <input type="number" id="imageRating" name="image_rating" min="1" max="5"><br><br>
+    <input type="number" id="imageRating" name="image_rating" min="1" max="5" required><br><br>
 
     <label for="sceneRating">How much did the scenes represent your dream? (1-5)</label>
-    <input type="number" id="sceneRating" name="scene_rating" min="1" max="5"><br><br>
+    <input type="number" id="sceneRating" name="scene_rating" min="1" max="5" required><br><br>
 
     <label for="experienceRating">How was the general experience? (1-5)</label>
-    <input type="number" id="experienceRating" name="experience_rating" min="1" max="5"><br><br>
+    <input type="number" id="experienceRating" name="experience_rating" min="1" max="5" required><br><br>
 
     <label for="comments">Any additional comments:</label><br>
     <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br><br>
