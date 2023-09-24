@@ -146,6 +146,13 @@ def process_input(input_data, user_id):
 
     # Call OpenAI GPT-3 to separate scenes
     scenes_list = call_openai(input_data, test=IS_TEST)
+    if len(scenes_list) == 0:
+        app.logger.error("len(scenes_list) == 0")
+        sse.publish(
+            {"message": 'error'},
+            type="message",
+            channel=user_id,
+        )
     # scenes_list = [input_data]
 
     # Get today's date

@@ -73,6 +73,7 @@
                 window.location.href = "/";
             });
         });
+
         source.addEventListener('message', function (event) {
                 const data = JSON.parse(event.data);
                 if (data.message == 'finished'){
@@ -81,7 +82,14 @@
                     btn.style.visibility = 'visible'
                     //spinner.style.visibility = 'hidden';
                 }
+                else if (data.message == 'error'){
+                var btn = document.getElementById('feedbackButton');
+                document.getElementById("spinner").remove();
+                btn.style.visibility = 'visible'
+                alert("Some error occured! Please contact the website administrator.")
+                }
             }, false);
+
 
         source.addEventListener('image_and_scene', function (event) {
             var spinner = document.getElementById('spinner');

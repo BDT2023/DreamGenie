@@ -106,18 +106,28 @@ def call_openai(
     # API call to OpenAI GPT-3 using this schema:
     # https://beta.openai.com/docs/api-reference/completions/create
     generated_text = "\n\n1. The first scene is of a person on an escalator, with plastic squares and water rolling along the side. The person later learns that they are filters. \n\n2. The second scene is of a large church where a mardi gras parade is taking place inside while mass is being celebrated in peace. \n\n3. The third scene is of a clerk coming to collect a bill which has already been paid. He has with him graded papers from a school, but the person does not see their son's name."
+    generated_text ='''1. Two dogs running across a sandy desert, with a person running away from them in the distance.
+2. A child standing in a lush, green forest, looking around curiously.
+3. An elderly woman sitting at a table in a brightly lit shopping mall,enjoying a cone of ice cream.'''
+    generated_text = """
+    Scene 1: This is scene 1.
+    Scene 2: This is scene 2.
+    3. This is line 3.
+    """
     prompt = build_prompt(dream.lstrip(), command, n=3)
-    completions = openai.Completion.create(
-        engine=model_engine,
-        prompt=prompt,
-        max_tokens=256,
-        n=1,
-        stop=None,  # optional token that stops the generation
-        temperature=0.45,  # not too high
-    )
+    # completions = openai.Completion.create(
+    #     engine=model_engine,
+    #     prompt=prompt,
+    #     max_tokens=256,
+    #     n=1,
+    #     stop=None,  # optional token that stops the generation
+    #     temperature=0.45,  # not too high
+    # )
 
-    # # Print the generated text
-    generated_text = completions.choices[0].text
+    # # # Print the generated text
+    # generated_text = completions.choices[0].text
+    # TODO: add error handling - 
+    
     # Append the generated text to the output file to keep track of the results.
     with open("out.txt", "a+") as f:
         f.write(f"Prompt: {prompt}")
@@ -128,8 +138,22 @@ def call_openai(
         f.write(f"########################")
         ic(f"########################")
         f.write(os.linesep)
-    gen_list = generated_text.split("Scene")[1:]
-    gen_list = [re.sub(r"[0-9]\: ", "", x) for x in gen_list]
+        
+    def split_generated(generated_text):
+        split_text = generated_text.split("Scene")[1:]
+        if len(split_text) != 0:
+            return split_text
+        pattern = r"^\d+\."
+        # Split the text using the pattern
+        split_text = re.split(pattern, generated_text, flags=re.MULTILINE)
+        if len(split_text) == 0:
+            split_text = generated_text.split('\n')
+        return split_text[1:]
+     
+    
+    gen_list = split_generated(generated_text)
+    gen_list = [re.sub(r"[0-9](\:|\.) ", "", x) for x in gen_list]
+    ic(gen_list)
     return gen_list
 
 

@@ -16,7 +16,7 @@
   <h1>Welcome to Dream Genie!</h1>
   <p>Share your dream, and watch it come alive through scenes and art.</p>
   <div class="input-group">
-    <textarea id="inputBox" rows="5" cols="100"></textarea>
+    <textarea id="inputBox" rows="5" cols="100" oninput="validateInput(this)"></textarea>
   </div>
   <button onclick="sendInput()">Send</button>
   <button id="recordButton" onclick="startRecording()">Start Recording</button>
@@ -39,7 +39,18 @@
     /*
     'audio_result'
     */
+    function validateInput(inputElement) {
+    // Regular expression to match English letters, numbers, and common punctuation marks
+    var regex = /^[A-Za-z0-9\s,.!?'"()]*$/;
 
+    var inputValue = inputElement.value;
+
+    // Check if the input is empty or does not match the regular expression
+    if (inputValue.trim() === '' || !regex.test(inputValue)) {
+      // If empty or contains non-English characters, remove them and set a default value
+      inputElement.value = 'Enter English text here';
+    }
+  }
     source.addEventListener('audio_result', function (e) {
       const data = JSON.parse(event.data);
       console.log("Received message: ", data['audio_result']);
