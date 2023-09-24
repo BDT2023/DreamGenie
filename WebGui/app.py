@@ -79,7 +79,7 @@ scenes_list = []
 current_scene_index = 0
 URLS = get_service_urls()
 if URLS['sd'] == '' or URLS['whisper'] == '':
-    throw Exception("The dsi server is down!")
+    raise RuntimeError("The dsi server is down!")
 
 
 #currently not used
