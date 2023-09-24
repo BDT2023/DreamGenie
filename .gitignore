@@ -32,3 +32,4 @@ api_keys.env
 *.__wz_cache
 *\flask_session
 /ses
+dockerbuildpush.bat

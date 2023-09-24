@@ -10,6 +10,8 @@ openai.api_key = os.environ.get('API_KEY_OPENAI')
 
 
 def load_dreams(file_name="..\\Scene_Analyzer\\sample_texts_normalized.csv"):
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_name = os.path.join(dir_path,"sample_texts_normalized.csv")
     dream_list = pd.read_csv(file_name, header=None)
     return dream_list
 
@@ -21,6 +23,8 @@ def get_samples(file_name="manual_scene_separation_data.txt"):
     file_name: Name of the file containing the separated scenes. Default is 'manual_scene_separation_data.txt'.
     """
     samples = []
+    dir_path = os.path.dirname(os.path.realpath(__file__))
+    file_name = os.path.join(dir_path,file_name)
     try:
         with open(file_name, "r") as f:
             data = f.read()
@@ -48,11 +52,12 @@ def build_prompt(
 
     # If we are passing examples in the prompt, we need to add "Examples:" to the prompt, otherwise we don't.
     if examples != "":
-        prompt = f"{command}{os.linesep}Examples:\
+        prompt = f"Examples of dreams and scene seperation:\
     {examples.strip()}\
     {os.linesep}\
-    {dream}\
-    Scene 1:"
+    {command}\
+    {os.linesep}\
+    {dream}"
     else:
         prompt = f"{command}{os.linesep}{dream}"
     # print(prompt)
@@ -95,6 +100,7 @@ def call_openai(
     if test == True:
         return load_latest_output()
     # model_engine = "text-curie-001"
+    #model_engine = "davinci-002"
     model_engine = "text-davinci-003"
 
     # API call to OpenAI GPT-3 using this schema:
