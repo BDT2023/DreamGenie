@@ -26,6 +26,7 @@ import os
 # TODO: add __init__.py to the other modules
 # add path to the other modules to enable import
 # os.chdir(os.path.dirname(__file__))
+# TODO: add error handling
 URL = get_service_urls()["whisper"]
 IS_TEST = True
 PATH_DICT = {}
@@ -60,7 +61,7 @@ class StartWindow:
         self.proceed_button = ctk.CTkButton(
             master, text="Proceed", command=self.next_window
         )
-        self.proceed_button.pack(padx=20, pady=10)  
+        self.proceed_button.pack(padx=20, pady=10)
 
     def clear_window(self):
         # Destroy all widgets in the window

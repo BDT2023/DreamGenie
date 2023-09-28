@@ -8,14 +8,15 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
-#from my_secrets_ig import USERNAME, PASSWORD
+
+# from my_secrets_ig import USERNAME, PASSWORD
 import os
 from datetime import datetime
 import time
 import concurrent.futures
 
-USERNAME = os.getenv('USERNAME')
-PASSWORD = os.getenv('PASSWORD')
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
 
 
 counter = 0
@@ -145,11 +146,11 @@ def send_to_sd(prompt, isWeb=False):
         "subseed_strength": 0,
         "seed_resize_from_h": -1,
         "seed_resize_from_w": -1,
-        "sampler_name": "DPM++ 2M",  # TODO: play with the results
+        "sampler_name": "DPM++ 2M Karras",  # TODO: play with the results
         "batch_size": 1,
         "n_iter": 1,
-        "steps": 30,
-        "cfg_scale": 8.5,
+        "steps": 20,
+        "cfg_scale": 7.5,
         "width": 768,
         "height": 512,
         "restore_faces": "false",
