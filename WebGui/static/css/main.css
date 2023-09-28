@@ -27,11 +27,11 @@ h1 {
     margin-bottom: 20px;
 }
   #imageCarousel {
-    height: 500px; /* Adjust this value as needed */
+    height: 500px; 
     margin-bottom: 20px; /* Space below the carousel */
   }
   .carousel-inner > .item > img {
-    max-height: 500px; /* Adjust this value as needed */
+    max-height: 500px; 
   }
     .carousel-caption {
         background-color: rgba(0, 0, 0, 0.5); /* Almost transparent dark grey */

@@ -1,5 +1,8 @@
 # Run with gunicorn app:app --worker-class eventlet --bind 127.0.0.1:5000
 # IMPORTANT! this should be first, otherwise the code breaks
+
+
+# Description : This module is a Flask web application for generating images from text prompts using GPT
 import eventlet
 
 eventlet.monkey_patch()
@@ -26,7 +29,7 @@ sys.path.append("../Utils")
 
 os.chdir(
     f"{os.path.dirname(os.path.realpath(__file__))}"
-)  # Change directory to current file location  ')")
+)  # Change directory to current file location
 cwd = os.getcwd()
 print(cwd)
 
@@ -35,22 +38,21 @@ from send_prompt import send_to_sd
 from utils import get_service_urls
 from send_prompt import poll_results
 
-# from my_secrets_web import MGDB_PASS
 MGDB_PASS = os.environ.get("MGDB_PASS")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
-IS_TEST = False
+REDIS_PORT = 6379
+IS_TEST = False # set to True to use dummy test data - previous scene separations, False to use real call to OpenAI
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 
 app.config["SESSION_TYPE"] = "redis"
 host = os.getenv("REDIS_HOST", "localhost")
 app.logger.info(f"REDIS_HOST: {host}")
-r = redis.Redis(host=host, port=6379)
+r = redis.Redis(host=host, port=REDIS_PORT)
 r.ping()
 
 # get redis url:
-# redis_url = r.connection_pool.connection_kwargs.get("url")
 app.config["SESSION_REDIS"] = r
 app.config["SSE_REDIS_URL"] = app.config["REDIS_URL"] = os.getenv(
     "REDIS_URL", "redis://localhost"
@@ -90,8 +92,8 @@ dbname = get_database()
 feedback_collection = dbname["Feedback"]
 
 # Global variables
-progress1 = 0
-scenes_list = []
+progress1 = 0 # progress for each scene
+scenes_list = [] # list of scenes
 current_scene_index = 0
 URLS = get_service_urls()
 if URLS["sd"] == "" or URLS["whisper"] == "":
@@ -183,12 +185,12 @@ def receive_user_input():
     return jsonify(success=True)
 
 
-def process_input(input_data, user_id):
+def process_input(dream_input, user_id):
     """
-    Process input data and generate images for each scene in the input data.
-
+    Creates scenes from the dream_input using a call to OpenAI GPT-3 and sends them to the SD server to generate images.
+    
     Args:
-        input_data (str): The input data to be processed.
+        dream_input (str): A dream description as told by the user
         user_id (str): The ID of the user. Passed because the function is called in a separate thread, outside of the request context.
 
     Returns:
@@ -197,7 +199,7 @@ def process_input(input_data, user_id):
     global progress1, scenes_list
 
     # Call OpenAI GPT-3 to separate scenes
-    scenes_list = call_openai(input_data, test=IS_TEST)
+    scenes_list = call_openai(dream_input, test=IS_TEST)
 
     # If no scenes were returned, emit an error message to the client
     if len(scenes_list) == 0:

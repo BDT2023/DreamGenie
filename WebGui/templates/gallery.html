@@ -134,37 +134,11 @@
                     imageContainer.removeChild(firstChild);
                     itemDiv.className += ' active';
                 }
-
                 var imageElement = document.createElement('img');
                 imageElement.src = imagePath;
                 imageElement.alt = "Image";
                 imageElement.width = 768;
                 imageElement.height = 512;
-
-
-                // imageElement.onload = function () {
-                //     var canvas = document.createElement('canvas');
-                //     canvas.width = imageElement.width;
-                //     canvas.height = imageElement.height;
-                //     var context = canvas.getContext('2d');
-                //     context.drawImage(imageElement, 0, 0);
-                //     var dataURL = canvas.toDataURL('image/png');
-                //     console.log("on load");
-                //     // Create the "Save" button
-                //     var saveButton = document.createElement('button');
-                //     saveButton.className = 'btn btn-primary save-button';
-                //     saveButton.innerHTML = '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>';
-                //     saveButton.addEventListener('click', function () {
-                //         console.log("on save");
-                //         var downloadLink = document.createElement('a');
-                //         downloadLink.href = dataURL;
-                //         downloadLink.download = 'image.png';
-                //         document.body.appendChild(downloadLink);
-                //         downloadLink.click();
-                //         document.body.removeChild(downloadLink);
-                //     });
-                // }
-
                 var canvas = document.createElement('canvas');
                 canvas.width = imageElement.width;
                 canvas.height = imageElement.height;

@@ -1,15 +1,24 @@
 import openai
 from icecream import ic  # for debugging https://github.com/gruns/icecream
-#from my_secrets import API_KEY_OPENAI
 import os
 import random as rand
 import re
 import pandas as pd
 
 openai.api_key = os.environ.get('API_KEY_OPENAI')
-
+TEST = True
 
 def load_dreams(file_name="..\\Scene_Analyzer\\sample_texts_normalized.csv"):
+    """
+    Load dreams from a CSV file.
+
+    Args:
+        file_name (str, optional): The path to the CSV file. 
+        Defaults to "..\\Scene_Analyzer\\sample_texts_normalized.csv".
+
+    Returns:
+        pandas.DataFrame: A dataframe containing the loaded dreams.
+    """
     dir_path = os.path.dirname(os.path.realpath(__file__))
     file_name = os.path.join(dir_path,"sample_texts_normalized.csv")
     dream_list = pd.read_csv(file_name, header=None)
@@ -21,6 +30,8 @@ def get_samples(file_name="manual_scene_separation_data.txt"):
     Open the file with the manually separated scenes and return a list of the separated dreams.
 
     file_name: Name of the file containing the separated scenes. Default is 'manual_scene_separation_data.txt'.
+    Returns: 
+        List of strings containing the separated dreams.
     """
     samples = []
     dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -40,15 +51,20 @@ def build_prompt(
 ):
     """
     Build the prompt for the API call.
-    n = number of examples of manual separation to pass to the model
+    Start by giving n examples and their separation, then pass the command and the dream to be separated.
+    
+    Args:
+        dream (str): The dream to be separated.
+        command (str, optional): The command to be passed to the model.
+        n (int, optional) = number of examples of manual separation to pass to the model
     """
     examples = ""
     samples = get_samples()
+    
     # build the examples string from the manual separation data
     for i in range(0, min(len(samples), n)):
         examples += samples[i]
         examples += os.linesep
-    # print(examples)
 
     # If we are passing examples in the prompt, we need to add "Examples:" to the prompt, otherwise we don't.
     if examples != "":
@@ -60,7 +76,6 @@ def build_prompt(
     {dream}"
     else:
         prompt = f"{command}{os.linesep}{dream}"
-    # print(prompt)
     return prompt
 
 
@@ -70,17 +85,16 @@ def load_latest_output():
 
     Reads the text from "out.txt" file and splits it into a list of strings based on the "OUT:" keyword. 
     It then further splits the list based on the "Scene" keyword, removes the line numbers and returns the list.
-
+    
     Returns:
     List of strings containing the latest output from the "out.txt" file.
     """
     with open("out.txt", "r") as f:
         text = f.read()
-        split_text = text.split("OUT:")
-        gen_list = split_text[-1].split("Scene")[1:]
-        gen_list = [re.sub(r"[0-9]\: ", "", x) for x in gen_list]
-        gen_list[-1] = gen_list[-1].split('\n')[0]+'\n'
-        #print(gen_list)
+        split_text = text.split("OUT:") # split the text based on the "OUT:" keyword
+        gen_list = split_text[-1].split("Scene")[1:] # remove the first element
+        gen_list = [re.sub(r"[0-9]\: ", "", x) for x in gen_list] # remove the line numbers
+        gen_list[-1] = gen_list[-1].split('\n')[0]+'\n' # remove the last line
     return gen_list
 
 def call_openai(
@@ -100,8 +114,8 @@ def call_openai(
     if test == True:
         return load_latest_output()
     # model_engine = "text-curie-001"
-    #model_engine = "davinci-002"
-    model_engine = "text-davinci-003"
+    # model_engine = "davinci-002"
+    model_engine = "text-davinci-003" # the best one so far for this task
 
     # API call to OpenAI GPT-3 using this schema:
     # https://beta.openai.com/docs/api-reference/completions/create
@@ -139,12 +153,19 @@ def call_openai(
         f.write(os.linesep)
         
     def split_generated(generated_text):
-        split_text = generated_text.split("Scene")[1:]
-        if len(split_text) != 0:
+        """
+        Split the generated text into multiple scenes based on the occurrence of the word "Scene".
+        Args:
+            generated_text: The text to be split.
+        Returns:
+            A list of split scenes.
+        """
+        split_text = generated_text.split("Scene")[1:] # remove the first element because it's empty
+        if len(split_text) != 0: 
             return split_text
         pattern = r"^\d+\."
         # Split the text using the pattern
-        split_text = re.split(pattern, generated_text, flags=re.MULTILINE)
+        split_text = re.split(pattern, generated_text, flags=re.MULTILINE) 
         if len(split_text) == 0:
             split_text = generated_text.split('\n')
         return split_text[1:]
@@ -178,4 +199,4 @@ def separate_random(test = False,command="Give short visual descriptions of the 
 
 if __name__ == "__main__":
     # Load a random dream from the csv and call the openai scene separator on it.
-    separate_random(test=False)
+    separate_random(test=TEST)
