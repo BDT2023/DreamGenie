@@ -9,7 +9,7 @@ eventlet.monkey_patch()
 
 import sys
 import time
-from flask import request, Flask, render_template, session, jsonify, redirect, url_for
+from flask import request, Flask, render_template, session, jsonify
 from flask_sse import sse
 from flask_session import Session
 import requests
@@ -42,7 +42,7 @@ MGDB_PASS = os.environ.get("MGDB_PASS")
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 REDIS_PORT = 6379
-IS_TEST = False # set to True to use dummy test data - previous scene separations, False to use real call to OpenAI
+IS_TEST = False  # set to True to use dummy test data - previous scene separations, False to use real call to OpenAI
 app = Flask(__name__)
 app.logger.setLevel(logging.INFO)
 app.app_context().push()
@@ -93,8 +93,8 @@ dbname = get_database()
 feedback_collection = dbname["Feedback"]
 
 # Global variables
-progress1 = 0 # progress for each scene
-scenes_list = [] # list of scenes
+progress1 = 0  # progress for each scene
+scenes_list = []  # list of scenes
 current_scene_index = 0
 URLS = get_service_urls()
 if URLS["sd"] == "" or URLS["whisper"] == "":
@@ -189,7 +189,7 @@ def receive_user_input():
 def process_input(dream_input, user_id):
     """
     Creates scenes from the dream_input using a call to OpenAI GPT-3 and sends them to the SD server to generate images.
-    
+
     Args:
         dream_input (str): A dream description as told by the user
         user_id (str): The ID of the user. Passed because the function is called in a separate thread, outside of the request context.
@@ -383,4 +383,3 @@ def submit_feedback():
     feedback_collection.insert_one(feedback_data)
 
     return render_template("thank_you.html")
-
