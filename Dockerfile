@@ -7,7 +7,7 @@ RUN apt-get update \
 	  redis-server
 	  
 
-RUN git clone -b Daniel_experimental https://github.com/BDT2023/DreamGenie.git
+RUN git clone -b main https://github.com/BDT2023/DreamGenie.git
 
 RUN pip install pymongo
 
