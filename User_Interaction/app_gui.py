@@ -10,7 +10,6 @@ import time
 import sys
 import os
 from PIL import Image, ImageTk
-
 os.chdir(os.path.dirname(__file__))
 sys.path.append("../Scene_Analyzer")
 sys.path.append("../Image_Generation")
@@ -23,16 +22,22 @@ import customtkinter as ctk
 import string
 import os
 
-# TODO: add __init__.py to the other modules
-# add path to the other modules to enable import
-# os.chdir(os.path.dirname(__file__))
 URL = get_service_urls()["whisper"]
-IS_TEST = True
-PATH_DICT = {}
+IS_TEST = True 
+PATH_DICT = {} # global dict to store paths of images
 
 
 class StartWindow:
     def __init__(self, master):
+        """
+        Initializes the class with the given master widget.
+
+        Parameters:
+            master (widget): The master widget to which this class belongs.
+
+        Returns:
+            None
+        """
         self.master = master
 
         # Create two radio buttons for Text and Audio
@@ -60,7 +65,7 @@ class StartWindow:
         self.proceed_button = ctk.CTkButton(
             master, text="Proceed", command=self.next_window
         )
-        self.proceed_button.pack(padx=20, pady=10)  
+        self.proceed_button.pack(padx=20, pady=10)
 
     def clear_window(self):
         # Destroy all widgets in the window
@@ -433,7 +438,6 @@ class SeparatedScenesWindow:
         # Show the response text in the new window
         self.scenes_list = scenes_list
         PATH_DICT = {scene: None for scene in scenes_list}
-        # print(PATH_DICT)
         self.paragraph = self.list_to_paragraph(scenes_list)
         self.concat_text = (
             "Here are the scenes I separated for you: \n" + self.paragraph + "\n"
@@ -476,17 +480,6 @@ class SeparatedScenesWindow:
         self.show_image_window = ShowImageWindow(
             self.master, self.scenes_list[0], self.scenes_list, idx=0
         )
-        # if len(self.scenes_list) == 1:
-        #     self.show_image_window = ShowImageWindow(
-        #         self.master, self.scenes_list[0], None
-        #     )
-        # else:
-        #     self.show_image_window = ShowImageWindow(
-        #         self.master, self.scenes_list[0], self.scenes_list[1:]
-        #     )
-        # TODO - destroy thread when window is closed
-        # t = threading.Thread(target=self.send_request, args=(self.show_image_window,))
-        # run function that print hello world in lambda function.
         t = threading.Thread(
             target=self.scenes_images_factory, args=(self.scenes_list.copy(),)
         )

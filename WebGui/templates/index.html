@@ -1,3 +1,4 @@
+<!-- This is the HTML template for the index page of the Dream Genie web application. It includes a form for users to input their dream, buttons to send the input and start/stop recording audio, and a spinner to indicate that the application is processing the user's input. The template also includes JavaScript code to handle the audio recording and playback, as well as to send the user's input to the server for processing. -->
 <!DOCTYPE html>
 <html>
 
@@ -9,49 +10,51 @@
   <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
 </head>
 
+
 <body>
   <h1>Welcome to Dream Genie!</h1>
+  <p>Share your dream, and watch it come alive through scenes and art.</p>
   <div class="input-group">
-  <textarea id="inputBox" rows="5" cols="100"></textarea>
+    <textarea id="inputBox" rows="5" cols="100"></textarea>
   </div>
   <button onclick="sendInput()">Send</button>
   <button id="recordButton" onclick="startRecording()">Start Recording</button>
   <button id="stopButton" onclick="stopRecording()">Stop Recording</button>
+  <div id="warningMessage" style="color: red; display: none;">Please enter at least 10 characters of non-empty text.</div>
   <audio id="audioPlayback" controls style="visibility: hidden;"></audio>
-  <div id="messageContainer"></div>
+  <br>
+  <div id="spinnerContainer" style="text-align: center;">
+    <div id="spinner" class="loader" style="visibility: visibile;"></div>
+  </div>
 
 
-  <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
-    integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
-    crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script type="text/javascript">
+    document.getElementById("spinner").style.display = "none";
+    const user_id = "{{ user_id }}"; // get the user id passed in the context
+    console.log("I'm user: {{ user_id }}");
+    const source = new EventSource("{{ url_for('sse.stream') }}?channel=" + encodeURIComponent(user_id));
+    console.log("My source is:" + source.url);
+    /*
+    'audio_result'
+    */
+    source.addEventListener('audio_result', function (e) {
+      const data = JSON.parse(event.data);
+      console.log("Received message: ", data['audio_result']);
+      var audio_result = data['audio_result'];
+      //alert(audio_result);
+      document.getElementById("spinner").style.display = "none";
+      console.log(audio_result);
+      var textBox = document.getElementById('inputBox');
+      textBox.value = audio_result;
+    }, false);
 
-
-    var socket = io.connect('http://localhost:5000');
     var mediaRecorder;
     var chunks = [];
     var imageArray = [];
     var state = 'idle';
 
-    function blobToHex(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = function (evt) {
-          if (evt.target.readyState === FileReader.DONE) {
-            const arrayBuffer = evt.target.result;
-            const byteArray = new Uint8Array(arrayBuffer);
-            const hexArray = Array.from(byteArray, byte => {
-              return ('0' + (byte & 0xFF).toString(16)).slice(-2);
-            });
-            resolve(hexArray.join(' '));
-          }
-        };
-        reader.onerror = reject;
-        reader.readAsArrayBuffer(blob);
-      });
-    }
     function startRecording() {
       // Disable the record button until we get a result or error
       var button = document.getElementById("recordButton");
@@ -105,6 +108,24 @@
       let audioElement = document.getElementById("audioPlayback");
       audioElement.src = audioURL;
     }
+      function blobToHex(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = function (evt) {
+            if (evt.target.readyState === FileReader.DONE) {
+              const arrayBuffer = evt.target.result;
+              const byteArray = new Uint8Array(arrayBuffer);
+              const hexArray = Array.from(byteArray, byte => {
+                return ('0' + (byte & 0xFF).toString(16)).slice(-2);
+              });
+              resolve(hexArray.join(' '));
+            }
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(blob);
+        });
+      }
+
     function blobToBase64(blob, cb) {
       let reader = new FileReader();
       reader.onload = function () {
@@ -118,120 +139,67 @@
     // Define the chunk size (you can adjust this value as needed)
     const chunkSize = 1024 * 10; // For example, split the base64 string into 10 x 1KB chunks
 
-    function processAudioData() {
+    async function processAudioData() {
       // Create a new Blob object from the concatenated chunks and specify the MIME type.
+      
+      const sendDataToServer = async (audioBlob) => {
+        try {
+          const formData = new FormData();
+          formData.append('audio', audioBlob, 'audio.wav');
+          console.log("Sending audio input to server");
+          document.getElementById("spinner").style.display = "block";
+          const response = await fetch('/audio', {
+            method: 'POST',
+            body: formData
+          });
+          // Handle response if needed
+        } catch (error) {
+          console.error("Error sending audio to server:", error);
+          // Handle error if needed
+        }
+      };
+
       var audioBlob = new Blob(chunks, { 'type': 'audio/wav; codecs=opus' });
+      await sendDataToServer(audioBlob);
+
       console.log("Number of chunks:", chunks.length);
       console.log("Blob size:", audioBlob.size);
-
-      blobToBase64(audioBlob, function (base64) {
-        // audioBlob is the Blob object
-        console.log("Im...Im... EMiiiiitiiing");
-
-        // Split the base64 string into chunks
-        const totalChunks = Math.ceil(base64.length / chunkSize);
-        for (let i = 0; i < totalChunks; i++) {
-          const start = i * chunkSize;
-          const end = (i + 1) * chunkSize;
-          const chunk = base64.substring(start, end);
-
-          console.log(`Sending chunk ${i + 1} of ${totalChunks}`);
-          socket.emit('audioChunk', chunk); // send chunk to server
-        }
-        socket.emit('endAudio', {}); // send complete event to server
-      });
     }
 
 
-    function sendInput() {
+    async function sendInput() {
       var textBox = document.getElementById('inputBox');
       input_data = textBox.value;
       console.log(input_data);
-      socket.emit('user_input', input_data);
-      socket.disconnect();
-      //socket.sleep(0);
+      if (input_data === '' || input_data.length < 10) {
+        // Display a warning message
+        var warningMessage = document.getElementById('warningMessage');
+        warningMessage.style.display = 'block';
+        return;
+      }
+
+      const sendDataToServer = async (inputData) => {
+        try {
+          const formData = new FormData();
+          formData.append('user_input', inputData);
+          console.log("Sending user input to server");
+          const response = await fetch('/user_input', {
+            method: 'POST',
+            body: formData
+          });
+          // Handle response if needed
+        } catch (error) {
+          console.error("Error sending user input to server:", error);
+        }
+      };
+      await sendDataToServer(input_data);
       navigateToGallery();
     }
 
-    function navigateToGallery() {
-      window.location.href = '/gallery';
-    }
-
-    socket.on('received', function (data) {
-      //navigateToGallery();
-      return false;
-    });
-
-    socket.on('message', function (message_data) {
-      console.log(message_data);
-    });
-
-
-    socket.on('output', function (output_data) {
-      console.log(output_data);
-      var messageDiv = document.createElement('div');
-      messageDiv.innerHTML = output_data;
-      var messageContainer = document.getElementById('messageContainer');
-      messageContainer.appendChild(messageDiv);
-    });
-
-    /*
-      function addImageToCarousel(scene) {
-      console.log("Adding image to carousel, array: ", imageArray); // <-- Add this
-      if (imageArray.length > 0) {
-        var imagePath = imageArray.shift();
-        var imageContainer = document.getElementById('imageContainer');
-        console.log("Image Container: ", imageContainer); // <-- Add this
-        var firstChild = imageContainer.firstChild;
-        var itemDiv = document.createElement('div');
-        itemDiv.className = 'item';
-        if(firstChild === null) {
-            itemDiv.className += ' active';
+        function navigateToGallery() {
+          window.location.href = '/gallery';
         }
-        var imageElement = document.createElement('img');
-        imageElement.src =  imagePath;
-        imageElement.alt = "Image";
-        imageElement.width = 300;
-        imageElement.height = 300;
-      // Create the caption element
-        var captionElement = document.createElement('div');
-        captionElement.className = 'carousel-caption d-none d-md-block';
-        var captionText = document.createElement('p');
-        captionText.innerText = scene;
-        captionElement.appendChild(captionText);
-
-        // Append image and caption to carousel item
-        itemDiv.appendChild(imageElement);
-        itemDiv.appendChild(captionElement);
-
-        // Append new carousel item to carousel
-        imageContainer.appendChild(itemDiv);
-        $(document).ready(function() {
-          $('#imageCarousel').carousel();
-        });
-      }
-    }
-
-    socket.on('image_and_scene', function(data) {
-      // TODO: change to navigating to gallery page
-      //window.location.href = '/gallery';
-      const imagePath = data.image_path;
-      const scene = data.scene;
-      console.log("Received image path: ", imagePath); // <-- Add this
-      alert(imagePath);
-      imageArray.push(imagePath);
-      addImageToCarousel(scene);
-    });
-    */
-
-    // TODO: rename result to audio_result
-    socket.on('result', function (audio_result) {
-      alert(audio_result);
-      console.log(audio_result);
-      var textBox = document.getElementById('inputBox');
-      textBox.value = audio_result;
-    });
-
+        
   </script>
 </body>
 

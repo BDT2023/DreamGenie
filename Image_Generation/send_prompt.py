@@ -1,3 +1,6 @@
+"""
+This module contains functions for sending a prompt to the Stable Diffusion API and saving the resulting image.
+"""
 import sys
 
 sys.path.append("../Utils")
@@ -8,11 +11,15 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
-from my_secrets_ig import USERNAME, PASSWORD
+
 import os
 from datetime import datetime
 import time
 import concurrent.futures
+
+USERNAME = os.getenv("USERNAME")
+PASSWORD = os.getenv("PASSWORD")
+
 
 counter = 0
 URL = ""
@@ -21,42 +28,62 @@ session = requests.Session()
 session.auth = (USERNAME, PASSWORD)
 
 
-def save_image(img, folder, filename,isWeb = False):
+def save_image(img, folder, filename, isWeb):
+    """
+    Save an image to a specified folder.
+    If isWeb is True, the function creates a subfolder called "static" inside the specified folder if it doesn't already exist.
+    Then, it saves the image to the subfolder with the specified filename.
+    Otherwise, if isWeb is False, the function checks if the specified folder exists and creates it if it doesn't.
+    Then, it saves the image to the folder with the specified filename.
+
+    Parameters:
+        img (PIL.Image.Image): The image to be saved.
+        folder (str): The folder where the image will be saved.
+        filename (str): The name of the saved image file.
+        isWeb (bool): Flag indicating whether we are working with the web app or not.
+
+    Returns:
+        str: The path where the image is saved.
+    """
     if isWeb:
-        static_folder = os.path.join('static', folder)
+        static_folder = os.path.join("static", folder)
         if not os.path.exists(static_folder):
             os.makedirs(static_folder)
-        img.save(os.path.join(static_folder, filename))
+        save_path = os.path.join(static_folder, filename)
     else:
         if not os.path.exists(folder):
             os.makedirs(folder)
-        img.save(os.path.join(folder, filename))
+        save_path = os.path.join(folder, filename)
+
+    img.save(save_path)
+    return save_path
 
 
-# Deprecated
-def get_url():
-    global URL
-    api_url = "https://api.ngrok.com/endpoints"
-    headers = {"Authorization": f"Bearer {API_KEY}", "Ngrok-Version": "2"}
-    response = session.get(api_url, headers=headers)
-    if response.status_code != 200:
-        raise Exception(f"API request failed: {response.text}")
-    if len(response.json()["endpoints"]) == 0:
-        raise Exception(f"No endpoints found")
-    URL = response.json()["endpoints"][0]["public_url"]
-    return URL
-
-# TODO: check edge cases
 def poll_results():
-    # s.auth = (USERNAME, PASSWORD)
+    """
+    Poll the results of the API call, using the progress endpoint of the Stable Diffusion on server.
+
+    Returns:
+        float: The progress of the API call.
+
+    """
     response = session.get(URL + "/sdapi/v1/progress")
     if response.status_code != 200:
         raise Exception(f"API request failed: {response.text}")
-    # return response.json()['progress']
     return round(float(response.json()["progress"]), 2)
 
 
 def poll_results_until_done():
+    """
+    Polls the results until the process is done.
+
+    This function continuously calls the `poll_results` function to check the progress of the process.
+    It keeps polling until one of the following conditions is met:
+    - The progress is less than or equal to 0.
+    - The progress is greater than or equal to 99.
+    - The timeout period of 50 seconds has elapsed.
+
+    """
     time_started = time.time()
     TIMEOUT = 50  # seconds
     while True:
@@ -68,6 +95,12 @@ def poll_results_until_done():
 
 
 def check_style_api():
+    """
+    Check the style API to see if the "project_tokens" style exists.
+
+    Returns:
+        bool: True if the style exists, False otherwise.
+    """
     response = session.get(URL + "/sdapi/v1/prompt-styles")
     if response.status_code != 200:
         raise Exception(f"API request failed: {response.text}")
@@ -78,30 +111,40 @@ def check_style_api():
 
 
 def check_model_api():
+    """
+    Check the model API for available options.
+
+    Returns:
+        str: The model checkpoint for the sd_model.
+    """
     response = session.get(URL + "/sdapi/v1/options")
     if response.status_code != 200:
         raise Exception(f"API request failed: {response.text}")
     return response.json()["sd_model_checkpoint"]
 
 
-def send_to_sd(prompt,isWeb = False):
+def send_to_sd(prompt, isWeb=False):
+    """
+    Sends a prompt to the sdapi/v1/txt2img endpoint and saves the resulting image.
+    
+    Args:
+        prompt (str): The prompt to be sent to the API.
+        isWeb (bool, optional): Indicates whether the function is being called from a web application. Defaults to False.
+    
+    Returns:
+        str: The path to the saved image.
+    
+    Raises:
+        Exception: If the API request fails.
+    """
+    print(f"web= {isWeb}")
     global counter, URL
 
     if URL == "":
         URLS = get_service_urls()
         URL = URLS["sd"]
-    # BACKUP URL FOR PRESENTATION
-    # URL = "https://9d6dbf0643353de5a3.gradio.live"
-
-    # is_style = check_style_api()  # check if the style is already added
-    # ic(is_style)
-    is_style = True
     tokens = ""
     negative_prompt = ""
-
-    # style = "project_tokens"
-    # ic.disable()
-    # if not is_style:
     tokens = """
     dream,expressive oil painting, whimsical atmosphere,
     trending on artstation HQ, amazing,artistic,vibrant,detailed,award winning,
@@ -112,18 +155,22 @@ def send_to_sd(prompt,isWeb = False):
     missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
     """
     style = ""
+    
+    # Experimental: trying to use premade negative embeddings for stable diffusion
     negative_embeddings = [
         "easynegative",
         "Unspeakable-Horrors-Composition-4v",
         "ng_deepnegative_v1_75t",
         "bad_prompt_version2",
     ]
-    model_name = check_model_api()
+    model_name = check_model_api() # Get the name of the currently loaded sd checkpoint
+
+    # The illuminati 2.0 sd checkpoint requires a different negative prompt
     if "illuminati" in model_name:
         negative_prompt += "nfixer,nartfixer,nrealfixer"
     else:
         tokens += "<lora:epi_noiseoffset_v2:1>"
-    # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
+    # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API 
     payload = {
         "enable_hr": "false",
         "denoising_strength": 0,
@@ -136,17 +183,17 @@ def send_to_sd(prompt,isWeb = False):
         "subseed_strength": 0,
         "seed_resize_from_h": -1,
         "seed_resize_from_w": -1,
-        "sampler_name": "DPM++ 2M",  # TODO: play with the results
+        "sampler_name": "DPM++ 2M Karras",  # can be changed to change the quality of the results
         "batch_size": 1,
         "n_iter": 1,
-        "steps": 30,
-        "cfg_scale": 8.5,
+        "steps": 20, # can be changed to affect the speed and quality of the results
+        "cfg_scale": 7.5,
         "width": 768,
         "height": 512,
         "restore_faces": "false",
         "tiling": "false",
         "negative_prompt": f"{negative_prompt}",
-        # "script_name": "CensorScript",
+        # "script_name": "CensorScript", #TODO: check how to implement this
         # "script_args": ['true','false'], #Pass the script its arguments as a list
         # "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
         "eta": 0,  # TODO: check about the following parameters
@@ -154,36 +201,32 @@ def send_to_sd(prompt,isWeb = False):
         "s_tmax": 0,
         "s_tmin": 0,
         "s_noise": 1
-        # "override_settings": {"sd_model_checkpoint":'dreamlikeart-diffusion-1.0.ckpt [14e1ef5d]'}
-    }
+        #"override_settings": {"sd_model_checkpoint": "dreamlikeart-diffusion-1.0.ckpt"},
+    } 
 
     def post_prompt(payload):
         return session.post(URL + "/sdapi/v1/txt2img", json=payload)
-
-    # TODO: add timing meter to check how long it takes to get a result
+    
     start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         ic(f'sending prompt: {payload["prompt"]}')
         future = executor.submit(post_prompt, payload)
         executor.submit(poll_results_until_done)
         x = future.result()
-    # x = session.post(URL + '/sdapi/v1/txt2img', json=payload)
     ic(x)
     if x.status_code != 200:
         raise Exception(f"API request failed: {x.text}")
-    # check if the image wasn't filterd due to nsfw
+    # check if the image wasn't filtered due to nsfw
     ic(f"Time taken: {time.time() - start_time} seconds")
     for i in range(0, len(x.json()["images"])):
         im = Image.open(BytesIO(base64.b64decode(x.json()["images"][i])))
         extrema = im.convert("L").getextrema()
         if not extrema == (0, 0):
-            # im.show()
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter += 1
             now = datetime.now().strftime("%H%M")
-            save_image(im, date_folder, f"image_{counter}_{now}.png",isWeb)
-
-            return f".\{date_folder}\image_{counter}_{now}.png"
+            save_path = save_image(im, date_folder, f"image_{counter}_{now}.png", isWeb)
+            return save_path
         else:
             ic("Image completely black!")
 

@@ -1,5 +1,6 @@
 *.pyc
 *.png
+!WebGui/static/favicon.png
 *.spec
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/misc.xml
@@ -25,3 +26,10 @@ my_secrets.py
 my_secrets_*.py
 .vscode/launch.json
 .gitignore
+nginx/nginx_cert/*
+WebGui\my_secrets_web.py
+api_keys.env
+*.__wz_cache
+*\flask_session
+/ses
+dockerbuildpush.bat

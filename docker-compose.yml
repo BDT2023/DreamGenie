@@ -1,0 +1,33 @@
+services:
+    redis:
+        image: redis/redis-stack-server:latest
+        ports:
+            - 6379:6379
+        
+    genie:
+        #build: .
+        image: benxxdmage/dreamgenie:tagname
+        #ports:
+        #   - 5000:5000
+        depends_on:
+            - redis
+        environment:
+           -  REDIS_HOST=redis 
+           -  REDIS_URL=redis://redis
+           
+    nginx:
+        image: nginx:latest
+        volumes:
+          - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  # Mount the Nginx config
+          - ./nginx/nginx_cert/nginx-selfsigned.crt:/etc/nginx/ssl/ssl_certificate.crt:ro  # Mount SSL cert
+          - ./nginx/nginx_cert/nginx-selfsigned.key:/etc/nginx/ssl/ssl_certificate.key:ro  # Mount SSL key
+        ports:
+          - 6980:80
+          - 5000:443
+        depends_on:
+          - genie  # Ensure the Genie (Gunicorn) service is running before starting Nginx
+
+            
+        
+        
+    

@@ -439,3 +439,134 @@ OUT:
 Scene 1: A person stands in a room with a white wall and a window overlooking a garden. The sun is shining in and the room is filled with a warm light.
 Scene 2: The person looks at the wall and sees a painting of a small white dog with brown eyes and a pink tongue sticking out.
 ########################
+Prompt: Give short visual descriptions of the scenes in the following:
+Examples:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.
+I am with the family in a picnic of some sort. There is a snake somewhere visible. I am aware of it, but
+not concern. Then comes another one - near, but not near enough to alarm. Saniee goes to kill them.
+He has a cane, but so short like a foot or so. A dance starts with Saniee using the cane to hit the snake
+and snake is moving around. The second snake is beautiful and each time goes on some pebbles,
+there are these radiating rainbow colors like jewels. Next thing the snake is shattered in rock size
+pieces, more like a broken statue than a living thing. Throughout, the mood is happiness and joy
+OUT:
+Scene 1: A family is gathered for a picnic, with a visible snake nearby.
+Scene 2: A family is gathered for a picnic, with a visible two snakes nearby one closer than the first and is beautiful and is radiating rainbow colors like jewels. A family member, goes to kill the snakes using a short cane,and the snake is moving around.
+Scene 3: The snake is shattered into rock-size pieces, more like a broken statue than a living thing. The mood throughout is happiness and joy.    
+    I HAD a dream about 2 dogs chasing me in the desert, later I woke up to see my child climbing a tree in the forest, and my grandma eating a huge ice cream    Scene 1:Output:  A man is in a desert with two dogs chasing him. Scene 2: A man is in a forest with his child climbing a tree, and his grandma eating a huge ice cream. Scene 3: The man is in a forest with his child climbing a tree, and his grandma eating a huge ice cream, and a dog is chasing him.
+    I was in a dark room with a lot of people, I was looking for a way out. I found a door that was locked and I couldn't open it. I was frustrated and I wanted to get out of there. I don't remember what happened next, but I woke up.   Scene 1: A person is in a dark room with a lot of people, looking for a way out. Scene 2: The person finds a door that is locked and the person can't open it. Scene 3: The person is frustrated and wants to get out of the room, but can't.
+    I was in a dark room with a lot of people, I was looking for a way out. I found a door that was locked and I couldn't open it. I was frustrated and I wanted to get out of there. I don't remember what happened next, but I woke up.
+########################
+Prompt: Examples of dreams and scene seperation:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+    Give short visual descriptions of the scenes in the following:    
+    so i had a dream that two dogs were chasing me in the middle of the desert then i aaw a kid in the forest and after that ii saw my grandma eating an icecream in the mall
+    Scene 1:Output:  A person running in the middle of a desert, two dogs chasing them. 
+Scene 2: A child in a forest, standing still.
+Scene 3: An elderly woman in a mall, eating an ice cream.
+########################
+Prompt: Examples of dreams and scene seperation:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+    Give short visual descriptions of the scenes in the following:    
+    i had a dream that two dogs were chasing me in the middle of the desert then i saw a kid in the forest and after that ii saw my grandma eating an icecream in the mall
+Output: 
+Scene 1: A person running in the middle of a desert, being chased by two dogs.
+Scene 2: View of a forest, with a kid standing in the middle. 
+Scene 3: Inside a mall, an elderly woman eating an ice cream.
+########################
+Prompt: Examples of dreams and scene seperation:    I am in my old house, but I am not a child. I am searching for something and I'm afraid that I may get
+caught. I am not supposed to be here. It's middle of the night now and dark. I am about to leave, but I
+realize someone is there. I go back to the house and I wake up.
+OUT:
+Scene 1: A grown man stands in an old house, illuminated by a single lightbulb. He is searching intently,while looking worried,it's night outside.
+Scene 2: The man is about to leave, he looks back and sees a person in the window.
+My dream setting is in a classroom, like a yoga studio.
+The floors are wood, there's lots of mats laying down, the walls are a warm buttery yellow and the lighting is soft.
+It looks like a typical yoga studio. I'm on my mat and I'm working something out of my body.
+All the postures that I normally do, I'm trying them sideways and upside down and backwards.
+I'm amazed that this approach is actually working and it doesn't feel strenuous on my body 
+and I wonder why I never thought about doing it this way before.
+OUT:
+Scene 1: View of a yoga studio, the floors are wooden with mats on them, and the walls are butter yellow, illuminated by soft light.
+Scene 2: A person is at the yoga studio, on the mat doing yoga, but the postures are sideways and upside down.
+My dream last night started in a cold stark landscape at twilight. I was just standing there.
+I like twilight. I was feeling rather calmed by it. Around the corner comes a wolf.
+I just watched it doing its loping thing - it wasn't running, it wasn't walking - it was just doing its brisk lope. It was panting.
+I was standing there admiring it. Then it went around another corner and was gone.
+I didn't follow it. But I feel like it actually led to something, though I can't remember the rest of the dream.
+OUT:
+Scene 1: A person stands in a cold stark landscape at twilight.
+Scene 2: A wolf starts loping around the person, panting. 
+Scene 3: The person watches the wolf around them admiringly.    
+    Give short visual descriptions of the scenes in the following:    
+    so i had a dream that two dogs were chasing me in the middle of the desert then i saw a kid in the forest and after that ii saw my grandma eating an icecream in the mall
+Output: 
+Scene 1: A person running in the middle of a desert, two dogs chasing them.
+Scene 2: Person in a forest, seeing a child. 
+Scene 3: Person in a mall, seeing their grandma eating an ice cream.
+########################

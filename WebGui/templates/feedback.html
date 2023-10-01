@@ -1,0 +1,55 @@
+<!-- This HTML file contains a form for users to submit feedback for the Dream Genie service. It includes fields for age, gender, familiarity with AI image generation, ratings for image accuracy, scene representation, and overall experience, as well as a comments section. The form is submitted to the "/submit_feedback" endpoint via the POST method. -->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Dream Genie - Feedback</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+        <!-- Bootstrap CSS -->
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    </head>
+<body>
+
+<h1>Thank You for Using Dream Genie!</h1>
+<p>We hope you enjoyed your experience. We would appreciate your honest feedback to continue improving our service.</p>
+<p>Please rate on a scale of 1 to 5, where 1 is not satisfied and 5 is very satisfied.</p>
+
+<form action="/submit_feedback" method="post">
+    <label for="age">Age:</label>
+    <input type="number" id="age" name="age" min="1" max="150" required><br><br>
+
+    <label for="gender">Gender:</label>
+    <select id="gender" name="gender" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+        <option value="preferNotToSay">Prefer not to say</option>
+    </select><br><br>
+
+    <label for="familiarity">How familiar are you with AI image generation?</label>
+    <select id="familiarity" name="familiarity" required>
+        <option value="No experience">No experience</option>
+        <option value="Somewhat knowledgeable">Somewhat knowledgeable</option>
+        <option value="Well-versed">Well-versed</option>
+    </select><br><br>
+    
+
+    <label for="imageRating">How close were the images to the scenes they represent? (1-5)</label>
+    <input type="number" id="imageRating" name="image_rating" min="1" max="5" required><br><br>
+
+    <label for="sceneRating">How much did the scenes represent your dream? (1-5)</label>
+    <input type="number" id="sceneRating" name="scene_rating" min="1" max="5" required><br><br>
+
+    <label for="experienceRating">How was the general experience? (1-5)</label>
+    <input type="number" id="experienceRating" name="experience_rating" min="1" max="5" required><br><br>
+
+    <label for="comments">Any additional comments:</label><br>
+    <textarea id="comments" name="comments" rows="4" cols="50"></textarea><br><br>
+
+    <div class="text-center"> <!-- Added a wrapper div and applied text-center class -->
+        <input type="submit" class="btn btn-primary" value="Submit Feedback">
+    </div>
+</form>
+
+</body>
+</html>
