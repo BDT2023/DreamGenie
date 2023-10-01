@@ -376,3 +376,4 @@ def submit_feedback():
     feedback_collection.insert_one(feedback_data)
 
     return render_template("thank_you.html")
+

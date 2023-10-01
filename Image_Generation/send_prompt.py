@@ -1,3 +1,6 @@
+"""
+This module contains functions for sending a prompt to the Stable Diffusion API and saving the resulting image.
+"""
 import sys
 
 sys.path.append("../Utils")
