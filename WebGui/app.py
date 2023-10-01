@@ -216,13 +216,7 @@ def process_input(dream_input, user_id):
     # of the form: static/2021-03-31/unique_id
     unique_path = os.path.join(os.getcwd(), "static", today.isoformat(), unique_id)
     logging.info(f"Unique path: {unique_path}")
-    # of the form: static/2021-03-31/unique_id
-    unique_path = os.path.join(os.getcwd(), "static", today.isoformat(), unique_id)
-    logging.info(f"Unique path: {unique_path}")
 
-    # create dir for unique id
-    # os.mkdir(unique_path)
-    os.makedirs(unique_path, exist_ok=True)
     # create dir for unique id
     # os.mkdir(unique_path)
     os.makedirs(unique_path, exist_ok=True)
