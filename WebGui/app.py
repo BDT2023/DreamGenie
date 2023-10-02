@@ -135,12 +135,12 @@ def receive_user_input():
     return jsonify(success=True)
 
 
-def process_input(dream_input, user_id):
+def process_input(input_data, user_id):
     """
-    Creates scenes from the dream_input using a call to OpenAI GPT-3 and sends them to the SD server to generate images.
+    Creates scenes from the input_data using a call to OpenAI GPT-3 and sends them to the SD server to generate images.
 
     Args:
-        dream_input (str): A dream description as told by the user
+        input_data (str): A dream description as told by the user
         user_id (str): The ID of the user. Passed because the function is called in a separate thread, outside of the request context.
 
     Returns:

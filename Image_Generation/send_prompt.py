@@ -11,6 +11,8 @@ from PIL import Image
 import base64
 from io import BytesIO
 import argparse
+import json
+import re
 
 import os
 from datetime import datetime
@@ -145,6 +147,20 @@ def check_and_load_model_api(model_name="dreamlikeDiffusion10_10.ckpt"):
         print(f"Loaded model: {model_name}")
 
 
+def check_nsfw(response_text):
+    pattern = r'\{\\"nsfw\\"\: \[(true|false)\]\}'
+    # Use re.search to find the pattern in the text
+    match = re.search(pattern, response_text)
+    if match:
+        # The pattern was found in the text
+        bool_val = match.group(1)
+        return True if bool_val in ("true", "True") else False
+    else:
+        # The pattern was not found in the text
+        print("Pattern not found")
+        return False
+
+
 def send_to_sd(prompt, isWeb=False):
     """
     Sends a prompt to the sdapi/v1/txt2img endpoint and saves the resulting image.
@@ -217,8 +233,8 @@ def send_to_sd(prompt, isWeb=False):
         "restore_faces": "false",
         "tiling": "false",
         "negative_prompt": f"{negative_prompt}",
-        # "script_name": "CensorScript", #TODO: check how to implement this
-        # "script_args": ['true','false'], #Pass the script its arguments as a list
+        "script_name": "CensorScript",  # TODO: check how to implement this https://github.com/IOMisaka/sdapi-scripts
+        "script_args": [True, False],  # Pass the script its arguments as a list
         # "script_args": [('put_at_start','false'),('different_seeds','true')], #Pass the script its arguments as a list
         "eta": 0,  # TODO: check about the following parameters
         "s_churn": 0,
@@ -241,18 +257,22 @@ def send_to_sd(prompt, isWeb=False):
     if x.status_code != 200:
         raise Exception(f"API request failed: {x.text}")
     # check if the image wasn't filtered due to nsfw
+    nsfw = check_nsfw(x.text)
+    with open("response.txt", "w") as f:
+        f.write(x.text)
+
     ic(f"Time taken: {time.time() - start_time} seconds")
     for i in range(0, len(x.json()["images"])):
         im = Image.open(BytesIO(base64.b64decode(x.json()["images"][i])))
         extrema = im.convert("L").getextrema()
-        if not extrema == (0, 0):
+        if not extrema == (0, 0) and not nsfw:
             date_folder = datetime.now().strftime("%Y-%m-%d")
             counter += 1
             now = datetime.now().strftime("%H%M")
             save_path = save_image(im, date_folder, f"image_{counter}_{now}.png", isWeb)
             return save_path
         else:
-            ic("Image completely black!")
+            ic("Not safe for work!")
 
 
 if __name__ == "__main__":
@@ -268,5 +288,5 @@ if __name__ == "__main__":
     prompt = "A painting of a forest with a river flowing through it."
     prompt = "I am again in my mom's house -city- and there is all this preparation going on  and i suddenly find out that a war is about to break out. THere are foreign soldiers and lots of guns around. We don't know the language but sounds like Arabic and my kids are trying to send a text message to my husband to ask for help without being caught ..."
     prompt = "two cats fighting each other"
-    prompt = "A wolf starts loping around the person, panting"
+    prompt = "a wolf loping through the forest"
     send_to_sd(prompt)
