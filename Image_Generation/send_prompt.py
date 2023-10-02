@@ -123,17 +123,39 @@ def check_model_api():
     return response.json()["sd_model_checkpoint"]
 
 
+def check_and_load_model_api(model_name="dreamlikeDiffusion10_10.ckpt"):
+    """
+    Checks if the specified model is loaded in Stable diffusion and loads it if it is not already loaded.
+
+    Args:
+        model_name (str): The name of the model to be loaded. Default is "dreamlikeDiffusion10_10.ckpt".
+
+    Returns:
+        None
+    """
+    response = session.get(URL + "/sdapi/v1/options")
+    curr_model = response.json()["sd_model_checkpoint"]
+    print(f"Current model: {curr_model}")
+    if model_name not in curr_model:
+        response = session.post(
+            URL + "/sdapi/v1/options", json={"sd_model_checkpoint": model_name}
+        )
+        if response.status_code != 200:
+            raise Exception(f"API request failed: {response.text}")
+        print(f"Loaded model: {model_name}")
+
+
 def send_to_sd(prompt, isWeb=False):
     """
     Sends a prompt to the sdapi/v1/txt2img endpoint and saves the resulting image.
-    
+
     Args:
         prompt (str): The prompt to be sent to the API.
         isWeb (bool, optional): Indicates whether the function is being called from a web application. Defaults to False.
-    
+
     Returns:
         str: The path to the saved image.
-    
+
     Raises:
         Exception: If the API request fails.
     """
@@ -143,6 +165,8 @@ def send_to_sd(prompt, isWeb=False):
     if URL == "":
         URLS = get_service_urls()
         URL = URLS["sd"]
+
+    check_and_load_model_api()
     tokens = ""
     negative_prompt = ""
     tokens = """
@@ -155,7 +179,7 @@ def send_to_sd(prompt, isWeb=False):
     missing arms, missing legs, extra arms, extra legs,fused fingers, too many fingers, long neck, username, watermark, signature
     """
     style = ""
-    
+
     # Experimental: trying to use premade negative embeddings for stable diffusion
     negative_embeddings = [
         "easynegative",
@@ -163,14 +187,14 @@ def send_to_sd(prompt, isWeb=False):
         "ng_deepnegative_v1_75t",
         "bad_prompt_version2",
     ]
-    model_name = check_model_api() # Get the name of the currently loaded sd checkpoint
+    model_name = check_model_api()  # Get the name of the currently loaded sd checkpoint
 
     # The illuminati 2.0 sd checkpoint requires a different negative prompt
     if "illuminati" in model_name:
         negative_prompt += "nfixer,nartfixer,nrealfixer"
     else:
         tokens += "<lora:epi_noiseoffset_v2:1>"
-    # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API 
+    # https://github.com/AUTOMATIC1111/stable-diffusion-webui/wiki/API
     payload = {
         "enable_hr": "false",
         "denoising_strength": 0,
@@ -186,7 +210,7 @@ def send_to_sd(prompt, isWeb=False):
         "sampler_name": "DPM++ 2M Karras",  # can be changed to change the quality of the results
         "batch_size": 1,
         "n_iter": 1,
-        "steps": 20, # can be changed to affect the speed and quality of the results
+        "steps": 20,  # can be changed to affect the speed and quality of the results
         "cfg_scale": 7.5,
         "width": 768,
         "height": 512,
@@ -201,12 +225,12 @@ def send_to_sd(prompt, isWeb=False):
         "s_tmax": 0,
         "s_tmin": 0,
         "s_noise": 1
-        #"override_settings": {"sd_model_checkpoint": "dreamlikeart-diffusion-1.0.ckpt"},
-    } 
+        # "override_settings": {"sd_model_checkpoint": "dreamlikeart-diffusion-1.0.ckpt"},
+    }
 
     def post_prompt(payload):
         return session.post(URL + "/sdapi/v1/txt2img", json=payload)
-    
+
     start_time = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
         ic(f'sending prompt: {payload["prompt"]}')
