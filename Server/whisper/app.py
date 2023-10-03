@@ -1,22 +1,27 @@
 from flask import Flask, abort, request
 from tempfile import NamedTemporaryFile
-import whisper
+
+from faster_whisper import WhisperModel
 import torch
+#import whisper
 
 # Check if NVIDIA GPU is available
 torch.cuda.is_available()
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-
+model_size = "medium"
 # Load the Whisper model:
-model = whisper.load_model("medium", device=DEVICE)
+# model = whisper.load_model(model_size, device=DEVICE)
+model = WhisperModel(model_size, device="cuda", compute_type="int8")
 
 app = Flask(__name__)
+
+
 @app.route("/")
 def hello():
     return "Whisper Hello World!"
 
 
-@app.route('/whisper', methods=['POST'])
+@app.route("/whisper", methods=["POST"])
 def handler():
     if not request.files:
         # If the user didn't submit any files, return a 400 (Bad Request) error.
@@ -29,18 +34,23 @@ def handler():
     for filename, handle in request.files.items():
         # Create a temporary file.
         # The location of the temporary file is available in `temp.name`.
-        temp = NamedTemporaryFile()
+        temp = NamedTemporaryFile(delete=False)
         # Write the user's uploaded file to the temporary file.
         # The file will get deleted when it drops out of scope.
         handle.save(temp)
+        temp.close()
         # Let's get the transcript of the temporary file.
-        result = model.transcribe(temp.name)
+        # This returns segments, so we need to modify them:
+        segments, info = model.transcribe(temp.name, language='en')
+        result = {}
+        result["text"] = " ".join([seg.text for seg in segments])
         # Now we can store the result object for this file.
-        results.append({
-            'filename': filename,
-            'transcript': result['text'],
-        })
+        results.append(
+            {
+                "filename": filename,
+                "transcript": result["text"],
+            }
+        )
 
     # This will be automatically converted to JSON.
-    return {'results': results}
-
+    return {"results": results}

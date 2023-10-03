@@ -33,3 +33,4 @@ api_keys.env
 *\flask_session
 /ses
 dockerbuildpush.bat
+Image_Generation/response.txt
