@@ -10,6 +10,7 @@ Click the video to watch on youtube:
   </a>
 </div>
 Here is an image exmaple from a dream about dragons
+
 ![Dragon and a person flying towards a glowing island](https://github.com/BDT2023/DreamGenie/assets/92650578/625c419a-2263-4b21-a902-2c5a1415e001)
 
 ## Features
