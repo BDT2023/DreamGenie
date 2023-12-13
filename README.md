@@ -10,6 +10,8 @@ Click the video to watch on youtube:
   </a>
 </div>
 
+![Dragon and a person flying towards a glowing island](https://github.com/BDT2023/DreamGenie/assets/92650578/625c419a-2263-4b21-a902-2c5a1415e001)
+
 ## Features
 - Voice/text input for dream scene generation.
 - GPT-3 for splitting transcribed text into individual dream scenes.
