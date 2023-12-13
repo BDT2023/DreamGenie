@@ -43,7 +43,7 @@ For a detailed exploration of Dream Genie's architecture, deployment strategies,
 Follow the instructions in the application for providing dream inputs and viewing generated scenes.
 
 ## License
-This project is licensed under [LICENSE NAME] - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgments
 - Special thanks to all contributors and supporters of the Dream Genie project.
