@@ -9,8 +9,7 @@ Click the video to watch on youtube:
     <img src="https://github.com/BDT2023/DreamGenie/assets/72495653/14f8b273-cad0-47b0-9920-8a922551fd08" alt="Watch the video" style="width:100%;">
   </a>
 </div>
-Here is an image exmaple from a dream about dragons:
-
+Here is an image example from a dream about dragons:
 
 ![Dragon and a person flying towards a glowing island](https://github.com/BDT2023/DreamGenie/assets/92650578/625c419a-2263-4b21-a902-2c5a1415e001)
 
