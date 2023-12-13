@@ -2,6 +2,14 @@
 ## Overview
 Dream Genie is an innovative application designed to enable users, especially older adults, to experience their dreams in a new light. It allows users to talk about a dream, then identifies key scenes and creates artistic representations of each scene.
 
+## Demo
+Click the video to watch on youtube:
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=vYGtx706kPA">
+    <img src="https://github.com/BDT2023/DreamGenie/assets/72495653/14f8b273-cad0-47b0-9920-8a922551fd08" alt="Watch the video" style="width:100%;">
+  </a>
+</div>
+
 ## Features
 - Voice/text input for dream scene generation.
 - GPT-3 for splitting transcribed text into individual dream scenes.
